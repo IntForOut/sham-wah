@@ -6,7 +6,7 @@
     >
       <div class="flex items-center gap-3">
         <div
-          class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center"
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-400 via-gold-500 to-bronze-600 flex items-center justify-center shadow-md shadow-gold-500/20"
         >
           <span class="text-white text-sm font-bold">{{ tabIcon }}</span>
         </div>
@@ -113,7 +113,7 @@ const ui = useUiStore();
 
 function modeClass(mode: DisplayMode) {
   return ui.displayMode === mode
-    ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-400 shadow-sm"
+    ? "bg-gold-50 dark:bg-gold-900/20 border-gold-500 dark:border-gold-600 text-gold-700 dark:text-gold-400 shadow-sm"
     : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50";
 }
 

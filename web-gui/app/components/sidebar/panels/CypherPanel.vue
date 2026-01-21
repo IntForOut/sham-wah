@@ -22,7 +22,7 @@
             spellcheck="false"
             placeholder="MATCH (n) RETURN n LIMIT 25"
             rows="6"
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm font-mono focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent transition-all resize-none"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm font-mono focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all resize-none"
             @keydown.ctrl.enter="executeQuery"
             @keydown.meta.enter="executeQuery"
           ></textarea>
@@ -44,7 +44,7 @@
             :class="
               !query.trim() || isExecuting
                 ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
-                : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:shadow-lg hover:shadow-indigo-500/30 hover:scale-[1.02] active:scale-[0.98]'
+                : 'bg-gradient-to-r from-gold-500 via-gold-600 to-bronze-600 text-white hover:shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] active:scale-[0.98]'
             "
           >
             <svg
@@ -93,7 +93,7 @@
           <button
             @click="formatQuery"
             :disabled="!query.trim()"
-            class="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gold-50 dark:hover:bg-gold-900/20 hover:border-gold-300 dark:hover:border-gold-700 font-medium text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Formater la requête (Ctrl+Shift+F)"
           >
             <svg
@@ -167,11 +167,11 @@
       <!-- SUCCESS STATE -->
       <div
         v-else-if="results"
-        class="p-4 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
+        class="p-4 rounded-lg bg-sage-50 dark:bg-sage-900/20 border border-sage-200 dark:border-sage-800"
       >
         <div class="flex items-start gap-3">
           <svg
-            class="w-5 h-5 text-green-500 dark:text-green-400 flex-shrink-0 mt-0.5"
+            class="w-5 h-5 text-sage-600 dark:text-sage-400 flex-shrink-0 mt-0.5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -184,10 +184,10 @@
             />
           </svg>
           <div class="flex-1">
-            <p class="text-sm font-medium text-green-800 dark:text-green-300">
+            <p class="text-sm font-medium text-sage-800 dark:text-sage-300">
               Requête exécutée avec succès
             </p>
-            <p class="text-sm text-green-700 dark:text-green-400 mt-1">
+            <p class="text-sm text-sage-700 dark:text-sage-400 mt-1">
               {{ results.count }} résultat(s) trouvé(s) en
               {{ results.executionTime }}ms
             </p>
@@ -207,10 +207,10 @@
           v-for="(example, index) in examples"
           :key="index"
           @click="loadExample(example.query)"
-          class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 group"
+          class="w-full text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gold-50 dark:hover:bg-gold-900/20 hover:border-gold-300 dark:hover:border-gold-700 transition-all duration-200 group"
         >
           <p
-            class="text-sm font-medium text-gray-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400"
+            class="text-sm font-medium text-gray-900 dark:text-white mb-1 group-hover:text-gold-700 dark:group-hover:text-gold-400"
           >
             {{ example.title }}
           </p>

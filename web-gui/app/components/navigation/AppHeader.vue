@@ -3,7 +3,12 @@
     class="h-20 border-b bg-white dark:bg-gray-900 dark:border-gray-800 flex items-center justify-between px-6 shadow-sm"
   >
     <!-- LEFT: APP TITLE & LOGO -->
-    <div class="flex items-center gap-2 pl-4">
+    <div class="flex items-center gap-3 pl-2">
+      <div
+        class="w-12 h-12 bg-gradient-to-br from-gold-400 via-gold-500 to-bronze-600 rounded-xl flex items-center justify-center shadow-lg shadow-gold-500/20"
+      >
+        <span class="text-white font-bold text-lg">KG</span>
+      </div>
       <span
         class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight"
       >
@@ -86,7 +91,7 @@ watch(
  */
 function linkClass(view: ViewName) {
   return ui.currentView === view
-    ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+    ? "bg-gold-50 dark:bg-gold-900/20 text-gold-700 dark:text-gold-400 border-b-2 border-gold-500"
     : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800";
 }
 </script>
