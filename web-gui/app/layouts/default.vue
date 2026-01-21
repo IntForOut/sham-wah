@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex flex-col">
+  <div class="h-screen flex flex-col bg-gray-50 dark:bg-gray-950">
     <!-- HEADER -->
     <AppHeader />
 
@@ -9,7 +9,7 @@
       <AppSidebar />
 
       <!-- CONTENT -->
-      <main class="flex-1 overflow-auto bg-gray-50">
+      <main class="flex-1 overflow-auto bg-gray-50 dark:bg-gray-950">
         <NuxtPage />
       </main>
     </div>

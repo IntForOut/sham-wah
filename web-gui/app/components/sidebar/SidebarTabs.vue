@@ -1,5 +1,7 @@
 <template>
-  <div class="w-14 flex flex-col items-center py-4 gap-2 bg-gray-50 border-r">
+  <div
+    class="w-20 flex flex-col items-center py-6 gap-3 bg-gray-50 dark:bg-gray-800/50 border-r dark:border-gray-800"
+  >
     <SidebarTabItem
       v-for="tab in tabs"
       :key="tab.id"
@@ -28,10 +30,8 @@ const tabs: Array<{
 ];
 
 function onSelect(tab: SidebarTab) {
-  if (!ui.sidebarOpen) {
-    ui.openSidebar(tab);
-  } else {
-    ui.setSidebarTab(tab);
-  }
+  if (!ui.sidebarOpen) return ui.openSidebar(tab);
+  if (ui.activeSidebarTab === tab) return ui.toggleSidebar();
+  ui.setSidebarTab(tab);
 }
 </script>
