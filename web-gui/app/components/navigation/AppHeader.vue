@@ -29,7 +29,7 @@
       <ThemeSwitcher />
       <LanguageSelector />
       <a
-        href="https://github.com/vpech77/sham-wah"
+        href="https://github.com/vpech77"
         target="_blank"
         rel="noopener noreferrer"
         class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
@@ -88,9 +88,5 @@ function linkClass(view: ViewName) {
   return ui.currentView === view
     ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
     : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-800";
-}
-
-function toggleMobileMenu() {
-  mobileMenuOpen.value = !mobileMenuOpen.value;
 }
 </script>
