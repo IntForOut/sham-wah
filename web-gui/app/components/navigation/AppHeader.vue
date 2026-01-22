@@ -5,9 +5,9 @@
     <!-- LEFT: APP TITLE & LOGO -->
     <div class="flex items-center gap-3 pl-2">
       <div
-        class="w-12 h-12 bg-gradient-to-br from-gold-400 via-gold-500 to-bronze-600 rounded-xl flex items-center justify-center shadow-lg shadow-gold-500/20"
+        class="w-12 h-12 bg-white border border-gold-400 hover:bg-gray-50 dark:bg-gold-900/20 dark:border-gold-400 dark:hover:bg-gold-900/30 rounded-xl flex items-center justify-center shadow-lg shadow-gold-500/20"
       >
-        <span class="text-white font-bold text-lg">KG</span>
+        <span class="text-white font-bold text-2xl">🐐</span>
       </div>
       <span
         class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight"
