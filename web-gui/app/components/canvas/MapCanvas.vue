@@ -180,6 +180,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import maplibregl from "maplibre-gl";
 
 const mapContainer = ref<HTMLDivElement | null>(null);
 const loading = ref(true);
@@ -190,28 +191,24 @@ const currentStyle = ref("streets");
 let map: any = null;
 
 onMounted(() => {
-  // Initialize MapLibre here
-  // Example initialization (uncomment when maplibre-gl is installed):
-  /*
   map = new maplibregl.Map({
     container: mapContainer.value!,
-    style: 'https://demotiles.maplibre.org/style.json',
+    style: "https://demotiles.maplibre.org/style.json",
     center: [2.3488, 48.8534], // Paris coordinates
-    zoom: 12
+    zoom: 4,
   });
 
-  map.on('load', () => {
+  map.on("load", () => {
     loading.value = false;
   });
 
-  map.on('click', (e: any) => {
+  map.on("click", (e: any) => {
     selectedLocation.value = {
-      name: 'Selected Location',
+      name: "Selected Location",
       coordinates: `${e.lngLat.lat.toFixed(4)}, ${e.lngLat.lng.toFixed(4)}`,
-      description: 'Click on the map to explore'
+      description: "Click on the map to explore",
     };
   });
-  */
 
   // Simulate loading
   setTimeout(() => {
@@ -241,7 +238,7 @@ const resetView = () => {
   if (map) {
     map.flyTo({
       center: [2.3488, 48.8534],
-      zoom: 12,
+      zoom: 4,
       duration: 1000,
     });
   }
