@@ -16,6 +16,12 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    public: {
+      MAPTILER_KEY: process.env.NUXT_PUBLIC_MAPTILER_KEY,
+    },
+  },
+
   modules: [
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",
