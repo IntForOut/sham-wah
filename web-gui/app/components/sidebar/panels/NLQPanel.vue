@@ -246,19 +246,14 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import QueryActionSelector from "@/components/QueryActionSelector.vue";
-import ResourceTypeSelector from "@/components/ResourceTypeSelector.vue";
-import RelationshipSelector from "@/components/RelationshipSelector.vue";
-import ConceptSelector from "@/components/ConceptSelector.vue";
-import AdvancedFilters from "@/components/AdvancedFilters.vue";
-import ResultsTable from "@/components/ResultsTable.vue";
+import QueryActionSelector from "./nlqPanel/QueryActionSelector.vue";
+import ResourceTypeSelector from "./nlqPanel/ResourceTypeSelector.vue";
+import RelationshipSelector from "./nlqPanel/RelationshipSelector.vue";
+import ConceptSelector from "./nlqPanel/ConceptSelector.vue";
+import AdvancedFilters from "./nlqPanel/AdvancedFilters.vue";
+import ResultsTable from "./nlqPanel/ResultsTable.vue";
 import IconGitHub from "~/components/icons/IconGitHub.vue";
-// import {
-//   HikingIcon,
-//   FileTextIcon,
-//   DatabaseIcon,
-//   MapIcon,
-// } from "~/components/icons.vue";
+import IconHiking from "~/components/icons/IconHiking.vue";
 
 // Query builder state
 const queryBuilder = ref({
@@ -310,7 +305,7 @@ const queryTemplates = [
   {
     title: "Hiking Data",
     description: "Display hiking-related datasets",
-    icon: IconGitHub,
+    icon: IconHiking,
     config: {
       action: "display",
       resourceTypes: ["Dataset", "ScientificSurvey"],
