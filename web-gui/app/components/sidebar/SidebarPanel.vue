@@ -119,12 +119,12 @@ function modeClass(mode: DisplayMode) {
 
 const panelMap = {
   cypher: {
-    title: "Requête Graphe",
+    title: "Graph Query",
     icon: "G",
     component: CypherPanel,
   },
   nlq: {
-    title: "Langage naturel",
+    title: "Natural Language",
     icon: "N",
     component: NLQPanel,
   },
