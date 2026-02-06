@@ -65,10 +65,10 @@ const navItems: Array<{
   path: string;
   view: ViewName;
 }> = [
-  { label: "Exploration", path: "/explore", view: "explore" },
-  { label: "Carte", path: "/map", view: "map" },
-  { label: "Ressources", path: "/resources", view: "resources" },
-  { label: "Édition", path: "/edit", view: "edit" },
+  { label: "Explore", path: "/explore", view: "explore" },
+  { label: "Map", path: "/map", view: "map" },
+  { label: "Resources", path: "/resources", view: "resources" },
+  { label: "Edit", path: "/edit", view: "edit" },
 ];
 
 /**

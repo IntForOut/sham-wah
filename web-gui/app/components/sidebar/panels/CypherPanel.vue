@@ -4,13 +4,13 @@
     <section>
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-          Requête Cypher
+          Cypher Query
         </h3>
         <button
           @click="clearQuery"
           class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
-          Effacer
+          Clear
         </button>
       </div>
 
@@ -31,7 +31,7 @@
           <div
             class="absolute bottom-2 right-2 text-xs text-gray-400 dark:text-gray-500"
           >
-            {{ query.length }} caractères
+            {{ query.length }} characters
           </div>
         </div>
 
@@ -123,7 +123,7 @@
             class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
             >Enter</kbd
           >
-          pour exécuter
+          &nbsp;to execute query
         </p>
       </div>
     </section>
@@ -131,7 +131,7 @@
     <!-- RESULTS SECTION -->
     <section v-if="results || error">
       <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-        Résultats
+        Results
       </h3>
 
       <!-- ERROR STATE -->
@@ -155,7 +155,7 @@
           </svg>
           <div class="flex-1">
             <p class="text-sm font-medium text-red-800 dark:text-red-300">
-              Erreur d'exécution
+              Execution error
             </p>
             <p class="text-sm text-red-700 dark:text-red-400 mt-1 font-mono">
               {{ error }}
@@ -185,10 +185,10 @@
           </svg>
           <div class="flex-1">
             <p class="text-sm font-medium text-sage-800 dark:text-sage-300">
-              Requête exécutée avec succès
+              Query executed successfully
             </p>
             <p class="text-sm text-sage-700 dark:text-sage-400 mt-1">
-              {{ results.count }} résultat(s) trouvé(s) en
+              {{ results.count }} result(s) found in
               {{ results.executionTime }}ms
             </p>
           </div>
@@ -199,7 +199,7 @@
     <!-- EXAMPLES SECTION -->
     <section>
       <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
-        Exemples de requêtes
+        Query examples
       </h3>
 
       <div class="space-y-2">
@@ -233,19 +233,19 @@ const error = ref<string | null>(null);
 
 const examples = [
   {
-    title: "Récupérer tous les nœuds",
+    title: "Retrieve all nodes",
     query: "MATCH (n) RETURN n LIMIT 25",
   },
   {
-    title: "Compter les nœuds par label",
+    title: "Count nodes by label",
     query: "MATCH (n) RETURN labels(n) AS label, count(*) AS count",
   },
   {
-    title: "Trouver les relations",
+    title: "Find relationships",
     query: "MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 10",
   },
   {
-    title: "Chercher par propriété",
+    title: "Search by property",
     query: 'MATCH (n {name: "example"}) RETURN n',
   },
 ];

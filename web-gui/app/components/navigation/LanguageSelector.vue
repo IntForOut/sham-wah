@@ -72,7 +72,8 @@ const languages = [
 
 onMounted(() => {
   // Load saved language preference
-  const savedLang = localStorage.getItem("language");
+  // const savedLang = localStorage.getItem("language");
+  const savedLang = "en";
   if (savedLang) {
     currentLanguage.value = savedLang;
   }

@@ -10,7 +10,7 @@ export const useUiStore = defineStore("ui", () => {
   const currentView = ref<ViewName>("explore");
   const sidebarOpen = ref(true);
   const displayMode = ref<DisplayMode>("graph");
-  const activeSidebarTab = ref<SidebarTab>("cypher");
+  const activeSidebarTab = ref<SidebarTab>("nlq");
 
   // --- GETTERS ---
   const isSidebarOpen = computed(() => sidebarOpen.value);
