@@ -22,22 +22,30 @@
         />
 
         <!-- RESOURCE TYPE SELECTOR -->
-        <ResourceTypeSelector
+        <!-- <ResourceTypeSelector
           v-model="queryBuilder.resourceTypes"
           :disabled="!queryBuilder.action"
-        />
+        /> -->
 
         <!-- RELATIONSHIP SELECTOR -->
-        <RelationshipSelector
+        <!-- <RelationshipSelector
           v-model="queryBuilder.relationship"
           :disabled="!queryBuilder.resourceTypes.length"
-        />
+        /> -->
 
         <!-- CONCEPT SELECTOR -->
-        <ConceptSelector
+        <!-- <ConceptSelector
           v-model="queryBuilder.concepts"
           :disabled="!queryBuilder.relationship"
-        />
+        /> -->
+
+        <!-- RESOURCE TYPE SELECTOR -->
+        <ResourceTypeSelector v-model="queryBuilder.resourceTypes" />
+
+        <RelationshipDisplay :relationship="queryBuilder.relationship" />
+
+        <!-- CONCEPT SELECTOR -->
+        <ConceptSelector v-model="queryBuilder.concepts" />
 
         <!-- ADVANCED FILTERS (Collapsible) -->
         <AdvancedFilters
@@ -254,12 +262,15 @@ import AdvancedFilters from "./nlqPanel/AdvancedFilters.vue";
 import ResultsTable from "./nlqPanel/ResultsTable.vue";
 import IconGitHub from "~/components/icons/IconGitHub.vue";
 import IconHiking from "~/components/icons/IconHiking.vue";
+import RelationshipDisplay from "./nlqPanel/RelationshipDisplay.vue";
+
+const determinedRelationship = "represents";
 
 // Query builder state
 const queryBuilder = ref({
   action: "",
   resourceTypes: [] as string[],
-  relationship: "",
+  relationship: determinedRelationship,
   concepts: [] as string[],
   filters: {
     limit: 25,
@@ -392,7 +403,7 @@ watch(
 function onActionChange() {
   // Reset dependent fields when action changes
   queryBuilder.value.resourceTypes = [];
-  queryBuilder.value.relationship = "";
+  queryBuilder.value.relationship = determinedRelationship;
   queryBuilder.value.concepts = [];
 }
 
@@ -400,7 +411,7 @@ function resetQuery() {
   queryBuilder.value = {
     action: "",
     resourceTypes: [],
-    relationship: "",
+    relationship: determinedRelationship,
     concepts: [],
     filters: {
       limit: 25,
