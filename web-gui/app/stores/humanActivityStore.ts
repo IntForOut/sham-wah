@@ -99,105 +99,105 @@ export const useHumanActivitiesStore = defineStore("humanActivities", () => {
     });
   }
 
+  // Updated generateMockAssets to use your specific data list
   function generateMockAssets(params: QueryParams): DigitalAsset[] {
-    const assetTypes =
-      params.assetType === "all"
-        ? ["Dataset", "ScientificPaper", "ScientificSurvey"]
-        : [params.assetType];
-
-    const count = Math.min(Math.floor(Math.random() * 10) + 3, params.limit);
-
-    return Array.from({ length: count }, (_, i) => {
-      const type = assetTypes[Math.floor(Math.random() * assetTypes.length)]!;
-      const conceptSubset = params.concepts
-        .sort(() => Math.random() - 0.5)
-        .slice(0, Math.floor(Math.random() * params.concepts.length) + 1);
-
-      const mainConcept = conceptSubset[0]!;
-
-      return {
-        id: `asset-${Date.now()}-${i}`,
-        type,
-        name: generateAssetName(type, mainConcept),
-        description: generateAssetDescription(type, conceptSubset),
-        concepts: conceptSubset,
-        metadata: {
-          dateCreated: new Date(
-            Date.now() - Math.random() * 365 * 24 * 60 * 60 * 1000,
-          )
-            .toISOString()
-            .split("T")[0],
-          author: generateRandomAuthor(),
-          location: generateRandomLocation(),
-        },
-      };
-    });
-  }
-
-  function generateAssetName(type: string, concept: string): string {
-    const templates = {
-      Dataset: [
-        `Chamois encounters area`,
-        `Outdoor Vision Export`,
-        `Parc des Bauges Sentiers BDTopo`,
-        `Tracks MultiSensors Vincennes`,
-      ],
-      ScientificPaper: [
-        `Analysis of ${concept} in Sensitive Areas`,
-        `Kerouaton 2024`,
-        `Ecological Impact of ${concept}`,
-        `Marchand et al. 2025`,
-      ],
-      ScientificSurvey: [
-        `Kerouatan Survey 2024`,
-        `${concept} Environmental Impact Survey`,
-        `${concept} Seasonal Variation Assessment`,
-      ],
-    };
-
-    const typeTemplates =
-      templates[type as keyof typeof templates] || templates.Dataset;
-    return typeTemplates[Math.floor(Math.random() * typeTemplates.length)]!;
-  }
-
-  function generateAssetDescription(type: string, concepts: string[]): string {
-    const templates = {
-      Dataset:
-        "185 real encounters. Only included real encounters as they are likely enough to work with and potential encounters drastically increase amount of data",
-      ScientificPaper:
-        "Eye-catching or breath-catching: Role and landscape attributes of pauses differs among hikers’ profile when rambling in a French mountainous area",
-      ScientificSurvey:
-        "Systematic survey collecting empirical data from field observations and measurements.",
-    };
-
-    return (
-      templates[type as keyof typeof templates] ||
-      "Digital asset containing relevant research data."
-    );
-  }
-
-  function generateRandomAuthor(): string {
-    const authors = [
-      "Smith et al.",
-      "Johnson Research Group",
-      "Wildlife Conservation Institute",
-      "National Park Service",
-      "University Environmental Lab",
-      "Forest Service Research",
+    const allMockData: DigitalAsset[] = [
+      {
+        id: "ov-tracks-2024",
+        type: "Dataset",
+        name: "OVTracksMontBlancBauges2024",
+        description:
+          "A set of tracks issued from Outdoorvision. GPS traces from outdoorvison are cleaned and filtered",
+        concepts: ["Outdoorvision", "GPS Traces"],
+      },
+      {
+        id: "strava-tracks-2014",
+        type: "Dataset",
+        name: "StravaTracksBauges2014",
+        description: "No description available",
+        concepts: ["Strava", "Bauges"],
+      },
+      {
+        id: "ov-map-service",
+        type: "DataService",
+        name: "OVRecreationalUserMapService",
+        description:
+          "This data stream makes it possible to display in the Outdoorvision application the aggregated paths of GPS tracks coming from connected services...",
+        concepts: ["Map Service", "Outdoorvision"],
+      },
+      {
+        id: "strava-map-service",
+        type: "DataService",
+        name: "StravaRecreationalUserMapService",
+        description:
+          "Shows the aggregated public activities from the past year on Strava",
+        concepts: ["Strava", "Recreational"],
+      },
+      {
+        id: "c2c-routes-2025",
+        type: "Dataset",
+        name: "CampToCampRoutesBauges2025",
+        description: "A set of Routes issued from Camptocamp.org API",
+        concepts: ["Camptocamp", "Routes"],
+      },
+      {
+        id: "altirando-2025",
+        type: "Dataset",
+        name: "AltitudeRandoRoutesBauges2025",
+        description: "A set of routes issued from altituderando.com",
+        concepts: ["Altituderando", "Routes"],
+      },
+      {
+        id: "c2c-poi-2025",
+        type: "Dataset",
+        name: "CampToCampPOIBauges2025",
+        description: "A set of Waypoints issued from Camptocamp.org API",
+        concepts: ["Camptocamp", "POI"],
+      },
+      {
+        id: "skilift-counters",
+        type: "Dataset",
+        name: "SkiLiftCountersMontBlanc2008To2024",
+        description:
+          "Counting data for each ski lift, including their locations (start and end points), over a 10-year period.",
+        concepts: ["Ski Lift", "Counting"],
+      },
+      {
+        id: "bdtopo-2025",
+        type: "Dataset",
+        name: "BDTopoSentiersBauges2025",
+        description:
+          "La BD TOPO® version 3.5 contient une description vectorielle 3D des éléments du territoire.",
+        concepts: ["BD TOPO", "Sentiers"],
+      },
+      {
+        id: "paper-marchand-2025",
+        type: "ScientificPaper",
+        name: "JournalOfPeopleAndNatureMarchandEtAl2025",
+        description:
+          "Disturbance by massive sporting events in mountain areas: When and where matters for the protected Alpine ibex Capra ibex",
+        concepts: ["Alpine Ibex", "Disturbance"],
+      },
+      {
+        id: "paper-vandamme-2024",
+        type: "ScientificPaper",
+        name: "SIGSPATIAL24VandDammeEtAl2024",
+        description:
+          "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
+        concepts: ["GNSS", "Trajectories"],
+      },
     ];
-    return authors[Math.floor(Math.random() * authors.length)]!;
-  }
 
-  function generateRandomLocation(): string {
-    const locations = [
-      "Rocky Mountains, CO",
-      "Yellowstone National Park",
-      "Pacific Northwest Region",
-      "Appalachian Trail Corridor",
-      "Sierra Nevada, CA",
-      "Great Smoky Mountains",
-    ];
-    return locations[Math.floor(Math.random() * locations.length)]!;
+    // Filter based on the assetType selected in the UI
+    let filtered = allMockData;
+    if (params.assetType !== "all") {
+      filtered = allMockData.filter(
+        (asset) => asset.type.toLowerCase() === params.assetType.toLowerCase(),
+      );
+    }
+
+    // Return the results limited by the 'limit' parameter
+    return filtered.slice(0, params.limit);
   }
 
   function transformNeo4jResponse(neo4jData: any): QueryResult {

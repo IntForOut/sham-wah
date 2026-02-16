@@ -77,6 +77,7 @@
         >
           <option value="all">All Resource type</option>
           <option value="Dataset">Dataset</option>
+          <option value="DataService">Data Service</option>
           <option value="ScientificPaper">Scientific Paper</option>
           <option value="ScientificSurvey">Scientific Survey</option>
           <option value="ScientificSurvey">Process</option>
@@ -262,7 +263,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { useHumanActivitiesStore } from "~/stores/humanActivitiesStore";
+import { useHumanActivitiesStore } from "~/stores/humanActivityStore";
 import ConceptSelector from "./nlqPanel/ConceptSelector.vue";
 
 // Store
