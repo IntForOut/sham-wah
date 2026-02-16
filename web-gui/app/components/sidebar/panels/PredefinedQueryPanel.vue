@@ -25,7 +25,7 @@
       </div>
     </div>
     <!-- CONCEPT SELECTOR COMPONENT -->
-    <ConceptSelector v-model="selectedConcepts" />
+    <ConceptSelector ref="conceptSelectorRef" v-model="selectedConcepts" />
     <!-- FILTERS -->
     <div class="grid grid-cols-2 gap-3">
       <div>
@@ -57,7 +57,7 @@
           <option value="DataService">Data Service</option>
           <option value="ScientificPaper">Scientific Paper</option>
           <option value="ScientificSurvey">Scientific Survey</option>
-          <option value="ScientificSurvey">Process</option>
+          <option value="Process">Process</option>
         </select>
       </div>
     </div>
@@ -65,10 +65,10 @@
     <div class="flex gap-3">
       <button
         @click="executeQuery"
-        :disabled="isExecuting || selectedConcepts.length === 0"
+        :disabled="isExecuting"
         class="flex-1 px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="
-          isExecuting || selectedConcepts.length === 0
+          isExecuting
             ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
             : 'bg-gradient-to-r from-gold-500 via-gold-600 to-bronze-600 text-white hover:shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] active:scale-[0.98]'
         "
@@ -112,12 +112,10 @@
 
       <button
         @click="clearQuery"
-        :disabled="
-          isExecuting || (selectedConcepts.length === 0 && !queryStore.results)
-        "
+        :disabled="isExecuting || !queryStore.results"
         class="px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="
-          isExecuting || (selectedConcepts.length === 0 && !queryStore.results)
+          isExecuting || !queryStore.results
             ? 'bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-600'
             : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white hover:scale-[1.02] active:scale-[0.98]'
         "
@@ -186,7 +184,7 @@
             v-for="(asset, index) in queryStore.results.data"
             :key="asset.id"
             @click="toggleAssetSelection(asset)"
-            class="w-full text-left pt-2 p-3 rounded-lg border transition-all duration-200"
+            class="w-full text-left py-3 p-4 rounded-lg border transition-all duration-200"
             :class="
               isAssetSelected(asset.id)
                 ? 'border-gold-500 dark:border-gold-500 bg-gold-50 dark:bg-gold-900/20 shadow-md'
@@ -244,16 +242,21 @@
 import { ref, computed, watch } from "vue";
 import { useHumanActivitiesStore } from "~/stores/humanActivityStore";
 import ConceptSelector from "./nlqPanel/ConceptSelector.vue";
+
 // Store
 const queryStore = useHumanActivitiesStore();
+
 // Local state
+const conceptSelectorRef = ref<InstanceType<typeof ConceptSelector>>();
 const selectedConcepts = ref<string[]>([]);
 const selectedAssets = ref<any[]>([]);
 const isExecuting = computed(() => queryStore.isExecuting);
+
 const filters = ref({
   limit: 10,
   assetType: "all",
 });
+
 // Watch for changes in selected concepts to clear results
 watch(
   selectedConcepts,
@@ -263,41 +266,75 @@ watch(
   },
   { deep: true },
 );
+
+// Watch for changes in filters to clear results
+watch(
+  filters,
+  () => {
+    queryStore.clearResults();
+    selectedAssets.value = [];
+  },
+  { deep: true },
+);
+
 // Computed properties
 const conceptsText = computed(() => {
   if (selectedConcepts.value.length === 0) return "";
-  // Simple comma-separated list for modern, clean display
   return selectedConcepts.value.join(", ");
 });
+
+// Get the effective concepts to use in query (handles optional specific concepts)
+const effectiveConceptsForQuery = computed(() => {
+  if (conceptSelectorRef.value?.effectiveConcepts) {
+    return conceptSelectorRef.value.effectiveConcepts;
+  }
+  return selectedConcepts.value;
+});
+
 const generatedQuery = computed(() => {
-  if (selectedConcepts.value.length === 0) return "";
+  const conceptsToUse = effectiveConceptsForQuery.value;
+
   let query = "MATCH ";
+
   // Build asset pattern
   if (filters.value.assetType === "all") {
-    query += "(asset:Dataset|ScientificPaper|ScientificSurvey)";
+    query +=
+      "(asset:Dataset|DataService|ScientificPaper|ScientificSurvey|Process)";
   } else {
     query += `(asset:${filters.value.assetType})`;
   }
-  // Add relationship to concepts
-  const conceptLabels = selectedConcepts.value.join("|");
-  query += `-[:REPRESENTS]->(concept:${conceptLabels})`;
-  // Return clause
-  query += "\nRETURN asset, concept";
+
+  // Add relationship to concepts if any are selected
+  if (conceptsToUse.length > 0) {
+    const conceptLabels = conceptsToUse.join("|");
+    query += `-[:REPRESENTS]->(concept:${conceptLabels})`;
+    // Return clause with concept
+    query += "\nRETURN asset, concept";
+  } else {
+    // Return clause without concept
+    query += "\nRETURN asset";
+  }
+
   // Add limit
   query += `\nLIMIT ${filters.value.limit}`;
+
   return query;
 });
+
 // Methods
 async function executeQuery() {
-  if (!generatedQuery.value || selectedConcepts.value.length === 0) return;
+  if (!generatedQuery.value) return;
+
   // Clear previous selections
   selectedAssets.value = [];
+
   const queryParams = {
     query: generatedQuery.value,
-    concepts: selectedConcepts.value,
+    concepts: effectiveConceptsForQuery.value,
     assetType: filters.value.assetType,
     limit: filters.value.limit,
   };
+
   await queryStore.executeQuery(queryParams);
 }
 
@@ -306,7 +343,7 @@ function clearQuery() {
   selectedAssets.value = [];
   queryStore.clearResults();
   filters.value = {
-    limit: 10,
+    limit: 15,
     assetType: "all",
   };
 }
@@ -315,6 +352,7 @@ function clearQuery() {
 function isAssetSelected(assetId: string): boolean {
   return selectedAssets.value.some((a) => a.id === assetId);
 }
+
 function toggleAssetSelection(asset: any) {
   const isAlreadySelected = isAssetSelected(asset.id);
   selectedAssets.value = [];
@@ -322,6 +360,7 @@ function toggleAssetSelection(asset: any) {
     selectedAssets.value = [asset];
   }
 }
+
 // Expose selected assets for parent components
 defineExpose({
   selectedAssets,

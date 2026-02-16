@@ -53,10 +53,35 @@
     <!-- Specific Concepts (if category selected) -->
     <div
       v-if="selectedCategory && availableConcepts.length > 0"
-      class="space-y-2 mt-3"
+      class="space-y-2 mt-3 p-3 rounded-lg bg-gold-50/50 dark:bg-gold-900/10 border border-gold-200/50 dark:border-gold-800/30"
     >
-      <p class="text-xs font-medium text-gray-600 dark:text-gray-400">
-        Select specific concepts:
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <p class="text-xs font-medium text-gray-700 dark:text-gray-300">
+            Select specific concepts
+          </p>
+          <span
+            class="px-2 py-0.5 text-xs font-medium rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+          >
+            Optional
+          </span>
+        </div>
+        <button
+          v-if="modelValue.length > 0"
+          @click="clearSpecificConcepts"
+          class="text-xs text-gold-600 dark:text-gold-400 hover:text-gold-700 dark:hover:text-gold-300 font-medium transition-colors"
+        >
+          Clear ({{ modelValue.length }})
+        </button>
+      </div>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        Leave empty to search all
+        {{
+          conceptCategories
+            .find((c) => c.name === selectedCategory)
+            ?.label.toLowerCase()
+        }}
+        concepts
       </p>
       <div class="grid grid-cols-2 gap-2">
         <button
@@ -67,8 +92,8 @@
           class="px-3 py-2 rounded-lg border text-xs font-medium transition-all duration-200"
           :class="
             isSelected(concept.value)
-              ? 'border-gold-500 dark:border-gold-400 bg-gold-500 dark:bg-gold-400 text-white'
-              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gold-300 dark:hover:border-gold-600'
+              ? 'border-gold-500 dark:border-gold-400 bg-gold-500 dark:bg-gold-400 text-white shadow-sm'
+              : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:border-gold-300 dark:hover:border-gold-600 hover:bg-gold-50 dark:hover:bg-gold-900/20'
           "
         >
           {{ concept.label }}
@@ -142,6 +167,18 @@ const availableConcepts = computed(() => {
   return category?.concepts || [];
 });
 
+// Computed: Get all concept values when category selected but no specific concepts
+const effectiveConcepts = computed(() => {
+  if (props.modelValue.length > 0) {
+    // User selected specific concepts
+    return props.modelValue;
+  } else if (selectedCategory.value) {
+    // Category selected but no specific concepts - return all concepts from category
+    return availableConcepts.value.map((c) => c.value);
+  }
+  return [];
+});
+
 function isSelected(value: string): boolean {
   return props.modelValue.includes(value);
 }
@@ -153,8 +190,18 @@ function toggleConcept(value: string) {
   emit("update:modelValue", newValue);
 }
 
+function clearSpecificConcepts() {
+  emit("update:modelValue", []);
+}
+
 // Reset concepts when category changes
 watch(selectedCategory, () => {
   emit("update:modelValue", []);
+});
+
+// Expose selected category for parent if needed
+defineExpose({
+  selectedCategory,
+  effectiveConcepts,
 });
 </script>
