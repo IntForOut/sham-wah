@@ -16,7 +16,7 @@
           d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
         />
       </svg>
-      Concept
+      Concept category
     </label>
 
     <!-- Concept Category Selector -->
@@ -26,7 +26,7 @@
         :disabled="disabled"
         class="w-full px-4 py-2.5 pr-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        <option value="">Select a category...</option>
+        <option value="">Select a concept category...</option>
         <option
           v-for="category in conceptCategories"
           :key="category.name"
@@ -98,19 +98,22 @@ const selectedCategory = ref("");
 
 const conceptCategories = [
   {
-    name: "activities",
-    label: "Activities",
+    name: "humanActivity",
+    label: "Human Activity",
     concepts: [
-      { value: "HumanOutdoorActivities", label: "Human Outdoor Activities" },
-      { value: "AnimalActivities", label: "Animal Activities" },
+      { value: "Hiking", label: "Hiking" },
+      { value: "Camping", label: "Camping" },
+      { value: "Climbing", label: "Climbing" },
+      { value: "Skiing", label: "Skiing" },
+      { value: "MontainBiking", label: "Montain Biking" },
+      { value: "Trekking", label: "Trekking" },
     ],
   },
   {
-    name: "humanOutdoorActivities",
-    label: "HumanOutdoorActivities",
+    name: "animalActivity",
+    label: "Animal Activity",
     concepts: [
       { value: "Hiking", label: "Hiking" },
-      { value: "FastHiking", label: "Fast Hiking" },
       { value: "Skiing", label: "Skiing" },
       { value: "Cycling", label: "Cycling" },
       { value: "TrailRunning", label: "Trail Running" },
@@ -123,19 +126,11 @@ const conceptCategories = [
       { value: "SensitiveArea", label: "Sensitive Area" },
       { value: "WaterArea", label: "Water Area" },
       { value: "RestArea", label: "Rest Area" },
+      { value: "MotorhomeArea", label: "Motorhome Area" },
       { value: "Landmark", label: "Landmark" },
       { value: "Trail", label: "Trail" },
-      { value: "MotorHome", label: "Motor Home" },
       { value: "NatureReserves", label: "Nature Reserves" },
       { value: "Footprint", label: "Footprint" },
-    ],
-  },
-  {
-    name: "species",
-    label: "Species & Population",
-    concepts: [
-      { value: "Chamois", label: "Chamois" },
-      { value: "Marmots", label: "Marmots" },
     ],
   },
 ];

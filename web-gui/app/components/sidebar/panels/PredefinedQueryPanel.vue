@@ -2,87 +2,51 @@
   <div class="space-y-4">
     <!-- NATURAL LANGUAGE STATEMENT -->
     <div
-      class="p-4 rounded-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700"
+      class="relative overflow-hidden rounded-xl border border-gold-200 dark:border-gold-800/50 bg-gradient-to-br from-white via-gold-50/30 to-amber-50/20 dark:from-gray-900 dark:via-gold-900/10 dark:to-amber-900/5 backdrop-blur-sm"
     >
-      <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-        <span class="font-medium text-gray-900 dark:text-white"
-          >I want all the digital assets that represents</span
-        >
-        <span
-          v-if="selectedConcepts.length > 0"
-          class="ml-2 font-semibold text-gold-600 dark:text-gold-400"
-        >
-          {{ conceptsText }}
-        </span>
-        <span v-else class="ml-2 text-gray-400 dark:text-gray-500 italic">
-          (select activities below)</span
-        >
-      </p>
-    </div>
+      <!-- Decorative elements -->
+      <div
+        class="absolute top-0 right-0 w-32 h-32 bg-gold-400/10 dark:bg-gold-400/5 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-0 left-0 w-24 h-24 bg-amber-400/10 dark:bg-amber-400/5 rounded-full blur-2xl"
+      ></div>
 
-    <!-- CONCEPT PILLS SELECTOR -->
-    <div class="space-y-3">
-      <!-- Control Buttons -->
-      <div class="flex items-center justify-between">
-        <button
-          @click="selectAllConcepts"
-          class="text-xs text-gray-600 dark:text-gray-400 hover:text-gold-600 dark:hover:text-gold-400 transition-colors flex items-center gap-1 font-medium"
-        >
-          <svg
-            class="w-3.5 h-3.5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+      <div class="relative p-5">
+        <div class="flex items-start gap-3">
+          <!-- Icon -->
+          <!-- <div
+            class="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-gold-500 to-amber-600 flex items-center justify-center shadow-md"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          Select all
-        </button>
+            <svg
+              class="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div> -->
 
-        <button
-          v-if="selectedConcepts.length > 0"
-          @click="clearSelection"
-          class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-1"
-        >
-          <svg
-            class="w-3.5 h-3.5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-          Clear all
-        </button>
-      </div>
-
-      <div class="flex flex-wrap gap-2">
-        <button
-          v-for="concept in availableConcepts"
-          :key="concept.id"
-          @click="toggleConcept(concept.id)"
-          type="button"
-          class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
-          :class="
-            isConceptSelected(concept.id)
-              ? 'bg-gold-500 text-white shadow-md hover:bg-gold-600 hover:shadow-lg hover:scale-105'
-              : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-gold-300 dark:hover:border-gold-700 hover:bg-gold-50 dark:hover:bg-gold-900/20'
-          "
-        >
-          {{ concept.label }}
-        </button>
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <h3
+              class="text-base font-semibold text-gray-900 dark:text-white mb-1"
+            >
+              I'm looking for resources about...
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- CONCEPT SELECTOR COMPONENT -->
+    <ConceptSelector v-model="selectedConcepts" />
 
     <!-- FILTERS -->
     <div class="grid grid-cols-2 gap-3">
@@ -105,16 +69,17 @@
         <label
           class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5"
         >
-          Asset Type
+          Resource Type
         </label>
         <select
           v-model="filters.assetType"
           class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all"
         >
-          <option value="all">All Assets</option>
+          <option value="all">All Resource type</option>
           <option value="Dataset">Dataset</option>
           <option value="ScientificPaper">Scientific Paper</option>
           <option value="ScientificSurvey">Scientific Survey</option>
+          <option value="ScientificSurvey">Process</option>
         </select>
       </div>
     </div>
@@ -296,8 +261,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useHumanActivitiesStore } from "~/stores/humanActivitiesStore";
+import ConceptSelector from "./nlqPanel/ConceptSelector.vue";
 
 // Store
 const queryStore = useHumanActivitiesStore();
@@ -312,50 +278,22 @@ const filters = ref({
   assetType: "all",
 });
 
-// Available concepts for human activities
-const availableConcepts = [
-  {
-    id: "Hiking",
-    label: "Hiking",
+// Watch for changes in selected concepts to clear results
+watch(
+  selectedConcepts,
+  () => {
+    queryStore.clearResults();
+    selectedAssets.value = [];
   },
-  {
-    id: "Camping",
-    label: "Camping",
-  },
-  {
-    id: "Skiing",
-    label: "Skiing",
-  },
-  {
-    id: "MountainBiking",
-    label: "Mountain Biking",
-  },
-  {
-    id: "ScenicViewing",
-    label: "Scenic Viewing",
-  },
-  {
-    id: "picnicking",
-    label: "Picnicking and Resting",
-  },
-  {
-    id: "WildlifeObservation",
-    label: "Wildlife Observation",
-  },
-];
+  { deep: true },
+);
 
 // Computed properties
 const conceptsText = computed(() => {
   if (selectedConcepts.value.length === 0) return "";
 
-  const labels = selectedConcepts.value.map((id) => getConceptLabel(id));
-
-  if (labels.length === 1) return labels[0];
-  if (labels.length === 2) return `${labels[0]} and ${labels[1]}`;
-
-  const lastLabel = labels[labels.length - 1];
-  const otherLabels = labels.slice(0, -1).join(", ");
-  return `${otherLabels}, and ${lastLabel}`;
+  // Simple comma-separated list for modern, clean display
+  return selectedConcepts.value.join(", ");
 });
 
 const generatedQuery = computed(() => {
@@ -384,40 +322,6 @@ const generatedQuery = computed(() => {
 });
 
 // Methods
-function isConceptSelected(conceptId: string): boolean {
-  return selectedConcepts.value.includes(conceptId);
-}
-
-function toggleConcept(conceptId: string) {
-  const index = selectedConcepts.value.indexOf(conceptId);
-  if (index > -1) {
-    selectedConcepts.value.splice(index, 1);
-  } else {
-    selectedConcepts.value.push(conceptId);
-  }
-
-  // Clear results when concepts change
-  queryStore.clearResults();
-  selectedAssets.value = [];
-}
-
-function clearSelection() {
-  selectedConcepts.value = [];
-  queryStore.clearResults();
-  selectedAssets.value = [];
-}
-
-function selectAllConcepts() {
-  selectedConcepts.value = availableConcepts.map((c) => c.id);
-  queryStore.clearResults();
-  selectedAssets.value = [];
-}
-
-function getConceptLabel(conceptId: string): string {
-  const concept = availableConcepts.find((c) => c.id === conceptId);
-  return concept?.label || conceptId;
-}
-
 async function executeQuery() {
   if (!generatedQuery.value || selectedConcepts.value.length === 0) return;
 
