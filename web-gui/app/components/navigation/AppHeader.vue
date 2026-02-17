@@ -67,7 +67,6 @@ const navItems: Array<{
 }> = [
   { label: "Explore Graph", path: "/explore", view: "explore" },
   // { label: "Map", path: "/map", view: "map" },
-  // { label: "Resources", path: "/resources", view: "resources" },
   { label: "Edit Graph", path: "/edit", view: "edit" },
 ];
 

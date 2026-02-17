@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
-export type ViewName = "explore" | "map" | "resources" | "edit";
-export type SidebarTab = "cypher" | "nlq" | "chatbot" | "human";
+export type ViewName = "explore" | "map" | "edit";
+export type SidebarTab = "cypher" | "chatbot" | "human";
 export type DisplayMode = "graph" | "table";
 
 export const useUiStore = defineStore("ui", () => {

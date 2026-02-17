@@ -241,7 +241,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useHumanActivitiesStore } from "~/stores/humanActivityStore";
-import ConceptSelector from "./nlqPanel/ConceptSelector.vue";
+import ConceptSelector from "./predefinedQueryPanel/ConceptSelector.vue";
 
 // Store
 const queryStore = useHumanActivitiesStore();
