@@ -51,7 +51,7 @@
     </div>
 
     <!-- Specific Concepts (if category selected) -->
-    <div
+    <!-- <div
       v-if="selectedCategory && availableConcepts.length > 0"
       class="space-y-2 mt-3 p-3 rounded-lg bg-gold-50/50 dark:bg-gold-900/10 border border-gold-200/50 dark:border-gold-800/30"
     >
@@ -99,7 +99,7 @@
           {{ concept.label }}
         </button>
       </div>
-    </div>
+    </div> -->
 
     <p class="text-xs text-gray-500 dark:text-gray-400">
       Filter by concepts that the assets represent

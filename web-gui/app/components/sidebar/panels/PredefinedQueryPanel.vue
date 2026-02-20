@@ -18,7 +18,7 @@
             <h3
               class="text-base font-semibold text-gray-900 dark:text-white mb-1"
             >
-              I'm looking for resources about...
+              I'm looking for data about...
             </h3>
           </div>
         </div>
