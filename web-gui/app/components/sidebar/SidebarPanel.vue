@@ -96,7 +96,7 @@
     </div> -->
 
     <!-- CONTENT -->
-    <div class="flex-1 overflow-auto p-6">
+    <div class="flex-1 overflow-auto px-6 py-4">
       <component :is="activeComponent" />
     </div>
   </div>
