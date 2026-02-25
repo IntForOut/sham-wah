@@ -1,147 +1,99 @@
 <template>
-  <div class="space-y-2">
-    <!-- NATURAL LANGUAGE STATEMENT + INLINE SELECTOR -->
-    <!-- <div
-      class="relative overflow-hidden rounded-xl border border-gold-200 dark:border-gold-800/50 bg-gradient-to-br from-white via-gold-50/30 to-amber-50/20 dark:from-gray-900 dark:via-gold-900/10 dark:to-amber-900/5 backdrop-blur-sm"
-    > -->
-    <!-- Decorative elements -->
-    <!-- <div
-      class="absolute top-0 right-0 w-32 h-32 bg-gold-400/10 dark:bg-gold-400/5 rounded-full blur-3xl"
-    ></div> -->
-    <div
-      class="absolute bottom-0 left-0 w-24 h-24 bg-amber-400/10 dark:bg-amber-400/5 rounded-full blur-2xl"
-    ></div>
-    <div class="relative">
-      <!-- Sentence + selector on same line -->
-      <div class="flex items-center gap-3 flex-wrap">
-        <h3
-          class="text-sm font-semibold text-gray-900 dark:text-white whitespace-nowrap shrink-0"
-        >
-          I'm looking for data about
-        </h3>
-        <div class="flex-1 min-w-[200px]">
-          <ConceptSelector
-            ref="conceptSelectorRef"
-            v-model="selectedConcepts"
-          />
-        </div>
-      </div>
-      <!-- </div> -->
-    </div>
+  <div class="space-y-6">
+    <!-- Row 1: sentence + [selector + quick search button] always on one line -->
+    <div class="flex items-center gap-3 flex-wrap">
+      <h3
+        class="text-sm font-semibold text-gray-900 dark:text-white whitespace-nowrap shrink-0"
+      >
+        I'm looking for data about
+      </h3>
 
-    <!-- FILTERS -->
-    <div class="grid grid-cols-2 gap-3">
-      <div>
-        <label
-          class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5"
-          >Limit</label
-        >
-        <input
-          v-model.number="filters.limit"
-          type="number"
-          min="1"
-          max="100"
-          class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all"
+      <!-- Selector + button as a single input-group -->
+      <div
+        class="flex flex-1 min-w-[220px] rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden focus-within:ring-2 focus-within:ring-gold-500 dark:focus-within:ring-gold-400 transition-all"
+      >
+        <ConceptSelector
+          :disabled="queryStore.isExecuting"
+          class="flex-1 border-none ring-0 focus-within:ring-0 rounded-none"
         />
-      </div>
-      <div>
-        <label
-          class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5"
-          >Resource Type</label
+        <button
+          :disabled="queryStore.isExecuting || !filterStore.hasCategorySelected"
+          class="shrink-0 px-3 flex items-center justify-center border-l border-gray-200 dark:border-gray-700 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+          :class="
+            queryStore.isExecuting
+              ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
+              : 'bg-gradient-to-b from-gold-500 to-gold-600 text-white hover:from-gold-400 hover:to-gold-500 active:from-gold-600 active:to-gold-700'
+          "
+          title="Search"
+          @click="executeQuery"
         >
-        <select
-          v-model="filters.assetType"
-          class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all"
-        >
-          <option value="all">All Resource type</option>
-          <option value="Dataset">Dataset</option>
-          <option value="DataService">Data Service</option>
-          <option value="ScientificPaper">Scientific Paper</option>
-          <option value="ScientificSurvey">Scientific Survey</option>
-          <option value="Process">Process</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- EXECUTE AND DELETE BUTTONS -->
-    <div class="flex gap-">
-      <button
-        @click="executeQuery"
-        :disabled="isExecuting || !hasCategorySelected"
-        class="flex-1 px-2 py-2 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        :class="
-          isExecuting
-            ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
-            : 'bg-gradient-to-r from-gold-500 via-gold-600 to-bronze-600 text-white hover:shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] active:scale-[0.98]'
-        "
-      >
-        <svg
-          v-if="isExecuting"
-          class="w-5 h-5 animate-spin"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
+          <svg
+            v-if="queryStore.isExecuting"
+            class="w-4 h-4 animate-spin"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+          <svg
+            v-else
+            class="w-4 h-4"
+            fill="none"
             stroke="currentColor"
-            stroke-width="4"
-          ></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-        <svg
-          v-else
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-        <span>{{ isExecuting ? "Searching..." : "Search" }}</span>
-      </button>
-
-      <!-- <button
-        @click="clearQuery"
-        :disabled="isExecuting || !queryStore.results"
-        class="px-4 py-3 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-        :class="
-          isExecuting || !queryStore.results
-            ? 'bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-600'
-            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:scale-[1.02] active:scale-[0.98]'
-        "
-        title="Clear query and results"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-          />
-        </svg>
-      </button> -->
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <!-- RESULTS SECTION -->
+    <!-- Filters accordion -->
+    <AppAccordion :default-open="false">
+      <template #icon>
+        <svg
+          class="w-3.5 h-3.5 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"
+          />
+        </svg>
+      </template>
+      <template #title>Filters</template>
+
+      <QueryFilters
+        :is-executing="queryStore.isExecuting"
+        @search="executeQuery"
+        @reset="resetAll"
+      />
+    </AppAccordion>
+
+    <!-- Results section -->
     <div v-if="queryStore.results || queryStore.error">
-      <!-- ERROR STATE -->
+      <!-- Error state -->
       <div
         v-if="queryStore.error"
         class="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
@@ -171,20 +123,18 @@
         </div>
       </div>
 
-      <!-- SUCCESS STATE -->
+      <!-- Success state -->
       <div v-else-if="queryStore.results">
-        <!-- Results Header -->
-        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">
           {{ queryStore.results.count }} result(s) ·
-          <!-- {{ queryStore.results.executionTime }}ms -->
+          {{ queryStore.results.executionTime }}ms
         </p>
-        <!-- Compact cards grid -->
         <div class="flex flex-col gap-1.5 overflow-y-auto pr-1 scrollbar-thin">
           <AssetCard
             v-for="asset in queryStore.results.data"
             :key="asset.id"
             :asset="asset"
-            :selected="isAssetSelected(asset.id)"
+            :selected="selectedAsset?.id === asset.id"
             @toggle="toggleAssetSelection"
           />
         </div>
@@ -196,109 +146,87 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useHumanActivitiesStore } from "~/stores/humanActivityStore";
+import { usePredefinedQueryStore } from "~/stores/predefinedQueryStore";
+import AppAccordion from "~/components/sidebar/panels/AppAccordion.vue";
 import ConceptSelector from "./predefinedQueryPanel/ConceptSelector.vue";
+import QueryFilters from "./predefinedQueryPanel/QueryFilters.vue";
 import AssetCard from "./predefinedQueryPanel/AssetCard.vue";
 
-// Store
+// ─── Stores ───────────────────────────────────────────────────────────────────
+
 const queryStore = useHumanActivitiesStore();
+const filterStore = usePredefinedQueryStore();
 
-// Local state
-const conceptSelectorRef = ref<InstanceType<typeof ConceptSelector>>();
-const selectedConcepts = ref<string[]>([]);
-const selectedAssets = ref<any[]>([]);
-const isExecuting = computed(() => queryStore.isExecuting);
+// ─── Local state ──────────────────────────────────────────────────────────────
 
-const hasCategorySelected = computed(() => {
-  return conceptSelectorRef.value?.selectedCategory ? true : false;
-});
+/** Only one asset can be selected at a time */
+const selectedAsset = ref<any | null>(null);
 
-const filters = ref({
-  limit: 15,
-  assetType: "all",
-});
-
-// Watch for changes in selected concepts to clear results
-watch(
-  selectedConcepts,
-  () => {
-    queryStore.clearResults();
-    selectedAssets.value = [];
-  },
-  { deep: true },
-);
-
-// Watch for changes in filters to clear results
-watch(
-  filters,
-  () => {
-    queryStore.clearResults();
-    selectedAssets.value = [];
-  },
-  { deep: true },
-);
-
-const effectiveConceptsForQuery = computed(() => {
-  if (conceptSelectorRef.value?.effectiveConcepts) {
-    return conceptSelectorRef.value.effectiveConcepts;
-  }
-  return selectedConcepts.value;
-});
+// ─── Query builder ────────────────────────────────────────────────────────────
 
 const generatedQuery = computed(() => {
-  const conceptsToUse = effectiveConceptsForQuery.value;
-  let query = "MATCH ";
+  const { assetType, limit } = filterStore.filters;
+  const concepts = filterStore.effectiveConcepts;
 
-  if (filters.value.assetType === "all") {
-    query +=
-      "(asset:Dataset|DataService|ScientificPaper|ScientificSurvey|Process)";
-  } else {
-    query += `(asset:${filters.value.assetType})`;
-  }
+  const assetLabel =
+    assetType === "all"
+      ? "Dataset|DataService|ScientificPaper|ScientificSurvey|Process"
+      : assetType;
 
-  if (conceptsToUse.length > 0) {
-    const conceptLabels = conceptsToUse.join("|");
-    query += `-[:REPRESENTS]->(concept:${conceptLabels})`;
+  let query = `MATCH (asset:${assetLabel})`;
+
+  if (concepts.length > 0) {
+    query += `-[:REPRESENTS]->(concept:${concepts.join("|")})`;
     query += "\nRETURN asset, concept";
   } else {
     query += "\nRETURN asset";
   }
 
-  query += `\nLIMIT ${filters.value.limit}`;
+  query += `\nLIMIT ${limit}`;
   return query;
 });
 
-// Methods
+// ─── Side effects ─────────────────────────────────────────────────────────────
+
+watch(
+  [
+    () => filterStore.selectedCategoryName,
+    () => filterStore.selectedConceptValues,
+    () => filterStore.filters,
+  ],
+  () => {
+    queryStore.clearResults();
+    selectedAsset.value = null;
+  },
+  { deep: true },
+);
+
+// ─── Methods ──────────────────────────────────────────────────────────────────
+
 async function executeQuery() {
-  if (!generatedQuery.value) return;
-  selectedAssets.value = [];
+  if (!filterStore.hasCategorySelected) return;
+  selectedAsset.value = null;
   await queryStore.executeQuery({
     query: generatedQuery.value,
-    concepts: effectiveConceptsForQuery.value,
-    assetType: filters.value.assetType,
-    limit: filters.value.limit,
+    concepts: filterStore.effectiveConcepts,
+    assetType: filterStore.filters.assetType,
+    limit: filterStore.filters.limit,
   });
 }
 
-function clearQuery() {
-  selectedConcepts.value = [];
-  selectedAssets.value = [];
+function resetAll() {
+  filterStore.reset();
   queryStore.clearResults();
-  filters.value = { limit: 15, assetType: "all" };
-}
-
-function isAssetSelected(assetId: string): boolean {
-  return selectedAssets.value.some((a) => a.id === assetId);
+  selectedAsset.value = null;
 }
 
 function toggleAssetSelection(asset: any) {
-  const isAlreadySelected = isAssetSelected(asset.id);
-  selectedAssets.value = [];
-  if (!isAlreadySelected) {
-    selectedAssets.value = [asset];
-  }
+  selectedAsset.value = selectedAsset.value?.id === asset.id ? null : asset;
 }
 
-defineExpose({ selectedAssets, selectedConcepts });
+// ─── Expose ───────────────────────────────────────────────────────────────────
+
+defineExpose({ selectedAsset });
 </script>
 
 <style scoped>
