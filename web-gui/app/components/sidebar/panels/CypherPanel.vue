@@ -7,15 +7,15 @@
           Cypher Query
         </h3>
         <button
-          @click="clearQuery"
           class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          @click="clearQuery"
         >
           Clear
         </button>
       </div>
 
       <div class="space-y-3">
-        <!-- TEXTAREA -->
+        <!-- Textarea -->
         <div class="relative">
           <textarea
             v-model="query"
@@ -25,9 +25,7 @@
             class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm font-mono focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all resize-none"
             @keydown.ctrl.enter="executeQuery"
             @keydown.meta.enter="executeQuery"
-          ></textarea>
-
-          <!-- Character count -->
+          />
           <div
             class="absolute bottom-2 right-2 text-xs text-gray-400 dark:text-gray-500"
           >
@@ -35,11 +33,10 @@
           </div>
         </div>
 
-        <!-- ACTION BUTTONS -->
+        <!-- Action buttons -->
         <div class="flex gap-2">
           <!-- Execute -->
           <button
-            @click="executeQuery"
             :disabled="!query.trim() || queryStore.isExecuting"
             class="flex-1 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             :class="
@@ -47,6 +44,7 @@
                 ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500'
                 : 'bg-gradient-to-r from-gold-500 via-gold-600 to-bronze-600 text-white hover:shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] active:scale-[0.98]'
             "
+            @click="executeQuery"
           >
             <svg
               v-if="queryStore.isExecuting"
@@ -61,12 +59,12 @@
                 r="10"
                 stroke="currentColor"
                 stroke-width="4"
-              ></circle>
+              />
               <path
                 class="opacity-75"
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
+              />
             </svg>
             <svg
               v-else
@@ -89,16 +87,16 @@
               />
             </svg>
             <span>{{
-              queryStore.isExecuting ? "Exécution..." : "Exécuter"
+              queryStore.isExecuting ? "Executing..." : "Execute"
             }}</span>
           </button>
 
           <!-- Format -->
           <button
-            @click="formatQuery"
             :disabled="!query.trim()"
             class="px-4 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gold-50 dark:hover:bg-gold-900/20 hover:border-gold-300 dark:hover:border-gold-700 font-medium text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            title="Formater la requête"
+            title="Format query"
+            @click="formatQuery"
           >
             <svg
               class="w-4 h-4"
@@ -115,17 +113,17 @@
             </svg>
           </button>
 
-          <!-- Clear results (mirrors PredefinedQueryPanel's trash button) -->
+          <!-- Clear results -->
           <button
-            @click="clearQuery"
             :disabled="queryStore.isExecuting || !queryStore.results"
             class="px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
             :class="
               queryStore.isExecuting || !queryStore.results
                 ? 'bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-600'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white hover:scale-[1.02] active:scale-[0.98]'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:scale-[1.02] active:scale-[0.98]'
             "
             title="Clear query and results"
+            @click="clearQuery"
           >
             <svg
               class="w-4 h-4"
@@ -143,7 +141,7 @@
           </button>
         </div>
 
-        <!-- Keyboard shortcuts hint -->
+        <!-- Keyboard shortcut hint -->
         <p class="text-xs text-gray-500 dark:text-gray-400">
           <kbd
             class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
@@ -154,7 +152,7 @@
             class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600"
             >Enter</kbd
           >
-          &nbsp;to execute query
+          &nbsp;to execute
         </p>
       </div>
     </section>
@@ -165,7 +163,7 @@
         Results
       </h3>
 
-      <!-- ERROR STATE -->
+      <!-- Error state -->
       <div
         v-if="queryStore.error"
         class="p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800"
@@ -195,42 +193,23 @@
         </div>
       </div>
 
-      <!-- SUCCESS STATE -->
+      <!-- Success state -->
       <div v-else-if="queryStore.results" class="space-y-3">
-        <!-- Results header: count + timing (same as PredefinedQueryPanel) -->
-        <div class="flex items-center justify-between">
-          <p class="text-xs text-gray-600 dark:text-gray-400">
-            {{ queryStore.results.count }} result(s) •
-            {{ queryStore.results.executionTime }}ms
-          </p>
-        </div>
-
-        <!-- Scrollable result cards (same as PredefinedQueryPanel) -->
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          {{ queryStore.results.count }} result(s) ·
+          {{ queryStore.results.executionTime }}ms
+        </p>
+        <!-- Scrollable list — same layout as PredefinedQueryPanel -->
         <div
-          class="space-y-2 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700 scrollbar-track-transparent"
+          class="flex flex-col gap-1.5 max-h-[420px] overflow-y-auto pr-1 scrollbar-thin"
         >
-          <div
+          <AssetCard
             v-for="asset in queryStore.results.data"
             :key="asset.id"
-            class="w-full text-left py-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-          >
-            <div class="mb-2">
-              <span
-                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
-              >
-                {{ asset.type }}
-              </span>
-            </div>
-            <h4
-              class="text-sm font-semibold leading-snug truncate mb-1 text-gray-900 dark:text-white"
-              :title="asset.name"
-            >
-              {{ asset.name }}
-            </h4>
-            <p class="text-xs line-clamp-3 text-gray-600 dark:text-gray-400">
-              {{ asset.description }}
-            </p>
-          </div>
+            :asset="asset"
+            :selected="selectedAsset?.id === asset.id"
+            @toggle="toggleAssetSelection"
+          />
         </div>
       </div>
     </section>
@@ -240,13 +219,12 @@
       <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
         Quick Templates
       </h3>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <button
           v-for="(template, index) in queryTemplates"
           :key="index"
-          @click="loadTemplate(template.query)"
           class="text-left p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gold-50 dark:hover:bg-gold-900/20 hover:border-gold-300 dark:hover:border-gold-700 transition-all duration-200 group"
+          @click="loadTemplate(template.query)"
         >
           <div class="flex items-start gap-2">
             <component
@@ -272,26 +250,28 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useHumanActivitiesStore } from "~/stores/humanActivityStore";
+import { useHumanActivitiesStore } from "~/stores/query-result-store";
+import AssetCard from "./predefinedQueryPanel/AssetCard.vue";
 import IconGitHub from "~/components/icons/IconGitHub.vue";
 import IconHiking from "~/components/icons/IconHiking.vue";
 
-// ── Store ────────────────────────────────────────────────────────────────────
-// Shared with PredefinedQueryPanel — isExecuting, results, error, clearResults
-// and executeQuery all come from here.
+// ─── Store ────────────────────────────────────────────────────────────────────
+
 const queryStore = useHumanActivitiesStore();
 
-// ── Local state ──────────────────────────────────────────────────────────────
-const query = ref("");
+// ─── Local state ──────────────────────────────────────────────────────────────
 
-// Auto-clear store results when the textarea is edited so stale results
-// never sit next to a modified query (same guard as PredefinedQueryPanel's
-// watch on selectedConcepts / filters).
+const query = ref("");
+const selectedAsset = ref<any | null>(null);
+
+// Clear stale results when the query is edited
 watch(query, () => {
   queryStore.clearResults();
+  selectedAsset.value = null;
 });
 
-// ── Quick Templates ───────────────────────────────────────────────────────────
+// ─── Quick templates ──────────────────────────────────────────────────────────
+
 const queryTemplates = [
   {
     title: "Human Activities",
@@ -337,12 +317,11 @@ const queryTemplates = [
   },
 ];
 
-// ── Methods ───────────────────────────────────────────────────────────────────
+// ─── Methods ──────────────────────────────────────────────────────────────────
+
 async function executeQuery() {
   if (!query.value.trim() || queryStore.isExecuting) return;
-
-  // Pass the raw Cypher through. concepts/assetType/limit are included to
-  // keep the store's executeQuery signature compatible with PredefinedQueryPanel.
+  selectedAsset.value = null;
   await queryStore.executeQuery({
     query: query.value,
     concepts: [],
@@ -354,52 +333,48 @@ async function executeQuery() {
 function clearQuery() {
   query.value = "";
   queryStore.clearResults();
+  selectedAsset.value = null;
 }
 
 function formatQuery() {
   if (!query.value.trim()) return;
-
   const keywords = ["MATCH", "WHERE", "RETURN", "WITH", "ORDER BY", "LIMIT"];
   let formatted = query.value;
-
   keywords.forEach((keyword) => {
-    const regex = new RegExp(`\\s+${keyword}\\s+`, "gi");
-    formatted = formatted.replace(regex, `\n${keyword} `);
+    formatted = formatted.replace(
+      new RegExp(`\\s+${keyword}\\s+`, "gi"),
+      `\n${keyword} `,
+    );
   });
-
   query.value = formatted.trim();
 }
 
 function loadTemplate(templateQuery: string) {
   query.value = templateQuery;
   queryStore.clearResults();
+  selectedAsset.value = null;
+}
+
+function toggleAssetSelection(asset: any) {
+  selectedAsset.value = selectedAsset.value?.id === asset.id ? null : asset;
 }
 </script>
 
 <style scoped>
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 .scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 .scrollbar-thin::-webkit-scrollbar-track {
   background: transparent;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
   background: #d1d5db;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 .dark .scrollbar-thin::-webkit-scrollbar-thumb {
   background: #4b5563;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
-}
-.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
 }
 </style>

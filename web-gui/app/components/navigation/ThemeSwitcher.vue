@@ -21,8 +21,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import IconSun from "@/components/icons/IconSun.vue";
-import IconMoon from "@/components/icons/IconMoon.vue";
+import IconSun from "~/components/icons/IconSun.vue";
+import IconMoon from "~/components/icons/IconMoon.vue";
 
 const isDark = ref(false);
 

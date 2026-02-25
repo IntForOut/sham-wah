@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 h-full flex flex-col bg-white dark:bg-gray-900">
+  <div class="w-[500px] h-full flex flex-col bg-white dark:bg-gray-900">
     <!-- HEADER -->
     <div
       class="h-16 px-6 border-b dark:border-gray-800 flex items-center justify-between"
@@ -96,7 +96,7 @@
     </div> -->
 
     <!-- CONTENT -->
-    <div class="flex-1 overflow-auto p-6">
+    <div class="flex-1 overflow-auto px-6 py-4">
       <component :is="activeComponent" />
     </div>
   </div>
@@ -104,7 +104,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useUiStore, type DisplayMode } from "@/stores/ui";
+import { useUiStore, type DisplayMode } from "~/stores/ui";
 import CypherPanel from "./panels/CypherPanel.vue";
 import ChatbotPanel from "./panels/ChatbotPanel.vue";
 import HumanActivityPanel from "./panels/PredefinedQueryPanel.vue";
@@ -130,7 +130,7 @@ const panelMap = {
   },
   chatbot: {
     title: "Chatbot",
-    icon: "R",
+    icon: "C",
     component: ChatbotPanel,
   },
 };

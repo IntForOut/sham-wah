@@ -9,5 +9,5 @@
 </template>
 
 <script setup lang="ts">
-import MapCanvas from "@/components/canvas/MapCanvas.vue";
+import MapCanvas from "~/components/canvas/MapCanvas.vue";
 </script>

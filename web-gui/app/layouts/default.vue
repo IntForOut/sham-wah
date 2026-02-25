@@ -17,6 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import AppHeader from "@/components/navigation/AppHeader.vue";
-import AppSidebar from "@/components/sidebar/AppSidebar.vue";
+import AppHeader from "~/components/navigation/AppHeader.vue";
+import AppSidebar from "~/components/sidebar/AppSidebar.vue";
 </script>

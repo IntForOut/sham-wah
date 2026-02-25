@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
-import IconLanguage from "@/components/icons/IconLanguage.vue";
+import IconLanguage from "~/components/icons/IconLanguage.vue";
 
 const isOpen = ref(false);
 const currentLanguage = ref("fr");

@@ -48,10 +48,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useUiStore, type ViewName } from "@/stores/ui";
+import { useUiStore, type ViewName } from "~/stores/ui";
 import ThemeSwitcher from "./ThemeSwitcher.vue";
 import LanguageSelector from "./LanguageSelector.vue";
-import IconGitHub from "@/components/icons/IconGitHub.vue";
+import IconGitHub from "~/components/icons/IconGitHub.vue";
 
 const route = useRoute();
 const ui = useUiStore();

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUiStore, type SidebarTab } from "@/stores/ui";
+import { useUiStore, type SidebarTab } from "~/stores/ui";
 import SidebarTabItem from "./SidebarTabItem.vue";
 
 const ui = useUiStore();
@@ -26,7 +26,7 @@ const tabs: Array<{
 }> = [
   { id: "human", label: "Predefined Query", icon: "P" },
   { id: "cypher", label: "Graph Query", icon: "G" },
-  { id: "chatbot", label: "Chatbot", icon: "R" },
+  { id: "chatbot", label: "Chatbot", icon: "C" },
 ];
 
 function onSelect(tab: SidebarTab) {

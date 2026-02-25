@@ -9,5 +9,5 @@
 </template>
 
 <script setup lang="ts">
-import GraphCanvas from "@/components/canvas/GraphCanvas.vue";
+import GraphCanvas from "~/components/canvas/GraphCanvas.vue";
 </script>
