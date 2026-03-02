@@ -145,8 +145,12 @@ import * as d3 from "d3";
 interface NodeDatum extends d3.SimulationNodeDatum {
   id: string;
   label: string;
+  description?: string; // optional second line shown inside rect nodes
   color: string;
   size: number;
+  shape?: "circle" | "rect";
+  width?: number;
+  height?: number;
   type?: string;
 }
 
@@ -172,12 +176,54 @@ let labelSelection: d3.Selection<
   SVGGElement,
   unknown
 > | null = null;
-let themeObserver: MutationObserver | null = null; // watches for dark/light mode changes
+let themeObserver: MutationObserver | null = null;
 
 // ─── Dark Mode Helper ─────────────────────────────────────────────────────────
 
 const getLabelColor = (): string =>
-  document.documentElement.classList.contains("dark") ? "#D1D5DB" : "#374151"; // gray-300 and gray-700
+  document.documentElement.classList.contains("dark") ? "#D1D5DB" : "#374151";
+
+// ─── Arrow Endpoint Helpers ───────────────────────────────────────────────────
+
+function getEdgeEnd(d: LinkDatum): { x: number; y: number } {
+  const source = d.source as NodeDatum;
+  const target = d.target as NodeDatum;
+  const sx = source.x ?? 0;
+  const sy = source.y ?? 0;
+  const tx = target.x ?? 0;
+  const ty = target.y ?? 0;
+  const dx = tx - sx;
+  const dy = ty - sy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+
+  if (dist === 0) return { x: tx, y: ty };
+
+  if (target.shape === "rect") {
+    // Intersect the line with the rectangle border
+    const hw = (target.width ?? 80) / 2;
+    const hh = (target.height ?? 30) / 2;
+    const scaleX = Math.abs(dx) > 0 ? hw / Math.abs(dx) : Infinity;
+    const scaleY = Math.abs(dy) > 0 ? hh / Math.abs(dy) : Infinity;
+    const scale = Math.min(scaleX, scaleY);
+    return {
+      x: tx - dx * scale,
+      y: ty - dy * scale,
+    };
+  } else {
+    // Stop at the circle's circumference (+ stroke-width of 2)
+    const r = target.size + 2;
+    return {
+      x: tx - (dx / dist) * r,
+      y: ty - (dy / dist) * r,
+    };
+  }
+}
+
+// Returns the label vertical offset depending on node shape
+function getLabelDy(d: NodeDatum): number {
+  if (d.shape === "rect") return (d.height ?? 30) / 2 + 14;
+  return d.size + 14;
+}
 
 onMounted(() => {
   if (!graphContainer.value) return;
@@ -191,8 +237,18 @@ onMounted(() => {
       size: 10,
       type: "Secondary",
     },
-    { id: "n3", label: "Node 3", color: "#10B981", size: 14, type: "Hub" },
+    { id: "n3", label: "Node 3", color: "#10B981", size: 24, type: "Hub" },
     { id: "n4", label: "Node 4", color: "#F59E0B", size: 8 },
+    {
+      id: "n5",
+      label: "Rectangle Node",
+      description: "Custom description text",
+      color: "#EF4444",
+      size: 8,
+      shape: "rect",
+      width: 140,
+      height: 56,
+    },
   ];
 
   const links: LinkDatum[] = [
@@ -200,6 +256,7 @@ onMounted(() => {
     { source: "n1", target: "n3" },
     { source: "n2", target: "n3" },
     { source: "n3", target: "n4" },
+    { source: "n4", target: "n5" },
   ];
 
   const { width, height } = graphContainer.value.getBoundingClientRect();
@@ -222,23 +279,22 @@ onMounted(() => {
       g.attr("transform", event.transform);
     });
 
-  // Attaching the behavior to the SVG means the whole surface is pannable.
   svgEl.call(zoomBehavior);
 
-  // ── ARROWHEAD MARKER (optional — for directed graphs) ──────────────────
+  // ── ARROWHEAD MARKER ───────────────────────────────────────────────────
 
   svgEl
     .append("defs")
     .append("marker")
     .attr("id", "arrowhead")
     .attr("viewBox", "-0 -5 10 10")
-    .attr("refX", 20) // how far back from the target the arrow sits
+    .attr("refX", 10) // ← tip of the "M 0,-5 L 10,0 L 0,5" path
     .attr("refY", 0)
-    .attr("orient", "auto") // rotates to follow the line direction
+    .attr("orient", "auto")
     .attr("markerWidth", 6)
     .attr("markerHeight", 6)
     .append("path")
-    .attr("d", "M 0,-5 L 10,0 L 0,5") // a simple triangle
+    .attr("d", "M 0,-5 L 10,0 L 0,5")
     .attr("fill", "#94A3B8");
 
   // ── LINKS (edges) ──────────────────────────────────────────────────────
@@ -264,8 +320,6 @@ onMounted(() => {
     .join("g")
     .attr("class", "node")
     .style("cursor", "pointer")
-
-    // ── DRAG BEHAVIOR ──────────────────────────────────────────────────────
     .call(
       d3
         .drag<SVGGElement, NodeDatum>()
@@ -285,27 +339,62 @@ onMounted(() => {
         }),
     );
 
-  nodeGroup
-    .append("circle")
-    .attr("r", (d) => d.size)
-    .attr("fill", (d) => d.color)
-    .attr("stroke", "#fff")
-    .attr("stroke-width", 2);
+  nodeGroup.each(function (d) {
+    const sel = d3.select(this);
+    if (d.shape === "rect") {
+      const rw = d.width ?? 140;
+      const rh = d.height ?? 56;
+
+      // Background rect
+      sel
+        .append("rect")
+        .attr("width", rw)
+        .attr("height", rh)
+        .attr("x", -rw / 2)
+        .attr("y", -rh / 2)
+        .attr("rx", 6)
+        .attr("ry", 6)
+        .attr("fill", d.color)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 2);
+
+      // description text centered inside the rect
+      sel
+        .append("text")
+        .text(d.description ?? "")
+        .attr("text-anchor", "middle")
+        .attr("dominant-baseline", "middle")
+        .attr("fill", "white")
+        .attr("font-size", 12)
+        .attr("pointer-events", "none");
+    } else {
+      sel
+        .append("circle")
+        .attr("r", d.size)
+        .attr("fill", d.color)
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 2);
+    }
+  });
 
   // ── HOVER HIGHLIGHT ────────────────────────────────────────────────────
 
   nodeGroup
-    .on("mouseenter", function () {
-      d3.select(this)
-        .select("circle")
-        .attr("stroke", "#60A5FA")
-        .attr("stroke-width", 3);
+    .on("mouseenter", function (_, d) {
+      const sel = d3.select(this);
+      if (d.shape === "rect") {
+        sel.select("rect").attr("stroke", "#60A5FA").attr("stroke-width", 3);
+      } else {
+        sel.select("circle").attr("stroke", "#60A5FA").attr("stroke-width", 3);
+      }
     })
-    .on("mouseleave", function () {
-      d3.select(this)
-        .select("circle")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 2);
+    .on("mouseleave", function (_, d) {
+      const sel = d3.select(this);
+      if (d.shape === "rect") {
+        sel.select("rect").attr("stroke", "#fff").attr("stroke-width", 2);
+      } else {
+        sel.select("circle").attr("stroke", "#fff").attr("stroke-width", 2);
+      }
     });
 
   // ── NODE CLICK → INFO PANEL ────────────────────────────────────────────
@@ -320,7 +409,6 @@ onMounted(() => {
     selectedNode.value = { label: d.label, degree, type: d.type ?? "Default" };
   });
 
-  // Clicking empty SVG space deselects any highlighted node.
   svgEl.on("click", () => {
     selectedNode.value = null;
   });
@@ -335,11 +423,13 @@ onMounted(() => {
     .join("text")
     .text((d) => d.label)
     .attr("font-size", 11)
-    .attr("fill", getLabelColor()) // dark-mode aware initial colour
+    .attr("fill", getLabelColor())
     .attr("text-anchor", "middle")
-    .attr("dy", (d) => d.size + 14)
+    .attr("dy", (d) => getLabelDy(d))
     .attr("pointer-events", "none")
     .attr("display", showLabels.value ? null : "none");
+
+  // ── SIMULATION ─────────────────────────────────────────────────────────
 
   simulation = d3
     .forceSimulation<NodeDatum>(nodes)
@@ -348,27 +438,34 @@ onMounted(() => {
       d3
         .forceLink<NodeDatum, LinkDatum>(links)
         .id((d) => d.id)
-        .distance(100),
+        .distance(120),
     )
     .force("charge", d3.forceManyBody().strength(-300))
     .force("center", d3.forceCenter(width / 2, height / 2))
     .force(
       "collision",
-      d3.forceCollide().radius((d) => (d as NodeDatum).size + 10),
+      d3.forceCollide().radius((d) => {
+        const nd = d as NodeDatum;
+        if (nd.shape === "rect") {
+          return (
+            Math.sqrt(
+              Math.pow((nd.width ?? 80) / 2, 2) +
+                Math.pow((nd.height ?? 30) / 2, 2),
+            ) + 10
+          );
+        }
+        return nd.size + 10;
+      }),
     )
-    // tick fires ~60 times/sec while the simulation is "hot" (alpha > alphaMin).
-    // We imperatively update every SVG element's position here.
     .on("tick", () => {
       link
         .attr("x1", (d) => (d.source as NodeDatum).x ?? 0)
         .attr("y1", (d) => (d.source as NodeDatum).y ?? 0)
-        .attr("x2", (d) => (d.target as NodeDatum).x ?? 0)
-        .attr("y2", (d) => (d.target as NodeDatum).y ?? 0);
+        .attr("x2", (d) => getEdgeEnd(d).x)
+        .attr("y2", (d) => getEdgeEnd(d).y);
 
-      // translate() moves the whole node group (circle + any future children)
       nodeGroup.attr("transform", (d) => `translate(${d.x ?? 0},${d.y ?? 0})`);
 
-      // Labels get the same translation so they track their node
       labelSelection?.attr(
         "transform",
         (d) => `translate(${d.x ?? 0},${d.y ?? 0})`,
