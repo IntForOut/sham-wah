@@ -35,19 +35,35 @@ function drawCircleNode(
     .attr("stroke-width", d.isSelected ? 3 : 2)
     .attr("class", "node-shape");
 
-  if (d.size >= 16) {
-    sel
+  const innerW = d.size * 1.4;
+  const fontSize = 9;
+  const lineHeight = 12;
+  // ~5.4px per char at font-size 9
+  const maxChars = Math.floor(innerW / 5.4);
+  const lines = wrapText(d.label, maxChars, 3); // max 3 lines
+
+  if (lines.length) {
+    const totalH = lines.length * lineHeight;
+    const startY = -(totalH / 2) + lineHeight * 0.5;
+
+    const textEl = sel
       .append("text")
-      .text(typeAbbrev(d.type))
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
-      .attr("fill", "rgba(255,255,255,0.9)")
-      .attr("font-size", 9)
-      .attr("font-weight", "700")
+      .attr("fill", "rgba(255,255,255,0.95)")
+      .attr("font-size", fontSize)
+      .attr("font-weight", "600")
       .attr("pointer-events", "none");
+
+    lines.forEach((line, i) => {
+      textEl
+        .append("tspan")
+        .text(line)
+        .attr("x", 0)
+        .attr("y", startY + i * lineHeight);
+    });
   }
 }
-
 function drawRectNode(
   sel: d3.Selection<SVGGElement, NodeDatum, any, any>,
   d: NodeDatum,
@@ -111,11 +127,11 @@ function drawRectNode(
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-/**
- * Splits text into lines that fit within maxChars.
- * Breaks on word boundaries — never mid-word.
- */
-function wrapText(text: string, maxChars: number): string[] {
+function wrapText(
+  text: string,
+  maxChars: number,
+  maxLines = Infinity,
+): string[] {
   if (!text) return [];
   const words = text.split(" ");
   const lines: string[] = [];
@@ -127,11 +143,15 @@ function wrapText(text: string, maxChars: number): string[] {
       current = candidate;
     } else {
       if (current) lines.push(current);
-      // If a single word is longer than maxChars, hard-break it
+      if (lines.length >= maxLines - 1) {
+        current = word.slice(0, maxChars - 1) + "…";
+        break;
+      }
       current =
         word.length > maxChars ? word.slice(0, maxChars - 1) + "…" : word;
     }
   }
+
   if (current) lines.push(current);
   return lines;
 }
@@ -146,7 +166,6 @@ export function applyHoverHighlight(
     if (entering) {
       shape.attr("stroke", "#60A5FA").attr("stroke-width", 3);
     } else {
-
       const defaultStroke =
         d.shape === "rect" ? (d.isSelected ? d.color : "#1e293b") : "#fff";
       shape

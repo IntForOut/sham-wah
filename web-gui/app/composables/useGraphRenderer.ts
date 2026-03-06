@@ -190,7 +190,7 @@ export function useGraphRenderer(
       .append("g")
       .attr("class", "labels")
       .selectAll<SVGTextElement, NodeDatum>("text")
-      .data(nodes)
+      .data(nodes.filter((n) => n.shape === "rect"))
       .join("text")
       .text((d) => d.label)
       .attr("font-size", 11)
