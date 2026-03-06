@@ -3,9 +3,9 @@ import type { NodeDatum, LinkDatum } from "./graphTypes";
 
 export const TYPE_COLORS: Record<string, string> = {
   Dataset: "#3B82F6",
-  DataService: "#F59E0B",
+  DataService: "#3B82F6",
   ScientificPaper: "#8B5CF6",
-  Catalog: "#10B981",
+  Catalog: "#3B82F6",
   UserFeedback: "#EF4444",
 };
 
