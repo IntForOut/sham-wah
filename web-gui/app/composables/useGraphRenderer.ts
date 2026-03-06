@@ -118,6 +118,24 @@ export function useGraphRenderer(
       .attr("stroke-opacity", 0.7)
       .attr("marker-end", "url(#arrowhead)");
 
+    const linkLabel = g
+      .append("g")
+      .attr("class", "link-labels")
+      .selectAll<SVGTextElement, LinkDatum>("text")
+      .data(links)
+      .join("text")
+      .text((d) => d.label ?? "")
+      .attr("font-size", 9)
+      .attr("font-weight", "600")
+      .attr("fill", "#64748b")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("pointer-events", "none")
+      .attr("paint-order", "stroke")
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", 3)
+      .attr("stroke-linejoin", "round");
+
     // ── Node groups
     const nodeGroup = g
       .append("g")
@@ -193,15 +211,16 @@ export function useGraphRenderer(
           .id((d) => d.id)
           .distance((link) => {
             const target = link.target as NodeDatum;
-            return target.shape === "rect" ? 300 : 200;
+            return target.shape === "rect" ? 380 : 280;
           }),
       )
-      .force("charge", d3.forceManyBody().strength(-380))
+      .force("charge", d3.forceManyBody().strength(-500))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force(
         "collision",
         d3.forceCollide<NodeDatum>().radius(getCollisionRadius),
       )
+
       .on("tick", () => {
         link
           .attr("x1", (d) => (d.source as NodeDatum).x ?? 0)
@@ -209,6 +228,21 @@ export function useGraphRenderer(
           .attr("x2", (d) => getEdgeEnd(d).x)
           .attr("y2", (d) => getEdgeEnd(d).y);
 
+        linkLabel
+          .attr(
+            "x",
+            (d) =>
+              (((d.source as NodeDatum).x ?? 0) +
+                ((d.target as NodeDatum).x ?? 0)) /
+              2,
+          )
+          .attr(
+            "y",
+            (d) =>
+              (((d.source as NodeDatum).y ?? 0) +
+                ((d.target as NodeDatum).y ?? 0)) /
+              2,
+          );
         nodeGroup.attr(
           "transform",
           (d) => `translate(${d.x ?? 0},${d.y ?? 0})`,

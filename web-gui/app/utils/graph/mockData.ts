@@ -147,27 +147,27 @@ export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
       {
         source: "outdoorvision-catalog",
         target: "ov-map-service",
-        label: "PROVIDES",
+        label: "SERVICE",
       },
       {
         source: "outdoorvision-catalog",
         target: "ov-tracks-2024",
-        label: "PROVIDES",
+        label: "DATASET",
       },
       {
         source: "feedback-hikersfoot",
         target: "paper-vandamme-2024",
-        label: "REFERENCES",
+        label: "TARGET",
       },
       {
         source: "feedback-hikersfoot",
         target: "ov-tracks-2024",
-        label: "REFERENCES",
+        label: "TARGET",
       },
       {
         source: "feedback-artifacts",
         target: "ov-map-service",
-        label: "ANNOTATES",
+        label: "TARGET",
       },
     ],
   },
@@ -179,7 +179,7 @@ export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
       {
         source: "paper-vandamme-2024",
         target: "ov-tracks-2024",
-        label: "REFERENCES",
+        label: "TARGET",
       },
     ],
   },

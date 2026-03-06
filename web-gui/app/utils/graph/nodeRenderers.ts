@@ -140,10 +140,20 @@ export function applyHoverHighlight(
   sel: d3.Selection<SVGGElement, NodeDatum, any, any>,
   entering: boolean,
 ) {
-  sel
-    .select(".node-shape")
-    .attr("stroke", entering ? "#60A5FA" : "#fff")
-    .attr("stroke-width", entering ? 3 : 2);
+  sel.each(function (d) {
+    const shape = d3.select(this).select(".node-shape");
+
+    if (entering) {
+      shape.attr("stroke", "#60A5FA").attr("stroke-width", 3);
+    } else {
+
+      const defaultStroke =
+        d.shape === "rect" ? (d.isSelected ? d.color : "#1e293b") : "#fff";
+      shape
+        .attr("stroke", defaultStroke)
+        .attr("stroke-width", d.isSelected ? 3 : 2);
+    }
+  });
 }
 
 function typeAbbrev(type: string): string {
