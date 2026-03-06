@@ -78,8 +78,8 @@ function drawRectNode(
     .attr("y", -rh / 2)
     .attr("rx", 8)
     .attr("ry", 8)
-    .attr("fill", d.color)
-    .attr("stroke", d.isSelected ? "#fff" : "rgba(255,255,255,0.35)")
+    .attr("fill", "#ffffff")
+    .attr("stroke", d.isSelected ? d.color : "#1e293b")
     .attr("stroke-width", d.isSelected ? 3 : 1.5)
     .attr("class", "node-shape");
 
@@ -91,7 +91,7 @@ function drawRectNode(
       .append("text")
       .attr("text-anchor", "middle")
       .attr("dominant-baseline", "middle")
-      .attr("fill", "rgba(255,255,255,0.95)")
+      .attr("fill", "#1e293b")
       .attr("font-size", fontSize)
       .attr("pointer-events", "none");
 
