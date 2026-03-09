@@ -301,20 +301,6 @@ const queryTemplates = [
     query:
       "MATCH (asset:Dataset|DataService|ScientificPaper|ScientificSurvey|Process)\nRETURN asset\nLIMIT 25",
   },
-  {
-    title: "Count by Label",
-    description: "Stats — count nodes per label",
-    icon: IconGitHub,
-    query:
-      "MATCH (n)\nRETURN labels(n) AS label, count(*) AS count\nORDER BY count DESC",
-  },
-  {
-    title: "Explore Relationships",
-    description: "Show all relationship types in the graph",
-    icon: IconGitHub,
-    query:
-      "MATCH (n)-[r]->(m)\nRETURN type(r) AS relationship, count(*) AS count\nORDER BY count DESC\nLIMIT 25",
-  },
 ];
 
 // ─── Methods ──────────────────────────────────────────────────────────────────
