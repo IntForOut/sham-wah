@@ -20,12 +20,13 @@ export const MOCK_ASSETS: DigitalAsset[] = [
     type: "Dataset",
     name: "StravaTracksBauges2014",
     comment: "No description available.",
+    publisher: "Strava",
     concepts: ["Human Activity"],
   },
   {
     id: "ov-map-service",
     type: "DataService",
-    name: "OVRecreationalUserMapService",
+    name: "Recreational User Map Service",
     comment:
       "This data feed enables visualization in the Outdoorvision application of aggregated GPS tracks obtained from services and connected devices used by outdoor sports and recreational users. The aggregation is based exclusively on GPS traces and does not account for spatial constraints, such as the road network. It provides a precise representation of sports activity and the paths taken, including off-trail routes.",
     publisher: "Pôle ressources national sports de nature (PRNSN)",
@@ -38,9 +39,10 @@ export const MOCK_ASSETS: DigitalAsset[] = [
   {
     id: "strava-map-service",
     type: "DataService",
-    name: "StravaRecreationalUserMapService",
+    name: "Strava Global Heatmap",
     comment:
       "Displays the aggregated public activities recorded in Strava over the past year",
+    publisher: "Strava",
     concepts: ["Human Activity"],
   },
   {
@@ -48,6 +50,7 @@ export const MOCK_ASSETS: DigitalAsset[] = [
     type: "Dataset",
     name: "CampToCampRoutesBauges2025",
     comment: "A set of routes issued from Camptocamp.org API.",
+    publisher: "Camptocamp",
     concepts: ["Human Activity"],
   },
   {
@@ -56,27 +59,29 @@ export const MOCK_ASSETS: DigitalAsset[] = [
     name: "AltitudeRandoRoutesBauges2025",
     comment:
       "A set of routes issued from altituderando.com in 2025 in the Bauges area.",
+    publisher: "altituderando",
     concepts: ["Human Activity"],
   },
   {
     id: "c2c-poi-2025",
     type: "Dataset",
-    name: "CampToCampPOIBauges2025",
+    name: "Camptocamp.org-waypoints",
     comment: "A set of waypoints issued from Camptocamp.org API.",
+    publisher: "Camptocamp",
     concepts: ["Human Activity"],
   },
   {
     id: "skilift-counters",
     type: "Dataset",
-    name: "SkiLiftCountersMontBlanc2008To2024",
+    name: "Ski Lift Ridership Counts in the CMB Area",
     comment:
-      "Counting data for each ski lift, including their locations (start and end points), over a 10-year period.",
+      "Counting data for each ski lift, including their locations (start and end points), over a 10-year period (one file per year).",
     concepts: ["Human Activity"],
   },
   {
     id: "bdtopo-2025",
     type: "Dataset",
-    name: "BDTopoSentiersBauges2025",
+    name: "Trails from the BDTOPO dataset in the Bauges Massif (2025 edition)",
     comment:
       "This dataset is extracted from the BDTOPO database, under the Transportation theme, from the Road Segment feature class, applying a filter on the “nature” attribute corresponding to the value “trail”.",
     concepts: ["Human Activity"],
@@ -91,9 +96,8 @@ export const MOCK_ASSETS: DigitalAsset[] = [
   {
     id: "paper-vandamme-2024",
     type: "ScientificPaper",
-    name: "SIGSPATIAL24VandDammeEtAl2024",
-    comment:
-      "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories.",
+    name: "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
+    comment: "No description available",
     concepts: ["Human Activity"],
   },
 ];
@@ -105,6 +109,7 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     name: "OutdoorVision",
     comment:
       "Outdoorvision https://outdoorvision.fr/; is a service to gather GPS tracks voluntarily shared by human during their outdoor activity through their accounts on their mobile device Garmin Connect™ / Polar Flow / Suunto APP (Appli Suunto) / Decathlon. The data are anonymized and published for a list of authorised users. It is offered by the French National Resource Centre for Ecological Transition and Outdoor Sports, a support mission of the Ministry of Sport. It results from a partnership between local authorities, sports federations and brands united around a non-profit programme.",
+    publisher: "Pôle ressources national sports de nature (PRNSN)",
     concepts: [],
   },
   {
