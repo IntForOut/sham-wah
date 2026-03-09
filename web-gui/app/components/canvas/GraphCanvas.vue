@@ -216,6 +216,7 @@ import { ref, computed } from "vue";
 import { useGraphStore } from "~/stores/graph-store";
 import { useGraphRenderer } from "~/composables/useGraphRenderer";
 import { TYPE_COLORS } from "~/utils/graph/graphAdapter";
+import GraphInfoPanel from "./GraphInfoPanel.vue";
 
 const LEGEND_ITEMS = [
   { label: "Data", color: TYPE_COLORS.Dataset, shape: "circle" },
