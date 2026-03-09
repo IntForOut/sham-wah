@@ -3,7 +3,14 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
 
+  nitro: {
+    preset: "github-pages",
+  },
+
   app: {
+    baseURL: "/sham-wah/",
+    buildAssetsDir: "assets",
+
     head: {
       title: "Sham-Wah",
       meta: [
