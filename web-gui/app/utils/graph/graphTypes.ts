@@ -6,8 +6,7 @@ export interface NodeDatum extends d3.SimulationNodeDatum {
   id: string;
   label: string;
   fullName: string;
-  description: string; // truncated comment — shown inside rect nodes
-  fullDescription: string; // full comment — shown in the info panel
+  description: string;
   publisher?: string;
   location?: string[];
   color: string;

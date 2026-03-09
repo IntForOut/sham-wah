@@ -52,7 +52,7 @@
         v-if="hasComment"
         class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed"
       >
-        {{ node.fullDescription }}
+        {{ node.description }}
       </p>
       <p v-else class="text-xs text-gray-400 dark:text-gray-600 italic">
         No description available.
@@ -132,7 +132,7 @@ defineEmits<{ close: [] }>();
 
 const hasComment = computed(
   () =>
-    props.node.fullDescription &&
-    !props.node.fullDescription.toLowerCase().includes("no description"),
+    props.node.description &&
+    !props.node.description.toLowerCase().includes("no description"),
 );
 </script>

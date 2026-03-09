@@ -89,7 +89,7 @@ function drawRectNode(
   const padY = 10;
 
   const maxChars = Math.floor((rw - padX * 2) / RECT_PX_PER_CHAR);
-  const lines = wrapText(d.fullDescription ?? d.description ?? "", maxChars);
+  const lines = wrapText(d.description ?? "", maxChars);
 
   const textBlockH = lines.length * RECT_LINE_HEIGHT;
   const rh = textBlockH + padY * 2;

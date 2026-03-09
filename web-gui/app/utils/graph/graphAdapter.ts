@@ -38,10 +38,7 @@ function shortLabel(name: string): string {
   return label;
 }
 
-function truncateComment(text: string, max = 42): string {
-  if (!text || text.toLowerCase().includes("no description")) return "";
-  return text.length > max ? text.slice(0, max - 1) + "…" : text;
-}
+
 
 export function assetToNode(
   asset: DigitalAsset,
@@ -52,8 +49,7 @@ export function assetToNode(
     id: asset.id,
     label: isRect ? asset.name : shortLabel(asset.name),
     fullName: asset.name,
-    description: truncateComment(asset.comment),
-    fullDescription: asset.comment,
+    description: asset.comment,
     publisher: asset.publisher,
     location: asset.location,
     color: TYPE_COLORS[asset.type] ?? DEFAULT_COLOR,
