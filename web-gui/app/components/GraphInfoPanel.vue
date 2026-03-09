@@ -8,7 +8,7 @@
         <h3
           class="font-semibold text-gray-900 dark:text-white text-sm leading-tight break-words"
         >
-          {{ node.fullName }}
+          {{ node.label }}
         </h3>
       </div>
       <button

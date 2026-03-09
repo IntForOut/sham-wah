@@ -49,7 +49,7 @@ function drawCircleNode(
 ) {
   // Wrap the full untruncated name to fit the circle's inner chord (~70% of diameter)
   const maxChars = Math.floor((d.size * 1.4) / CIRCLE_PX_PER_CHAR);
-  const lines = wrapText(splitCamelCase(d.fullName), maxChars);
+  const lines = wrapText(splitCamelCase(d.label), maxChars);
 
   // Grow radius if the wrapped text is taller than the base size
   const r = Math.max(d.size, (lines.length * CIRCLE_LINE_HEIGHT) / 2 + 8);

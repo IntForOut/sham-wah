@@ -26,20 +26,6 @@ export interface RawEdge {
   label?: string;
 }
 
-function shortLabel(name: string): string {
-  const words = name
-    .replace(/([A-Z][a-z]+)/g, " $1")
-    .replace(/([A-Z]{2,})/g, " $1")
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
-  let label = words.slice(0, 3).join(" ");
-  if (label.length > 18) label = label.slice(0, 17) + "…";
-  return label;
-}
-
-
-
 export function assetToNode(
   asset: DigitalAsset,
   isSelected = false,
@@ -47,8 +33,7 @@ export function assetToNode(
   const isRect = asset.type === "UserFeedback";
   return {
     id: asset.id,
-    label: isRect ? asset.name : shortLabel(asset.name),
-    fullName: asset.name,
+    label: asset.name,
     description: asset.comment,
     publisher: asset.publisher,
     location: asset.location,
