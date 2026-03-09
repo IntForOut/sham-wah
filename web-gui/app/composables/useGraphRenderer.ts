@@ -60,8 +60,9 @@ export function useGraphRenderer(
   // ── Build ───────────────────────────────────────────────────────────────────
 
   function build(nodes: NodeDatum[], links: LinkDatum[]) {
-    if (!containerRef.value || !nodes.length) return;
-
+    if (!containerRef.value || !nodes.length) {
+      return;
+    }
     const { width, height } = containerRef.value.getBoundingClientRect();
 
     // ── SVG root
@@ -279,6 +280,7 @@ export function useGraphRenderer(
   // Rebuild whenever the store pushes new graph data
   watch([nodesRef, linksRef], ([nodes, links]) => {
     teardown();
+    clickedNode.value = null;
     build(nodes as NodeDatum[], links as LinkDatum[]);
   });
 
