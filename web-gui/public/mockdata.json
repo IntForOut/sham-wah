@@ -1,0 +1,68 @@
+[
+  {
+    "id": "OVTracksMontBlancBauges2024",
+    "label": "OVTracksMontBlancBauges2024",
+    "type": "dataset",
+    "description": "A set of tracks issued from Outdoorvision. GPS traces from Outdoorvision are cleaned and filtered."
+  },
+  {
+    "id": "StravaTracksBauges2014",
+    "label": "StravaTracksBauges2014",
+    "type": "dataset",
+    "description": "No description."
+  },
+  {
+    "id": "OVRecreationalUserMapService",
+    "label": "OVRecreationalUserMapService",
+    "type": "dataservice",
+    "description": "Displays aggregated GPS tracks from connected outdoor recreation services without spatial constraints."
+  },
+  {
+    "id": "StravaRecreationalUserMapService",
+    "label": "StravaRecreationalUserMapService",
+    "type": "dataservice",
+    "description": "Shows aggregated public activities from the past year on Strava."
+  },
+  {
+    "id": "CampToCampRoutesBauges2025",
+    "label": "CampToCampRoutesBauges2025",
+    "type": "dataset",
+    "description": "A set of routes issued from Camptocamp.org API."
+  },
+  {
+    "id": "AltitudeRandoRoutesBauges2025",
+    "label": "AltitudeRandoRoutesBauges2025",
+    "type": "dataset",
+    "description": "A set of routes issued from altituderando.com."
+  },
+  {
+    "id": "CampToCampPOIBauges2025",
+    "label": "CampToCampPOIBauges2025",
+    "type": "dataset",
+    "description": "A set of waypoints issued from Camptocamp.org API."
+  },
+  {
+    "id": "SkiLiftCountersMontBlanc2008To2024",
+    "label": "SkiLiftCountersMontBlanc2008To2024",
+    "type": "dataset",
+    "description": "Counting data for each ski lift including start and end locations over a 10-year period."
+  },
+  {
+    "id": "BDTopoSentiersBauges2025",
+    "label": "BDTopoSentiersBauges2025",
+    "type": "dataset-series",
+    "description": "La BD TOPO® version 3.5 contient une description vectorielle 3D structurée des éléments du territoire."
+  },
+  {
+    "id": "JournalOfPeopleAndNatureMarchandEtAl2025",
+    "label": "JournalOfPeopleAndNatureMarchandEtAl2025",
+    "type": "scientific-paper",
+    "description": "Disturbance by massive sporting events in mountain areas: When and where matters for the protected Alpine ibex."
+  },
+  {
+    "id": "SIGSPATIAL24VandDammeEtAl2024",
+    "label": "SIGSPATIAL24VandDammeEtAl2024",
+    "type": "scientific-paper",
+    "description": "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories."
+  }
+]
