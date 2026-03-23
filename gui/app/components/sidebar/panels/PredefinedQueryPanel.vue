@@ -249,7 +249,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
 import { useHumanActivitiesStore } from "~/stores/query-result-store";
 import { usePredefinedQueryStore } from "~/stores/predefined-query-store";
 import { useGraphStore } from "~/stores/graph-store";
@@ -265,18 +264,18 @@ const graphStore = useGraphStore();
 
 const { selectedAsset } = storeToRefs(graphStore);
 
-watch(
-  [
-    () => filterStore.selectedCategoryName,
-    () => filterStore.selectedConceptValues,
-    () => filterStore.filters,
-  ],
-  () => {
-    queryStore.clearResults();
-    graphStore.clearGraph();
-  },
-  { deep: true },
-);
+// watch(
+//   [
+//     () => filterStore.selectedCategoryName,
+//     () => filterStore.selectedConceptValues,
+//     () => filterStore.filters,
+//   ],
+//   () => {
+//     queryStore.clearResults();
+//     graphStore.clearGraph();
+//   },
+//   { deep: true },
+// );
 
 async function executeQuery() {
   if (!filterStore.hasCategorySelected) return;

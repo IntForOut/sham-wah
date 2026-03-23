@@ -16,8 +16,6 @@ export interface DigitalAsset {
   comment: string;
   publisher?: string;
   location?: string[];
-  concepts: string[];
-  metadata?: Record<string, unknown>;
 }
 
 export interface QueryParams {
@@ -39,6 +37,8 @@ export const useHumanActivitiesStore = defineStore("humanActivities", () => {
     queryHistory.value = [params, ...queryHistory.value].slice(0, 10);
     try {
       results.value = await fetchFromNeo4j(params);
+      console.log("Query executed successfully:");
+      console.table(results.value.data);
     } catch (err) {
       error.value =
         err instanceof Error ? err.message : "An unexpected error occurred";
@@ -47,7 +47,7 @@ export const useHumanActivitiesStore = defineStore("humanActivities", () => {
     }
   }
 
-  function fetchFromNeo4j(params: QueryParams): Promise<QueryResult> {
+  function fetchFromNeo4jMockData(params: QueryParams): Promise<QueryResult> {
     return new Promise((resolve) => {
       setTimeout(() => {
         const filtered =
@@ -63,6 +63,25 @@ export const useHumanActivitiesStore = defineStore("humanActivities", () => {
         });
       }, 800);
     });
+  }
+
+  async function fetchFromNeo4j(params: QueryParams): Promise<QueryResult> {
+    const response = await fetch("http://localhost:8000/assets/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        concepts: params.concepts,
+        assetType: params.assetType,
+        limit: params.limit,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail ?? `API error: ${response.status}`);
+    }
+
+    return response.json();
   }
 
   function clearResults() {

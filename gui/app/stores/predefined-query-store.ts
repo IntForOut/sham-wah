@@ -9,6 +9,7 @@ export interface Concept {
 export interface ConceptCategory {
   name: string;
   label: string;
+  rootConcept: string;
   concepts: Concept[];
 }
 
@@ -23,20 +24,23 @@ export const CONCEPT_CATEGORIES: ConceptCategory[] = [
   {
     name: "humanActivity",
     label: "Human Activity",
+    rootConcept: "HumanActivity",
     concepts: [
       { value: "Hiking", label: "Hiking" },
-      { value: "FastHiking", label: "FastHiking" },
+      { value: "FastHiking", label: "Fast Hiking" },
       { value: "Cycling", label: "Cycling" },
     ],
   },
   {
     name: "animalActivity",
     label: "Animal Activity",
+    rootConcept: "AnimalActivity",
     concepts: [],
   },
   {
     name: "land",
     label: "Land Entities",
+    rootConcept: "LandEntity",
     concepts: [
       { value: "SensitiveArea", label: "Sensitive Area" },
       { value: "AireProtegee", label: "Aire protégée" },
@@ -44,7 +48,7 @@ export const CONCEPT_CATEGORIES: ConceptCategory[] = [
       { value: "AireCampingCar", label: "Aire Camping Car" },
       { value: "Landmark", label: "Landmark" },
       { value: "EncounteringZone", label: "Encountering Zone" },
-      { value: "ReservesNaturelles", label: "Reserves naturelles" },
+      { value: "ReservesNaturelles", label: "Réserves naturelles" },
       { value: "PlandEau", label: "Plan d'eau" },
       { value: "PopulationFootprint", label: "Population Footprint" },
       { value: "Sentier", label: "Sentier" },
@@ -59,22 +63,23 @@ export const ASSET_TYPES = [
   { value: "Dataset", label: "Dataset" },
   { value: "DataService", label: "Data Service" },
   { value: "ScientificPaper", label: "Scientific Paper" },
-  { value: "ScientificSurvey", label: "Scientific Survey" },
   { value: "Process", label: "Process" },
 ] as const;
 
+export type AssetTypeValue = (typeof ASSET_TYPES)[number]["value"];
+
+const DEFAULT_FILTERS: QueryFilters = {
+  limit: 15,
+  assetType: "all",
+  dateStart: null,
+  dateEnd: null,
+};
+
 export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
-  // State
   const selectedCategoryName = ref<string>("");
   const selectedConceptValues = ref<string[]>([]);
-  const filters = ref<QueryFilters>({
-    limit: 15,
-    assetType: "all",
-    dateStart: null,
-    dateEnd: null,
-  });
+  const filters = ref<QueryFilters>({ ...DEFAULT_FILTERS });
 
-  // Getters
   const selectedCategory = computed(
     () =>
       CONCEPT_CATEGORIES.find((c) => c.name === selectedCategoryName.value) ??
@@ -85,17 +90,15 @@ export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
     () => selectedCategory.value?.concepts ?? [],
   );
 
+  const hasCategorySelected = computed(() => !!selectedCategoryName.value);
+
   const effectiveConcepts = computed<string[]>(() => {
     if (selectedConceptValues.value.length > 0)
       return selectedConceptValues.value;
-    if (selectedCategoryName.value)
-      return availableConcepts.value.map((c) => c.value);
+    if (selectedCategory.value) return [selectedCategory.value.rootConcept];
     return [];
   });
 
-  const hasCategorySelected = computed(() => !!selectedCategoryName.value);
-
-  // Actions
   function setCategory(categoryName: string) {
     selectedCategoryName.value = categoryName;
     selectedConceptValues.value = [];
@@ -103,13 +106,10 @@ export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
 
   function toggleConcept(value: string) {
     const idx = selectedConceptValues.value.indexOf(value);
-    if (idx === -1) {
-      selectedConceptValues.value = [...selectedConceptValues.value, value];
-    } else {
-      selectedConceptValues.value = selectedConceptValues.value.filter(
-        (v) => v !== value,
-      );
-    }
+    selectedConceptValues.value =
+      idx === -1
+        ? [...selectedConceptValues.value, value]
+        : selectedConceptValues.value.filter((v) => v !== value);
   }
 
   function clearConcepts() {
@@ -123,12 +123,7 @@ export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
   function reset() {
     selectedCategoryName.value = "";
     selectedConceptValues.value = [];
-    filters.value = {
-      limit: 15,
-      assetType: "all",
-      dateStart: null,
-      dateEnd: null,
-    };
+    filters.value = { ...DEFAULT_FILTERS };
   }
 
   return {

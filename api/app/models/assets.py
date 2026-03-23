@@ -9,8 +9,6 @@ class DigitalAsset(BaseModel):
     comment: str
     publisher: str | None = None
     location: list[str] | None = None
-    concepts: list[str] = []
-    metadata: dict[str, Any] | None = None
 
 class QueryResult(BaseModel):
     count: int
