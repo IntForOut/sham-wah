@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface Concept {
   value: string;
   label: string;
@@ -20,8 +18,6 @@ export interface QueryFilters {
   dateStart: string | null;
   dateEnd: string | null;
 }
-
-// ─── Static data ──────────────────────────────────────────────────────
 
 export const CONCEPT_CATEGORIES: ConceptCategory[] = [
   {
@@ -67,8 +63,6 @@ export const ASSET_TYPES = [
   { value: "Process", label: "Process" },
 ] as const;
 
-// ─── Store ────────────────────────────────────────────────────────────────────
-
 export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
   // State
   const selectedCategoryName = ref<string>("");
@@ -91,12 +85,6 @@ export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
     () => selectedCategory.value?.concepts ?? [],
   );
 
-  /**
-   * Concepts used for the actual query:
-   * - If the user picked specific concepts → use those
-   * - If only a category is selected → use all concepts from that category
-   * - Otherwise → empty array
-   */
   const effectiveConcepts = computed<string[]>(() => {
     if (selectedConceptValues.value.length > 0)
       return selectedConceptValues.value;
@@ -110,7 +98,7 @@ export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
   // Actions
   function setCategory(categoryName: string) {
     selectedCategoryName.value = categoryName;
-    selectedConceptValues.value = []; // reset specific concepts on category change
+    selectedConceptValues.value = [];
   }
 
   function toggleConcept(value: string) {

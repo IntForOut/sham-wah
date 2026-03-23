@@ -259,41 +259,11 @@ import QueryFilters from "./predefinedQueryPanel/QueryFilters.vue";
 import AssetCard from "./predefinedQueryPanel/AssetCard.vue";
 import { storeToRefs } from "pinia";
 
-// ─── Stores ───────────────────────────────────────────────────────────────────
-
 const queryStore = useHumanActivitiesStore();
 const filterStore = usePredefinedQueryStore();
 const graphStore = useGraphStore();
 
-// ─── Local state ──────────────────────────────────────────────────────────────
-
 const { selectedAsset } = storeToRefs(graphStore);
-
-// ─── Query builder ────────────────────────────────────────────────────────────
-
-const generatedQuery = computed(() => {
-  const { assetType, limit } = filterStore.filters;
-  const concepts = filterStore.effectiveConcepts;
-
-  const assetLabel =
-    assetType === "all"
-      ? "Dataset|DataService|ScientificPaper|ScientificSurvey|Process"
-      : assetType;
-
-  let query = `MATCH (asset:${assetLabel})`;
-
-  if (concepts.length > 0) {
-    query += `-[:REPRESENTS]->(concept:${concepts.join("|")})`;
-    query += "\nRETURN asset, concept";
-  } else {
-    query += "\nRETURN asset";
-  }
-
-  query += `\nLIMIT ${limit}`;
-  return query;
-});
-
-// ─── Side effects ─────────────────────────────────────────────────────────────
 
 watch(
   [
@@ -308,13 +278,10 @@ watch(
   { deep: true },
 );
 
-// ─── Methods ──────────────────────────────────────────────────────────────────
-
 async function executeQuery() {
   if (!filterStore.hasCategorySelected) return;
   graphStore.clearGraph();
   await queryStore.executeQuery({
-    query: generatedQuery.value,
     concepts: filterStore.effectiveConcepts,
     assetType: filterStore.filters.assetType,
     limit: filterStore.filters.limit,

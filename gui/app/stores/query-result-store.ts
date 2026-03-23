@@ -21,13 +21,10 @@ export interface DigitalAsset {
 }
 
 export interface QueryParams {
-  query: string;
   concepts: string[];
   assetType: string;
   limit: number;
 }
-
-// ─── Store ────────────────────────────────────────────────────────────────────
 
 export const useHumanActivitiesStore = defineStore("humanActivities", () => {
   const isExecuting = ref(false);

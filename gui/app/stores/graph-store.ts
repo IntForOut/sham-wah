@@ -10,8 +10,6 @@ interface NeighborGraph {
   edges: RawEdge[];
 }
 
-// ─── Store ────────────────────────────────────────────────────────────────────
-
 export const useGraphStore = defineStore("graph", () => {
   const selectedAsset = ref<DigitalAsset | null>(null);
   const graphNodes = shallowRef<NodeDatum[]>([]);

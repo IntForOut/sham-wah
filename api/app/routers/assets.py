@@ -60,17 +60,6 @@ async def query_assets(
         result = await session.run(cypher, query_params)
         records = await result.data()
 
-
-    print("-------cypher-----------")
-    print(cypher)
-    print()
-    
-    
-    for r in records:
-                
-        print("-------RECORD-----------")
-        print(r)
-
     assets = [_row_to_asset(r) for r in records]
     elapsed_ms = int((time.monotonic() - start) * 1000)
 
@@ -85,26 +74,16 @@ def _build_cypher(params: QueryParams) -> tuple[str, dict]:
         for c in params.concepts
         if c in CONCEPT_LABEL_MAP
     ]
-    asset_type_label = ASSET_TYPE_MAP.get(params.assetType, None)
-
+    asset_type_label = ASSET_TYPE_MAP.get(params.assetType, "Resource")
+    
     if activity_labels:
-        activity_union = "|".join(activity_labels)
-        asset_filter = f"AND n:{asset_type_label}" if asset_type_label else ""
-
-        cypher = f"""
-            MATCH (n:Resource)-[:ns6__represents]-(m:{activity_union})
-            {asset_filter}
-            RETURN DISTINCT n, labels(n) AS nodeLabels
-            LIMIT $limit
-        """
+        activity_label_clause = "|".join(activity_labels)
     else:
-        asset_filter = f"AND n:{asset_type_label}" if asset_type_label else ""
+        activity_label_clause = "ns2__HumanActivity"
 
-        cypher = f"""
-            MATCH (n:Resource)-[:ns6__represents]-(m:ns2__HumanActivity)
-            {asset_filter}
-            RETURN DISTINCT n, labels(n) AS nodeLabels
-            LIMIT $limit
-        """
-
+    cypher = f"""
+        MATCH (n:{asset_type_label})-[:ns6__represents]-(m:{activity_label_clause})
+        RETURN DISTINCT n
+        LIMIT $limit
+    """
     return cypher, p
