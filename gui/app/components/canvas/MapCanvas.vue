@@ -250,7 +250,6 @@ const resetView = () => {
 const toggleStyle = () => {
   currentStyle.value =
     currentStyle.value === "streets" ? "satellite" : "streets";
-  // Update map style here
 };
 
 const searchLocation = () => {

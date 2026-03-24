@@ -2,7 +2,7 @@
   <div
     class="relative w-full h-full bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
   >
-    <!-- ── Toolbar (top-right) ──────────────────────────────────────────── -->
+    <!-- Toolbar on the top-right corner -->
     <div class="absolute top-4 right-4 z-10 flex flex-col gap-2">
       <!-- Zoom controls -->
       <div
@@ -96,7 +96,7 @@
       </div>
     </div>
 
-    <!-- ── Info panel (top-left, slides in) ─────────────────────────────── -->
+    <!-- Info panel -->
     <Transition
       enter-active-class="transition ease-out duration-200"
       enter-from-class="opacity-0 -translate-x-2"
@@ -114,7 +114,7 @@
       </div>
     </Transition>
 
-    <!-- ── Empty state ───────────────────────────────────────────────────── -->
+    <!-- Empty state -->
     <Transition
       enter-active-class="transition ease-out duration-300"
       enter-from-class="opacity-0"
@@ -146,7 +146,7 @@
       </div>
     </Transition>
 
-    <!-- ── Loading overlay ───────────────────────────────────────────────── -->
+    <!-- Loading overlay -->
     <Transition
       enter-active-class="transition ease-out duration-150"
       enter-from-class="opacity-0"
@@ -170,7 +170,7 @@
       </div>
     </Transition>
 
-    <!-- ── Error banner ──────────────────────────────────────────────────── -->
+    <!-- Error Banner -->
     <div
       v-if="graphStore.error"
       class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-xs px-4 py-2 rounded-lg shadow"
@@ -178,7 +178,7 @@
       {{ graphStore.error }}
     </div>
 
-    <!-- ── Legend (bottom-left) ──────────────────────────────────────────── -->
+    <!-- Legend bottom left -->
     <div
       class="absolute bottom-4 left-4 z-10 bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 px-3 py-2 flex flex-wrap gap-x-4 gap-y-1.5 items-center"
     >
@@ -206,7 +206,6 @@
       </div>
     </div>
 
-    <!-- ── D3 mount point ────────────────────────────────────────────────── -->
     <div ref="graphContainer" class="w-full h-full" />
   </div>
 </template>
@@ -228,21 +227,16 @@ const LEGEND_ITEMS = [
   { label: "User Feedback", color: TYPE_COLORS.UserFeedback, shape: "rect" },
 ] as const;
 
-// ── Store ──────────────────────────────────────────────────────────────────────
 const graphStore = useGraphStore();
 
-// ── D3 mount target ───────────────────────────────────────────────────────────
 const graphContainer = ref<HTMLDivElement | null>(null);
 
-// ── Renderer composable ───────────────────────────────────────────────────────
 const { showLabels, clickedNode, zoomIn, zoomOut, resetView, toggleLabels } =
   useGraphRenderer(
     graphContainer,
     computed(() => graphStore.graphNodes),
     computed(() => graphStore.graphEdges),
   );
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 
 /** Count edges touching a given node (works before and after d3 resolves string ids) */
 function edgeDegree(nodeId: string): number {

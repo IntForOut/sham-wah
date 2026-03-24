@@ -27,7 +27,6 @@ import IconMoon from "~/components/icons/IconMoon.vue";
 const isDark = ref(false);
 
 onMounted(() => {
-  // Check localStorage or system preference
   const savedTheme = localStorage.getItem("theme");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 

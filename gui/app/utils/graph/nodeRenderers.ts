@@ -1,7 +1,6 @@
 import * as d3 from "d3";
 import type { NodeDatum } from "./graphTypes";
 
-// ── Typography constants ───────────────────────────────────────────────────────
 const CIRCLE_FONT_SIZE = 12;
 const CIRCLE_LINE_HEIGHT = 15;
 const CIRCLE_PX_PER_CHAR = 5.4;
@@ -41,7 +40,7 @@ export function applyHoverHighlight(
   });
 }
 
-// ── Node renderers ────────────────────────────────────────────────────────────
+// Node renderer
 
 function drawCircleNode(
   sel: d3.Selection<SVGGElement, NodeDatum, any, any>,
@@ -116,8 +115,6 @@ function drawRectNode(
   d.height = rh;
 }
 
-// ── Shared helpers ────────────────────────────────────────────────────────────
-
 /** Renders pre-wrapped lines as tspan elements, vertically centred on (0,0). */
 function appendWrappedText(
   sel: d3.Selection<SVGGElement, NodeDatum, any, any>,
@@ -169,7 +166,7 @@ function wrapText(
       current =
         word.length > maxChars ? word.slice(0, maxChars - 1) + "…" : word;
     }
-    // If we've hit the limit, truncate and stop
+    // If limit, truncate and stop
     if (lines.length === maxLines - 1 && current) {
       const remaining = words.slice(words.indexOf(word) + 1);
       if (remaining.length > 0) {

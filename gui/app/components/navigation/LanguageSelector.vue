@@ -96,9 +96,7 @@ function selectLanguage(code: string) {
   currentLanguage.value = code;
   localStorage.setItem("language", code);
   isOpen.value = false;
-
-  // Here you would typically integrate with your i18n solution
-  // For example: this.$i18n.locale = code;
+  // this.$i18n.locale = code;
   console.log(`Language changed to: ${code}`);
 }
 </script>

@@ -11,24 +11,14 @@ import {
   applyHoverHighlight,
 } from "~/utils/graph/nodeRenderers";
 
-/**
- * Encapsulates all d3 imperative logic.
- * GraphCanvas.vue just calls this and binds the returned refs / methods.
- *
- * @param containerRef  - ref to the <div> where the SVG is mounted
- * @param nodesRef      - reactive source of NodeDatum[] (from graphStore)
- * @param linksRef      - reactive source of LinkDatum[] (from graphStore)
- */
 export function useGraphRenderer(
   containerRef: Ref<HTMLDivElement | null>,
   nodesRef: Ref<NodeDatum[]>,
   linksRef: Ref<LinkDatum[]>,
 ) {
-  // ── Exposed UI state ────────────────────────────────────────────────────────
   const showLabels = ref(true);
   const clickedNode = ref<NodeDatum | null>(null);
 
-  // ── Internal d3 handles ─────────────────────────────────────────────────────
   let svgEl: d3.Selection<SVGSVGElement, unknown, null, undefined> | null =
     null;
   let zoomBehavior: d3.ZoomBehavior<SVGSVGElement, unknown> | null = null;
@@ -44,8 +34,6 @@ export function useGraphRenderer(
   const getLabelColor = () =>
     document.documentElement.classList.contains("dark") ? "#D1D5DB" : "#374151";
 
-  // ── Teardown ────────────────────────────────────────────────────────────────
-
   function teardown() {
     simulation?.stop();
     if (containerRef.value)
@@ -57,15 +45,11 @@ export function useGraphRenderer(
     zoomBehavior = null;
   }
 
-  // ── Build ───────────────────────────────────────────────────────────────────
-
   function build(nodes: NodeDatum[], links: LinkDatum[]) {
     if (!containerRef.value || !nodes.length) {
       return;
     }
     const { width, height } = containerRef.value.getBoundingClientRect();
-
-    // ── SVG root
     svgEl = d3
       .select(containerRef.value)
       .append("svg")
@@ -75,15 +59,13 @@ export function useGraphRenderer(
 
     const g = svgEl.append("g").attr("class", "graph-root");
 
-    // ── Zoom & pan
     zoomBehavior = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.1, 8])
       .on("zoom", (e) => g.attr("transform", e.transform));
 
     svgEl.call(zoomBehavior); // allow zoom scroll with mouse wheel
-
-    // ── Arrowhead marker
+    // Arrow maker
     svgEl
       .append("defs")
       .append("marker")
@@ -98,7 +80,7 @@ export function useGraphRenderer(
       .attr("d", "M 0,-5 L 10,0 L 0,5")
       .attr("fill", "#94A3B8");
 
-    // ── Links (drawn first so nodes render on top)
+    // Links (drawn first so nodes render on top)
     const link = g
       .append("g")
       .attr("class", "links")
@@ -129,7 +111,7 @@ export function useGraphRenderer(
       .attr("stroke-width", 3)
       .attr("stroke-linejoin", "round");
 
-    // ── Node groups
+    // Node groups
     const nodeGroup = g
       .append("g")
       .attr("class", "nodes")
@@ -169,7 +151,7 @@ export function useGraphRenderer(
         applyHoverHighlight(d3.select(this) as any, false);
       });
 
-    // Click → open info panel
+    // Click open info panel
     nodeGroup.on("click", (e, d) => {
       e.stopPropagation();
       clickedNode.value = d;
@@ -178,7 +160,7 @@ export function useGraphRenderer(
       clickedNode.value = null;
     });
 
-    // ── External labels
+    // External labels
     labelSel = g
       .append("g")
       .attr("class", "labels")
@@ -194,7 +176,7 @@ export function useGraphRenderer(
       .attr("pointer-events", "none")
       .attr("display", showLabels.value ? null : "none");
 
-    // ── Force simulation
+    // Force simulation
     simulation = d3
       .forceSimulation<NodeDatum>(nodes)
       .force(
@@ -225,7 +207,7 @@ export function useGraphRenderer(
           const dx = ex - sx;
           const dy = ey - sy;
           const len = Math.sqrt(dx * dx + dy * dy) || 1;
-          const curvature = 40; // px — increase for more arc
+          const curvature = 40; // px increase for more arc
           const cx = mx - (dy / len) * curvature;
           const cy = my + (dx / len) * curvature;
           return `M ${sx},${sy} Q ${cx},${cy} ${ex},${ey}`;
@@ -263,7 +245,7 @@ export function useGraphRenderer(
         );
       });
 
-    // ── Dark mode observer
+    // Dark mode observer
     themeObserver = new MutationObserver(() =>
       labelSel?.attr("fill", getLabelColor()),
     );
@@ -272,8 +254,6 @@ export function useGraphRenderer(
       attributeFilter: ["class"],
     });
   }
-
-  // ── Lifecycle ────────────────────────────────────────────────────────────────
 
   onMounted(() => build(nodesRef.value, linksRef.value));
 
@@ -285,8 +265,6 @@ export function useGraphRenderer(
   });
 
   onBeforeUnmount(teardown);
-
-  // ── Exposed controls ────────────────────────────────────────────────────────
 
   const zoomIn = () =>
     svgEl?.transition().duration(300).call(zoomBehavior!.scaleBy, 1.4);

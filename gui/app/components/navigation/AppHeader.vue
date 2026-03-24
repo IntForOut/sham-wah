@@ -57,9 +57,6 @@ const route = useRoute();
 const ui = useUiStore();
 const mobileMenuOpen = ref(false);
 
-/**
- * Navigation configuration
- */
 const navItems: Array<{
   label: string;
   path: string;
@@ -71,9 +68,6 @@ const navItems: Array<{
   // { label: "Edit Graph", path: "/edit", view: "edit" },
 ];
 
-/**
- * Sync route -> UI store
- */
 watch(
   () => route.path,
   (path) => {
@@ -86,9 +80,6 @@ watch(
   { immediate: true },
 );
 
-/**
- * Dynamic classes
- */
 function linkClass(view: ViewName) {
   return ui.currentView === view
     ? "bg-gold-50 dark:bg-gold-900/20 text-gold-700 dark:text-gold-400 border-b-2 border-gold-500"

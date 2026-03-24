@@ -43,7 +43,6 @@ export function assetToNode(
     width: isRect ? 160 : undefined,
     height: isRect ? 56 : undefined,
     type: asset.type,
-    concepts: asset.concepts ?? [],
     isSelected,
   };
 }

@@ -14,7 +14,6 @@ export interface NodeDatum extends d3.SimulationNodeDatum {
   width?: number;
   height?: number;
   type: string;
-  concepts: string[];
   isSelected?: boolean;
 }
 
