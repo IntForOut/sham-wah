@@ -127,16 +127,13 @@ export const usePredefinedQueryStore = defineStore("predefinedQuery", () => {
   }
 
   return {
-    // State
     selectedCategoryName,
     selectedConceptValues,
     filters,
-    // Getters
     selectedCategory,
     availableConcepts,
     effectiveConcepts,
     hasCategorySelected,
-    // Actions
     setCategory,
     toggleConcept,
     clearConcepts,
