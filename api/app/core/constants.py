@@ -4,6 +4,8 @@ ASSET_TYPE_MAP = {
     "ScientificPaper":"ns6__ScientificPaper",
     "Process":        "ns6__Process",
     "DatasetSeries":  "ns1__DatasetSeries",
+    "UserFeedback":   "ns6__UserFeedback",
+    "Catalog":        "ns1__Catalog",
 }
 
 CONCEPT_LABEL_MAP = {
