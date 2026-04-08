@@ -15,6 +15,31 @@ async def get_labels(driver: AsyncDriver = Depends(get_driver)):
     return {"labels": [r["label"] for r in records]}
 
 
+@router.get("/neighbors/OVRecreationalUserMapService")
+async def get_neighbors(driver: AsyncDriver = Depends(get_driver)):
+    cypher = """        
+    MATCH (n)
+    WHERE n.uri ENDS WITH "#OVRecreationalUserMapService"
+
+    OPTIONAL MATCH p = (n)-[r]-(v)
+    WHERE ALL(node IN nodes(p) WHERE node = n OR node:ns1__DataService OR node:ns1__Dataset OR node:ns6__UserFeedback OR node:ns1__Catalog)
+
+    RETURN 
+        n AS center, 
+        labels(n) AS nodeLabelsN,
+        v AS neighbor, 
+        labels(v) AS nodeLabels, 
+        type(r) AS rel_type,
+        startNode(r).uri AS source_uri, 
+        endNode(r).uri AS target_uri
+    """
+    
+    async with driver.session(database=settings.neo4j_database) as session:
+        result = await session.run(cypher)
+        records = await result.data()
+    return {"neighbors": records}
+
+
 @router.get("/sample", include_in_schema=False)
 async def sample_node(driver: AsyncDriver = Depends(get_driver)):
     async with driver.session(database=settings.neo4j_database) as session:
