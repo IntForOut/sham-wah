@@ -15,11 +15,11 @@ async def get_labels(driver: AsyncDriver = Depends(get_driver)):
     return {"labels": [r["label"] for r in records]}
 
 
-@router.get("/neighbors/OVRecreationalUserMapService")
+@router.get("/neighbors/node")
 async def get_neighbors_node(driver: AsyncDriver = Depends(get_driver)):
     cypher = """        
     MATCH (n)
-    WHERE n.uri ENDS WITH "#OVRecreationalUserMapService"
+    WHERE n.uri ENDS WITH "#OVTracksMontBlancBauges2024"
 
     OPTIONAL MATCH p = (n)-[r]-(v)
     WHERE ALL(node IN nodes(p) WHERE node = n OR node:ns1__DataService OR node:ns1__Dataset OR node:ns6__UserFeedback OR node:ns1__Catalog)

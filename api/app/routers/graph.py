@@ -2,52 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from neo4j import AsyncDriver
 from app.dependencies import get_driver
 from app.schemas.assets import NeighborGraph, DigitalAsset, RawEdge
+from app.core.constants import ASSET_TYPE_MAP_INV
+from app.core.parsers import row_to_asset
 from app.config import settings
 
 router = APIRouter(prefix="/graph", tags=["graph"])
-
-ASSET_TYPE_MAP = {
-    "Dataset":        "ns1__Dataset",
-    "DataService":    "ns1__DataService",
-    "ScientificPaper":"ns6__ScientificPaper",
-    "Process":        "ns6__Process",
-    "DatasetSeries":  "ns1__DatasetSeries",
-}
-
-CONCEPT_LABEL_MAP = {
-    "Hiking":             "ns2__Hiking",
-    "HumanActivity":      "ns2__HumanActivity",
-    "PopulationFootprint":"ns2__PopulationFootprint",
-    "Sentier":            "ns2__Sentier",
-    "ReservesNaturelles": "ns2__ReservesNaturelles",
-}
-
-ASSET_TYPE_MAP_INV = {v: k for k, v in ASSET_TYPE_MAP.items()}
-
-def _row_to_asset(row: dict) -> DigitalAsset:
-    node = row["v"]
-    props = dict(node)
-
-    raw_label = props.get("rdfs__label", ["Unnamed"])
-    raw_comment = props.get("rdfs__comment", [""])
-
-    ignored_labels = {"Resource", "owl__NamedIndividual"}
-    node_labels = row.get("nodeLabels", [])
-    
-    valid_labels = [l for l in node_labels if l not in ignored_labels]
-    actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "DATA") if valid_labels else "DATA"
-
-
-    return DigitalAsset(
-        id=props.get("uri", ""),
-        type=actual_type,
-        name=raw_label[0] if isinstance(raw_label, list) else raw_label,
-        comment=raw_comment[0] if isinstance(raw_comment, list) else raw_comment,
-        publisher=props.get("ns4__publisher", []),
-        location=props.get("ns4__location", []),
-    )
-
-
 
 @router.get("/neighbors/{asset_id}", response_model=NeighborGraph)
 async def get_neighbors(
@@ -81,19 +40,20 @@ async def get_neighbors(
     nodes_dict = {} 
     edges = []
 
-    center_node = _row_to_asset({
-        "v": records[0]["center"],
+    center_node = row_to_asset({
+        "center": records[0]["center"],
         "nodeLabels": records[0]["nodeLabelsN"]
-    })
+    }, node_key="center")
+
     nodes_dict[center_node.id] = center_node
 
 
     for row in records:
         if row["neighbor"] is not None:
-            neighbor_node = _row_to_asset({
-                "v": row["neighbor"],
+            neighbor_node = row_to_asset({
+                "neighbor": row["neighbor"],
                 "nodeLabels": row["nodeLabels"]
-            })
+            }, node_key="neighbor")
             nodes_dict[neighbor_node.id] = neighbor_node
 
             edges.append(RawEdge(

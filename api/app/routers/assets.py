@@ -2,51 +2,13 @@ import time
 from fastapi import APIRouter, Depends, HTTPException
 from neo4j import AsyncDriver
 from app.dependencies import get_driver
-from app.schemas.assets import QueryParams, QueryResult, DigitalAsset
+from app.schemas.assets import QueryParams, QueryResult
+from app.core.constants import ASSET_TYPE_MAP, CONCEPT_LABEL_MAP
+from app.core.parsers import row_to_asset
 from app.config import settings
 
 router = APIRouter(prefix="/assets", tags=["assets"])
 
-ASSET_TYPE_MAP = {
-    "Dataset":        "ns1__Dataset",
-    "DataService":    "ns1__DataService",
-    "ScientificPaper":"ns6__ScientificPaper",
-    "Process":        "ns6__Process",
-    "DatasetSeries":  "ns1__DatasetSeries",
-}
-
-CONCEPT_LABEL_MAP = {
-    "Hiking":             "ns2__Hiking",
-    "HumanActivity":      "ns2__HumanActivity",
-    "PopulationFootprint":"ns2__PopulationFootprint",
-    "Sentier":            "ns2__Sentier",
-    "ReservesNaturelles": "ns2__ReservesNaturelles",
-}
-
-ASSET_TYPE_MAP_INV = {v: k for k, v in ASSET_TYPE_MAP.items()}
-
-def _row_to_asset(row: dict) -> DigitalAsset:
-    node = row["n"]
-    props = dict(node)
-
-    raw_label = props.get("rdfs__label", ["Unnamed"])
-    raw_comment = props.get("rdfs__comment", [""])
-
-    ignored_labels = {"Resource", "owl__NamedIndividual"}
-    node_labels = row.get("nodeLabels", [])
-    
-    valid_labels = [l for l in node_labels if l not in ignored_labels]
-    actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "DATA") if valid_labels else "DATA"
-
-
-    return DigitalAsset(
-        id=props.get("uri", ""),
-        type=actual_type,
-        name=raw_label[0] if isinstance(raw_label, list) else raw_label,
-        comment=raw_comment[0] if isinstance(raw_comment, list) else raw_comment,
-        publisher=props.get("ns4__publisher"),
-        location=props.get("ns4__location"),
-    )
 
 @router.post("/query", response_model=QueryResult)
 async def query_assets(
@@ -63,8 +25,8 @@ async def query_assets(
     async with driver.session(database=settings.neo4j_database) as session:
         result = await session.run(cypher, query_params)
         records = await result.data()
-
-    assets = [_row_to_asset(r) for r in records]
+    
+    assets = [row_to_asset(r, node_key="n") for r in records]
     elapsed_ms = int((time.monotonic() - start) * 1000)
 
     return QueryResult(count=len(assets), executionTime=elapsed_ms, data=assets)
