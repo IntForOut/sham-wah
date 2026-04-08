@@ -16,7 +16,7 @@ async def get_labels(driver: AsyncDriver = Depends(get_driver)):
 
 
 @router.get("/neighbors/OVRecreationalUserMapService")
-async def get_neighbors(driver: AsyncDriver = Depends(get_driver)):
+async def get_neighbors_node(driver: AsyncDriver = Depends(get_driver)):
     cypher = """        
     MATCH (n)
     WHERE n.uri ENDS WITH "#OVRecreationalUserMapService"
