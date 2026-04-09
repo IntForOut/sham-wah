@@ -4,6 +4,7 @@ import { ASSET_BY_ID, MOCK_NEIGHBOR_GRAPHS } from "~/utils/graph/mockData";
 import type { DigitalAsset } from "~/stores/query-result-store";
 import type { NodeDatum, LinkDatum } from "~/utils/graph/graphTypes";
 import { buildGraphData, type RawEdge } from "~/utils/graph/graphAdapter";
+import { storeToRefs } from "pinia";
 
 interface NeighborGraph {
   nodes: DigitalAsset[];
@@ -18,18 +19,19 @@ export const useGraphStore = defineStore("graph", () => {
   const error = ref<string | null>(null);
   const config = useRuntimeConfig();
 
+  const uiStrore = useUiStore();
+  const { activeSidebarTab } = storeToRefs(uiStrore);
+
   async function selectAsset(asset: DigitalAsset) {
     selectedAsset.value = asset;
     isLoadingNeighbors.value = true;
     error.value = null;
     try {
-      console.log("------------------------------");
-      console.log(asset.id);
-      const { nodes, edges } = await fetchNeighborGraph(asset.id);
-
-      console.log("------------------------------");
-      console.log({ nodes, edges });
-
+      const fetcher =
+        activeSidebarTab.value === "mock"
+          ? fetchNeighborGraphMock
+          : fetchNeighborGraph;
+      const { nodes, edges } = await fetcher(asset.id);
       const { nodes: graphN, links } = buildGraphData(asset, nodes, edges);
       graphNodes.value = graphN;
       graphEdges.value = links;
