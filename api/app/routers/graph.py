@@ -7,7 +7,7 @@ from app.config import settings
 
 router = APIRouter(prefix="/graph", tags=["graph"])
 
-@router.get("/neighbors/{asset_id}", response_model=NeighborGraph)
+@router.get("/neighbors", response_model=NeighborGraph)
 async def get_neighbors(
     asset_id: str,
     depth: int = 1,
@@ -49,7 +49,7 @@ async def get_neighbors(
         raise HTTPException(status_code=404, detail="Asset not found")
     
     nodes_dict = {} 
-    edges_set = set() #pour eviter doublons
+    edges_set = set()
     edges = []
 
     center_node = row_to_asset({
@@ -57,8 +57,6 @@ async def get_neighbors(
         "nodeLabels": records[0]["nodeLabelsN"]
     }, node_key="center")
 
-    nodes_dict[center_node.id] = center_node
-    
     for row in records:
         if row["pathNodes"] is None:
             continue
@@ -68,6 +66,9 @@ async def get_neighbors(
                 "neighbor": node_data,
                 "nodeLabels": labels
             }, node_key="neighbor")
+            
+            if neighbor_node.id == center_node.id:
+                continue 
             
             nodes_dict[neighbor_node.id] = neighbor_node
 

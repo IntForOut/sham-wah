@@ -11,7 +11,7 @@ def row_to_asset(row: dict, node_key: str = "n") -> DigitalAsset:
     node_labels = row.get("nodeLabels", [])
     valid_labels = [l for l in node_labels if l not in IGNORED_LABELS]
 
-    actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "DATA") if valid_labels else "DATA"
+    actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "No Type") if valid_labels else "No Type"
 
     return DigitalAsset(
         id=props.get("uri", ""),

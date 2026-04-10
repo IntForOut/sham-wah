@@ -4,7 +4,7 @@
     <AppHeader />
 
     <!-- MAIN -->
-    <div class="flex flex-1 overflow-hidden">
+    <div class="flex flex-1 overflow-hidden ">
       <!-- SIDEBAR -->
       <AppSidebar />
 

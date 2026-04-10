@@ -179,6 +179,7 @@ export function useGraphRenderer(
     // Force simulation
     simulation = d3
       .forceSimulation<NodeDatum>(nodes)
+      // force distance entre les edges
       .force(
         "link",
         d3
@@ -186,15 +187,21 @@ export function useGraphRenderer(
           .id((d) => d.id)
           .distance((link) => {
             const target = link.target as NodeDatum;
-            return target.shape === "rect" ? 380 : 280;
+            return target.shape === "rect" ? 380 : 250;
           }),
       )
-      .force("charge", d3.forceManyBody().strength(-800))
+      // force de répulsion entre les nodes
+      .force("charge", d3.forceManyBody().strength(-5000))
+      //force pour centrer le graphe dans le svg
       .force("center", d3.forceCenter(width / 2, height / 2))
+      //force pour éviter que les nodes ne se chevauchent quand on deplace un noeud sur un noeud
       .force(
         "collision",
         d3.forceCollide<NodeDatum>().radius(getCollisionRadius),
       )
+
+      .force("x", d3.forceX(width / 2).strength(0.05))
+      .force("y", d3.forceY(height / 2).strength(0.05))
 
       .on("tick", () => {
         link.attr("d", (d) => {

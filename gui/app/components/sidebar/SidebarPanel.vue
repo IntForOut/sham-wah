@@ -15,25 +15,30 @@
         </span>
       </div>
 
-      <button
-        class="p-2 rounded-lg text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
-        @click="ui.toggleSidebar()"
-        title="Close sidebar"
-      >
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <div class="flex items-center gap-2">
+        <ClientOnly>
+          <Neo4jStatusBadge v-if="ui.activeSidebarTab !== 'mock'" />
+        </ClientOnly>
+        <button
+          class="p-2 rounded-lg text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+          @click="ui.toggleSidebar()"
+          title="Close sidebar"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- MODE D'AFFICHAGE -->
@@ -109,6 +114,7 @@ import CypherPanel from "./panels/CypherPanel.vue";
 import ChatbotPanel from "./panels/ChatbotPanel.vue";
 import HumanActivityPanel from "./panels/PredefinedQueryPanel.vue";
 import MockDataPanel from "./panels/MockDataPanel.vue";
+import Neo4jStatusBadge from "./Neo4jStatusBadge.vue";
 
 const ui = useUiStore();
 
