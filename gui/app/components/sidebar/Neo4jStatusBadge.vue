@@ -67,7 +67,7 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
 
 const config = useRuntimeConfig();
 
-const HEALTH_URL = `${config.public.NEO4J_API_URL}/health`;
+const HEALTH_URL = `${config.public.NEO4J_API_URL}/db/ready`;
 const POLL_INTERVAL_MS = 30_000; // re-ping toutes les 30 s
 
 type Status = "checking" | "ok" | "error";
