@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   gui:
     build:
@@ -11,6 +9,50 @@ services:
     volumes:
       - ./gui:/app
       - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    container_name: fastapi_dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app
+    env_file:
+      - .env
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+  neo4j:
+    image: neo4j:5.18-community
+    container_name: neo4j_dev
+    ports:
+      - "7474:7474" # Neo4j Browser (http://localhost:7474)
+      - "7687:7687" # Bolt protocol
     environment:
-      NUXT_HOST: 0.0.0.0
-      NUXT_PORT: 3000
+      NEO4J_AUTH: neo4j/changeme
+      # Auto-downloads the neosemantics (n10s) plugin on first start
+      NEO4J_PLUGINS: '["n10s"]'
+      NEO4J_dbms_security_procedures_unrestricted: "n10s.*"
+      NEO4J_dbms_security_procedures_allowlist: "n10s.*"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      # Your RDF file(s) will be accessible inside the container at /import
+      - ./neo4j/import:/var/lib/neo4j/import
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:7474"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
