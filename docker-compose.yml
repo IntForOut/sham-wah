@@ -10,7 +10,7 @@ services:
       - ./gui:/app
       - /app/node_modules
     env_file:
-      - .env
+      - ./gui/.env
     depends_on:
       - api
 
@@ -24,7 +24,9 @@ services:
     volumes:
       - ./api:/app
     env_file:
-      - .env
+      - ./api/.env
+    environment:
+      RUNNING_IN_DOCKER: "true"
     depends_on:
       neo4j:
         condition: service_healthy
@@ -38,7 +40,7 @@ services:
       - "7474:7474"
       - "7687:7687"
     env_file:
-      - neo4j.env
+      - ./neo4j/.env
     environment:
       NEO4J_dbms_security_procedures_unrestricted: "n10s.*"
       NEO4J_dbms_security_procedures_allowlist: "n10s.*"
