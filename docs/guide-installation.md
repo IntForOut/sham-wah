@@ -15,6 +15,12 @@ This guide is intended for developers and advanced users who want to install and
 - Python v3.12.3 the API
 - Neo4j ([Desktop](https://neo4j.com/download/) or Server)
 
+### Tech Stack Overview
+
+- [Nuxt 4](https://nuxt.com/) (Frontend): a high-level, open-source framework built on Vue.js that streamlines the creation of full-stack web applications by providing built-in solutions for server-side rendering (SSR), static site generation (SSG), and automatic routing.
+- [FastAPI](https://fastapi.tiangolo.com/) (Backend API): a modern, high-performance Python web framework used for building APIs that leverages standard Python type hints to provide automatic data validation, and native support for asynchronous programming.
+- [Neo4j](https://neo4j.com/) (Graph Database): a graph database management system designed to store and query highly connected data through a flexible nodes and relationships model, using the Cypher query language to perform complex deep-relationship with high efficiency.
+
 <h2 id="gui">🙋‍♂️ GUI (Nuxt 4) 🙋‍♂️</h2>
 
 ```bash
