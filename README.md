@@ -5,12 +5,12 @@
 ![Neo4J](https://img.shields.io/badge/Neo4j-008CC1?style=for-the-badge&logo=neo4j&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 
-## About
+## ⛰️ About ⛰️
 
 Sham‑Wah is a web application currently being developed for the [IntForOut Project](https://www.umr-lastig.fr/intforout/).
 It provides an intuitive interface for sharing and browsing the wide range of resources (scientific papers, datasets, scripts, services, etc...) produced and used by the project’s research teams thanks to an architecture based on a knowledge graph called [OutdoorPressure](https://github.com/intforout/outdoorpressure).
 
-## Why the Name “Sham‑Wah”?
+## 🤔 Why the Name “Sham‑Wah”? 🤔
 
 I wanted a short, pleasant‑sounding name for a Knowledge Graph Query Framework, ideally with a nod to knowledge graph, querying and alpine ecology. Since the project focuses on wildlife disturbance in mountain environments, I explored animal‑themed names and naturally thought of the [chamois](https://en.wikipedia.org/wiki/Chamois), an animal I love.
 
@@ -33,7 +33,9 @@ Sham‑Wah follows a web-based client–server architecture composed of three ma
 - API Backend: a FastAPI server that handles requests and communicates with the knowledge graph.
 - Knowledge Graph Database: A Neo4j instance storing entities and relationships, enriched with the neosemantics plugin.
 
-![Architecture Diagram of Sham-Xah](docs/img/archi.png)
+<p align='center' style="margin-top: 20px;">
+<img src="docs/img/archi.png" alt="Architecture Diagram of Sham-Wah" width="500">
+</p>
 
 ### Try the Demo (GUI Only)
 
