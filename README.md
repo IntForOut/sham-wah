@@ -85,6 +85,13 @@ docker compose up -d
 On Windows, Neo4j container may fail to start if files use CRLF line endings. Configure your editor to use LF to avoid this issue.
 </div>
 
+<figure style="text-align: left; margin-top: 20px;">
+  <img src="docs/img/vscodeLF.png" alt="vscode" width="400">
+  <figcaption style="margin-bottom: 8px; font-style: italic;">
+    Screenshot of the bottom‑right corner of the VS Code editor
+  </figcaption>
+</figure>
+
 ### 🪐 Services available 🪐
 
 - GUI: http://localhost:3000/sham-wah/
