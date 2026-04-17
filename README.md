@@ -80,8 +80,10 @@ You can run Sham‑Wah in two ways:
 docker compose up -d
 ```
 
-> [!WARNING]
-> On windows, if you encounter errors related to line endings (the neo4j container cannot run), ensure your editor uses LF instead of CRLF.
+<div style="border-left: 4px solid #d9534f; padding: 0.8em;">
+<strong>⚠️ WARNING</strong><br>
+On Windows, Neo4j container may fail to start if files use CRLF line endings. Configure your editor to use LF to avoid this issue.
+</div>
 
 ### 🪐 Services available 🪐
 
