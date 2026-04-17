@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 
 export type ViewName = "explore" | "map" | "edit";
-export type SidebarTab = "cypher" | "chatbot" | "human" | "mock";
+// export type SidebarTab = "cypher" | "chatbot" | "human" | "mock";
+export type SidebarTab = "chatbot" | "mock";
 export type DisplayMode = "graph" | "table";
 
 export const useUiStore = defineStore("ui", () => {
@@ -10,7 +11,7 @@ export const useUiStore = defineStore("ui", () => {
   const currentView = ref<ViewName>("explore");
   const sidebarOpen = ref(true);
   const displayMode = ref<DisplayMode>("graph");
-  const activeSidebarTab = ref<SidebarTab>("human");
+  const activeSidebarTab = ref<SidebarTab>("mock");
 
   // --- GETTERS ---
   const isSidebarOpen = computed(() => sidebarOpen.value);

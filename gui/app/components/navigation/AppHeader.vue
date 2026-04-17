@@ -10,9 +10,9 @@
         <span class="text-white font-bold text-2xl">🐐</span>
       </div>
       <span
-        class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight"
+        class="text-xl font-bold text-gray-900 dark:text-white tracking-tight"
       >
-        Sham-Wah
+        Sham-Wah Live Demo
       </span>
     </div>
 
@@ -63,9 +63,8 @@ const navItems: Array<{
   view: ViewName;
 }> = [
   { label: "Explore Data", path: "/explore", view: "explore" },
-  { label: "Map", path: "/map", view: "map" },
-  { label: "UserFeedback", path: "/edit", view: "edit" },
-  // { label: "Edit Graph", path: "/edit", view: "edit" },
+  { label: "Explore Map", path: "/map", view: "map" },
+  // { label: "UserFeedback", path: "/edit", view: "edit" },
 ];
 
 watch(

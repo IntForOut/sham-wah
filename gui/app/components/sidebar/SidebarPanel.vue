@@ -125,21 +125,21 @@ function modeClass(mode: DisplayMode) {
 }
 
 const panelMap = {
-  human: {
-    title: "Predefined Query",
-    icon: "P",
-    component: HumanActivityPanel,
-  },
+  // human: {
+  //   title: "Predefined Query",
+  //   icon: "P",
+  //   component: HumanActivityPanel,
+  // },
   mock: {
     title: "Predefined Query - Hard coded data",
-    icon: "H",
+    icon: "P",
     component: MockDataPanel,
   },
-  cypher: {
-    title: "Graph Query",
-    icon: "G",
-    component: CypherPanel,
-  },
+  // cypher: {
+  //   title: "Graph Query",
+  //   icon: "G",
+  //   component: CypherPanel,
+  // },
   chatbot: {
     title: "Chatbot",
     icon: "C",
