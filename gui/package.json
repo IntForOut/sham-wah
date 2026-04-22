@@ -1,5 +1,5 @@
 {
-  "name": "web-gui",
+  "name": "gui",
   "type": "module",
   "private": true,
   "scripts": {
