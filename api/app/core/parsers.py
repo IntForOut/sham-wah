@@ -1,5 +1,12 @@
 from app.core.constants import ASSET_TYPE_MAP_INV, IGNORED_LABELS
 from app.schemas.assets import DigitalAsset
+import re
+
+def split_camel_case(name: str) -> str:
+    name = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", name)
+    name = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+    return name
+
 
 def extract_name(uri: str) -> str:
     return uri.split("#", 1)[-1]
@@ -23,7 +30,7 @@ def row_to_asset(row: dict, node_key: str = "n") -> DigitalAsset:
     actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "No Type") if valid_labels else "No Type"
 
     if raw_label == "Unnamed":
-        node_name = extract_name(props.get("uri", ""))
+        node_name = split_camel_case(extract_name(props.get("uri", "")))
     else:
         node_name = raw_label
 
