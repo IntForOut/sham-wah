@@ -26,7 +26,8 @@ async def get_neighbors(
             node:ns1__DataService OR 
             node:ns1__Dataset OR 
             node:ns6__UserFeedback OR 
-            node:ns1__Catalog
+            node:ns1__Catalog OR
+            node:ns6__ScientificPaper
         )
         
         RETURN 
