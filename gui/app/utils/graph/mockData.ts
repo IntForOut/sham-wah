@@ -3,116 +3,157 @@ import type { RawEdge } from "./graphAdapter";
 
 export const MOCK_ASSETS: DigitalAsset[] = [
   {
-    id: "ov-tracks-2024",
-    type: "Dataset",
-    name: "OVTracksMontBlancBauges2024",
-    comment:
-      "A set of tracks issued from Outdoorvision. GPS traces from Outdoorvision are cleaned and filtered.",
-    publisher: "Pôle ressources national sports de nature (PRNSN)",
-    location: [
-      "La Réserve nationale de chasse et de faune sauvage des Bauges",
-      "Massif du Mont Blanc, côté France",
-    ],
-  },
-  {
-    id: "strava-tracks-2014",
-    type: "Dataset",
-    name: "StravaTracksBauges2014",
-    comment: "No description available.",
-    publisher: "Strava",
-  },
-  {
-    id: "ov-map-service",
+    id: "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
     type: "DataService",
     name: "Recreational User Map Service",
     comment:
-      "This data feed enables visualization in the Outdoorvision application of aggregated GPS tracks obtained from services and connected devices used by outdoor sports and recreational users. The aggregation is based exclusively on GPS traces and does not account for spatial constraints, such as the road network. It provides a precise representation of sports activity and the paths taken, including off-trail routes.",
-    publisher: "Pôle ressources national sports de nature (PRNSN)",
-    location: [
-      "La Réserve nationale de chasse et de faune sauvage des Bauges",
-      "Massif du Mont Blanc, côté France",
-    ],
+      "Ce flux de données permet de visualiser dans l’application Outdoorvision les tracés agrégés des traces GPS issus de services et d’objets connectés des pratiquants de sports et loisirs de nature. L’agrégation des flux s’appuie uniquement sur les traces GPS et ne prend pas en compte les contraintes spatiales comme le réseau routier. Cela permet de visualiser de façon précise la pratique sportive, les trajets réalisés qui peuvent être hors sentier.",
+    publisher: "",
+    location: [],
   },
   {
-    id: "strava-map-service",
+    id: "https://intforout.github.io/outdoorPressure#StravaRecreationalUserMapService",
     type: "DataService",
     name: "Strava Global Heatmap",
     comment:
-      "Displays the aggregated public activities recorded in Strava over the past year",
-    publisher: "Strava",
+      "Montre les activités publiques agrégées au cours de l'année passée dans Strava",
+    publisher: "",
+    location: [],
   },
   {
-    id: "c2c-routes-2025",
+    id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
     type: "Dataset",
-    name: "CampToCampRoutesBauges2025",
-    comment: "A set of routes issued from Camptocamp.org API.",
-    publisher: "Camptocamp",
-  },
-  {
-    id: "altirando-2025",
-    type: "Dataset",
-    name: "AltitudeRandoRoutesBauges2025",
+    name: "OutdoorVision export in Bauges and Mont Blanc in 2024",
     comment:
-      "A set of routes issued from altituderando.com in 2025 in the Bauges area.",
-    publisher: "altituderando",
+      "A set of tracks issued from Outdoorvision. GPS traces from outdoorvison are cleaned and filtered",
+    publisher: "",
+    location: [],
   },
   {
-    id: "c2c-poi-2025",
+    id: "https://intforout.github.io/outdoorPressure#SkiLiftCountersMontBlanc2008To2024",
     type: "Dataset",
-    name: "Camptocamp.org-waypoints",
-    comment: "A set of waypoints issued from Camptocamp.org API.",
-    publisher: "Camptocamp",
-  },
-  {
-    id: "skilift-counters",
-    type: "Dataset",
-    name: "Ski Lift Ridership Counts in the CMB Area",
+    name: "Ski Lift Ridership Counts in the CMB Area.",
     comment:
       "Counting data for each ski lift, including their locations (start and end points), over a 10-year period (one file per year).",
+    publisher: "",
+    location: [],
   },
   {
-    id: "bdtopo-2025",
+    id: "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
     type: "Dataset",
-    name: "Trails from the BDTOPO dataset in the Bauges Massif (2025 edition)",
+    name: "MOUSLS Tracks Multi Sensors Vincennes Forest",
     comment:
-      "This dataset is extracted from the BDTOPO database, under the Transportation theme, from the Road Segment feature class, applying a filter on the “nature” attribute corresponding to the value “trail”.",
+      "This dataset was collected by two researchers by following the data colection protocol and using five sensors Garmin watch, Polar watch, Visorando mobile phone application, Keymaza GPS, Ublox GPS. The study area covers dense forect in Vincennes forest (Paris).",
+    publisher: "",
+    location: [],
   },
   {
-    id: "paper-marchand-2025",
-    type: "ScientificPaper",
-    name: "Disturbance by massive sporting events in mountain areas: When and where matters for the protected Alpine ibex Capra ibex",
-    comment: "No description available",
+    id: "https://intforout.github.io/outdoorPressure#StravaMetroTracksMontBlanc2024",
+    type: "Dataset",
+    name: "Strava Metro Tracks Mont Blanc2024",
+    comment: "",
+    publisher: "",
+    location: [],
   },
   {
-    id: "paper-vandamme-2024",
-    type: "ScientificPaper",
-    name: "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
-    comment: "No description available",
+    id: "https://intforout.github.io/outdoorPressure#StravaTracksBauges2014",
+    type: "Dataset",
+    name: "Strava Tracks Bauges2014",
+    comment: "",
+    publisher: "",
+    location: [],
   },
 ];
 
 const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
   {
-    id: "outdoorvision-catalog",
-    type: "Catalog",
-    name: "OutdoorVision",
+    id: "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
+    type: "DataService",
+    name: "Recreational User Map Service",
     comment:
-      "Outdoorvision https://outdoorvision.fr/; is a service to gather GPS tracks voluntarily shared by human during their outdoor activity through their accounts on their mobile device Garmin Connect™ / Polar Flow / Suunto APP (Appli Suunto) / Decathlon. The data are anonymized and published for a list of authorised users. It is offered by the French National Resource Centre for Ecological Transition and Outdoor Sports, a support mission of the Ministry of Sport. It results from a partnership between local authorities, sports federations and brands united around a non-profit programme.",
-    publisher: "Pôle ressources national sports de nature (PRNSN)",
+      "Ce flux de données permet de visualiser dans l’application Outdoorvision les tracés agrégés des traces GPS issus de services et d’objets connectés des pratiquants de sports et loisirs de nature. L’agrégation des flux s’appuie uniquement sur les traces GPS et ne prend pas en compte les contraintes spatiales comme le réseau routier. Cela permet de visualiser de façon précise la pratique sportive, les trajets réalisés qui peuvent être hors sentier.",
+    publisher: "",
+    location: [],
   },
   {
-    id: "feedback-hikersfoot",
+    id: "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",
     type: "UserFeedback",
-    name: "TrackCollectionMergeForReplicability",
-    comment:
-      "The process in this paper can probably be reproduced to generate HikersFootprint in Les Bauges and MontBlanc, using OutdoorVision data as an input",
-  },
-  {
-    id: "feedback-artifacts",
-    type: "UserFeedback",
-    name: "QualityOfOVRecreationalUserMapService",
+    name: "Quality Of OV Recreational User Map Service",
     comment:
       "Artifacts exist in dense urban areas above a certain zoom level. This is because the accuracy of GPS tracks is lower in these areas, making the spatial information displayed less relevant.",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+    type: "Dataset",
+    name: "OutdoorVision export in Bauges and Mont Blanc in 2024",
+    comment:
+      "A set of tracks issued from Outdoorvision. GPS traces from outdoorvison are cleaned and filtered",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
+    type: "UserFeedback",
+    name: "Track Collection Merge For Replicability",
+    comment:
+      "The process proposed in this paper can probably be reproduced to generate HikersFootprint in Les Bauges and MontBlanc, using OutdoorVision data as an input",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#outdoorvision",
+    type: "Catalog",
+    name: "OutdoorVision Catalog",
+    comment:
+      "Outdoorvision https://outdoorvision.fr/; is a service to gather GPS tracks voluntarily shared by human during their outdoor activity through their accounts on their mobile device Garmin Connect™ / Polar Flow / Suunto APP / Decathlon. The data are anonymized and published for a list of authorised users. It is offered by the French National Resource Centre for Ecological Transition and Outdoor Sports.",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+    type: "Dataset",
+    name: "OutdoorVision export in Bauges and Mont Blanc in 2024",
+    comment:
+      "A set of tracks issued from Outdoorvision. GPS traces from outdoorvison are cleaned and filtered",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+    type: "ScientificPaper",
+    name: "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
+    comment: "",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#MOUSLS",
+    type: "Dataset",
+    name: "MOUSLS: Multi-sensors and Ground Truth Tracks in Vincennes (2025)",
+    comment:
+      "The goal of this dataset is to provide in-situ ground truth data to validate an algorithm for fusing GNSS tracks. This is a dataset series composed by two linked datasets. The first was (file tracks_multi_sensors_vincennes_forest.gpkg) contains GNSS tracks and was collected by two researchers using a strict data collection protocol, following the same path at times precisely and at other times with slight deviations. The second (file ground_truth_dense_forest_path.txt) was collected by a group of students and represents ground truth data for the same path in dense forest. English (2025)",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+    type: "Dataset",
+    name: "MOUSLS Ground Truth Dense Forest Path",
+    comment:
+      "This dataset was collected on-site by a group of students using a defined methodology. It contains precise station locations along a real-world path through dense forest, after reordering in the south–north direction of travel. The goal of these reference data is to obtain a very precise ground truth in order to assess the accuracy of GNSS tracks produced by following exactly the same path with five sensors: a Garmin watch, a Polar watch, the Visorando mobile application, a Keymaza GPS, and a Ublox GPS.",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+    type: "Catalog",
+    name: "IntForOut published Dataverse",
+    comment:
+      "Dataverse dédié au projet IntForOut. Ce catalogue est intégré dans la plateforme de l'entrepôt pluridisciplinaire Recherche Data Gouv.",
+    publisher: "",
+    location: [],
   },
 ];
 
@@ -126,52 +167,130 @@ export interface MockNeighborGraph {
 }
 
 export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
-  "ov-map-service": {
+  "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService": {
     nodeIds: [
-      "outdoorvision-catalog",
-      "ov-tracks-2024",
-      "paper-vandamme-2024",
-      "feedback-hikersfoot",
-      "feedback-artifacts",
+      "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",
+      "https://intforout.github.io/outdoorPressure#outdoorvision",
+      "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
     ],
     edges: [
       {
-        source: "outdoorvision-catalog",
-        target: "ov-map-service",
-        label: "SERVICE",
+        source:
+          "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",
+        target:
+          "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
+        label: "ns6__target",
       },
       {
-        source: "outdoorvision-catalog",
-        target: "ov-tracks-2024",
-        label: "DATASET",
+        source: "https://intforout.github.io/outdoorPressure#outdoorvision",
+        target:
+          "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
+        label: "ns1__service",
       },
       {
-        source: "feedback-hikersfoot",
-        target: "paper-vandamme-2024",
-        label: "TARGET",
-      },
-      {
-        source: "feedback-hikersfoot",
-        target: "ov-tracks-2024",
-        label: "TARGET",
-      },
-      {
-        source: "feedback-artifacts",
-        target: "ov-map-service",
-        label: "TARGET",
+        source: "https://intforout.github.io/outdoorPressure#outdoorvision",
+        target:
+          "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+        label: "ns1__dataset",
       },
     ],
   },
 
-  "ov-tracks-2024": {
-    nodeIds: ["ov-map-service", "paper-vandamme-2024"],
+  "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024": {
+    nodeIds: [
+      "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
+      "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+      "https://intforout.github.io/outdoorPressure#outdoorvision",
+      "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
+    ],
     edges: [
-      { source: "ov-tracks-2024", target: "ov-map-service", label: "FEEDS" },
       {
-        source: "paper-vandamme-2024",
-        target: "ov-tracks-2024",
-        label: "TARGET",
+        source:
+          "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
+        target:
+          "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+        label: "ns6__target",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
+        target:
+          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+        label: "ns6__target",
+      },
+      {
+        source: "https://intforout.github.io/outdoorPressure#outdoorvision",
+        target:
+          "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+        label: "ns1__dataset",
+      },
+      {
+        source: "https://intforout.github.io/outdoorPressure#outdoorvision",
+        target:
+          "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
+        label: "ns1__service",
       },
     ],
   },
+  "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest":
+    {
+      nodeIds: [
+        "https://intforout.github.io/outdoorPressure#MOUSLS",
+        "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+        "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+        "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+      ],
+      edges: [
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns1__inSeries",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns1__inSeries",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns3__quotedAs",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns1__dataset",
+        },
+        {
+          source: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          target:
+            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+          label: "ns3__wasQuotedFrom",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns4__hasPart",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+          target:
+            "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
+          label: "ns1__dataset",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+          target:
+            "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+          label: "ns1__dataset",
+        },
+      ],
+    },
 };
