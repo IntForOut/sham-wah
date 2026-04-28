@@ -7,8 +7,14 @@
 
 ## ⛰️ About ⛰️
 
-Sham‑Wah is a web application currently being developed for the [IntForOut Project](https://www.umr-lastig.fr/intforout/).
-It provides an intuitive interface for sharing and browsing the wide range of resources (scientific papers, datasets, scripts, services, etc...) produced and used by the project’s research teams thanks to an architecture based on a knowledge graph called [OutdoorPressure](https://github.com/intforout/outdoorpressure).
+Sham‑Wah is a web application currently being developed as part of the [IntForOut Project](https://www.umr-lastig.fr/intforout/).
+Designed as a companion to [OutdoorPressure](https://github.com/intforout/outdoorpressure) knowledge graph, it enables non‑experts to query and explore the graph through a user-friendly interface. It allows users to search and discover the wide range of resources (scientific papers, datasets, scripts, services, etc...) produced and used by the project’s research teams.
+
+### Try the Demo (GUI Only)
+
+A static preview of the GUI is available here: https://intforout.github.io/sham-wah/explore/
+
+This version does not communicate with the API or the Neo4j database, only the hard-coded data will give you a preview of the feature visualizations.
 
 
 ### Try the Demo (GUI Only)
@@ -74,29 +80,33 @@ You can run Sham‑Wah in two ways:
 
 <h2 id="docker">🐳 Docker Installation (Recommended) 🐳</h2>
 
-1. Install Docker (or Docker Desktop on Windows).
+1. Install Docker (or [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/) on Windows).
 
-2. Run all services:
+2. In the root of the application, run all services:
 
 ```bash
 docker compose up -d
 ```
 
-#### Common issue on Windows
+3. To stop all the services:
 
-<div style="border-left: 4px solid #d9534f; padding: 0.8em;">
-<strong>⚠️ WARNING</strong><br>
-Neo4j container may fail to start if files use CRLF line endings. Configure your editor to use LF to avoid this issue.
-</div>
+```bash
+docker compose down
+```
+
+### ⚠️ WARNING: Common issue on Windows and VScode terminal
+
+If you have use VSCode for example to create all the .env files or modifies the code itself, VSCode on Windows rewrites all the files with CRLF endings (\r\n) as the default line ending. When you run the docker command, Neo4j container (which uses a linux image) may fails to start as it uses shell scripts and files inside the container use CRLF instead of LF, so Linux interprets the extra \r character as an invalid command.
+
+1. Configure your VSCode to use LF to avoid this issue.
+
+##### Screenshot of the bottom‑right corner of the VS Code editor
 
 <figure style="text-align: left; margin-top: 20px;">
   <img src="docs/img/vscodeLF.png" alt="vscode" width="400">
-  <figcaption style="margin-bottom: 8px; font-style: italic;">
-    Screenshot of the bottom‑right corner of the VS Code editor
-  </figcaption>
 </figure>
 
-- Then, re‑run the entire Docker Compose setup with:
+2. Then, re‑run the entire Docker Compose setup with:
 
 ```bash
 docker compose build --no-cache
