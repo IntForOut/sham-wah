@@ -1,16 +1,37 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import type { NodeDatum } from "~/utils/graph/graphTypes";
+
+const props = defineProps<{ node: NodeDatum; degree: number }>();
+defineEmits<{ close: [] }>();
+
+const asset = computed(() => props.node.asset);
+
+const hasComment = computed(
+  () =>
+    !!asset.value.comment &&
+    !asset.value.comment.toLowerCase().includes("no description"),
+);
+
+const pdfLabel = computed(() => {
+  if (asset.value.type !== "Document") return null;
+  return decodeURIComponent(
+    asset.value.pdfUrl.split("/").pop() ?? asset.value.pdfUrl,
+  );
+});
+</script>
+
 <template>
   <div
     class="bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 p-4 w-96"
   >
     <!-- Header -->
     <div class="flex items-start justify-between gap-2 mb-3">
-      <div class="flex items-center gap-2 min-w-0">
-        <h3
-          class="font-semibold text-gray-900 dark:text-white text-sm leading-tight break-words"
-        >
-          {{ node.label }}
-        </h3>
-      </div>
+      <h3
+        class="font-semibold text-gray-900 dark:text-white text-sm leading-tight break-words"
+      >
+        {{ asset.name }}
+      </h3>
       <button
         class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex-shrink-0 transition-colors"
         @click="$emit('close')"
@@ -31,13 +52,13 @@
       </button>
     </div>
 
-    <!-- Type badge + selected indicator on the same line -->
+    <!-- Type badge -->
     <div class="flex items-center gap-2 mb-4">
       <span
         class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
         :style="{ backgroundColor: node.color }"
       >
-        {{ node.type }}
+        {{ asset.type }}
       </span>
     </div>
 
@@ -48,8 +69,10 @@
       >
         URI
       </p>
-      <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-        {{ node.id }}
+      <p
+        class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed break-all"
+      >
+        {{ asset.id }}
       </p>
     </div>
 
@@ -64,69 +87,81 @@
         v-if="hasComment"
         class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed"
       >
-        {{ node.description }}
+        {{ asset.comment }}
       </p>
       <p v-else class="text-xs text-gray-400 dark:text-gray-600 italic">
         No description available.
       </p>
     </div>
 
-    <!-- Publisher -->
-    <div v-if="node.publisher" class="mb-4">
+    <!-- Author — UserFeedback only -->
+    <div v-if="asset.type === 'UserFeedback'" class="mb-4">
+      <p
+        class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
+      >
+        Author
+      </p>
+      <p class="text-xs text-gray-600 dark:text-gray-400">{{ asset.author }}</p>
+    </div>
+
+    <!-- PDF — Document only -->
+    <div v-if="asset.type === 'Document'" class="mb-4">
+      <p
+        class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
+      >
+        PDF
+      </p>
+      <a
+        :href="asset.pdfUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline"
+      >
+        {{ pdfLabel }}
+      </a>
+    </div>
+
+    <!-- Publisher — Dataset, DataService, Catalog -->
+    <div
+      v-if="
+        (asset.type === 'Dataset' ||
+          asset.type === 'DataService' ||
+          asset.type === 'Catalog') &&
+        asset.publisher
+      "
+      class="mb-4"
+    >
       <p
         class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
       >
         Publisher
       </p>
-      <div class="flex items-start gap-1.5">
-        <svg
-          class="w-3.5 h-3.5 text-gray-400 flex-shrink-0 mt-0.5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-          />
-        </svg>
-        <p class="text-xs text-gray-600 dark:text-gray-400">
-          {{ node.publisher }}
-        </p>
-      </div>
+      <p class="text-xs text-gray-600 dark:text-gray-400">
+        {{ asset.publisher }}
+      </p>
     </div>
 
-    <!-- Location -->
-    <div v-if="node.location?.length" class="mb-4">
+    <!-- Location — Dataset, DataService -->
+    <div
+      v-if="
+        (asset.type === 'Dataset' || asset.type === 'DataService') &&
+        asset.location?.length
+      "
+      class="mb-4"
+    >
       <p
         class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
       >
         Location
       </p>
-
       <ul
-        class="text-xs text-gray-600 dark:text-gray-400 space-y-1 ml-2 list-disc list-inside"
+        class="text-xs text-gray-600 dark:text-gray-400 ml-2 list-disc list-inside space-y-1"
       >
-        <li v-for="loc in node.location" :key="loc">{{ loc }}</li>
+        <li v-for="loc in asset.location" :key="loc">{{ loc }}</li>
       </ul>
     </div>
 
-    <!-- Concepts -->
-    <!-- <div v-if="node.concepts?.length" class="mb-4">
-      <div class="flex flex-wrap gap-1">
-        <span
-          v-for="concept in node.concepts"
-          :key="concept"
-          class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs"
-        >
-          {{ concept }}
-        </span>
-      </div>
-    </div> -->
-
-    <!-- Stats -->
+    <!-- Footer -->
     <div
       class="border-t border-gray-100 dark:border-gray-700 pt-2 text-xs text-gray-500 dark:text-gray-400"
     >
@@ -134,17 +169,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from "vue";
-import type { NodeDatum } from "~/utils/graph/graphTypes";
-
-const props = defineProps<{ node: NodeDatum; degree: number }>();
-defineEmits<{ close: [] }>();
-
-const hasComment = computed(
-  () =>
-    props.node.description &&
-    !props.node.description.toLowerCase().includes("no description"),
-);
-</script>

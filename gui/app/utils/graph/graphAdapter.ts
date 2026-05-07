@@ -1,24 +1,6 @@
-import type { DigitalAsset } from "~/stores/query-result-store";
+import type { DigitalAsset } from "./assetTypes";
+import { ASSET_TYPE_CONFIG } from "./assetTypeConfig";
 import type { NodeDatum, LinkDatum } from "./graphTypes";
-
-export const TYPE_COLORS: Record<string, string> = {
-  Dataset: "#3B82F6",
-  DataService: "#3B82F6",
-  ScientificPaper: "#7ed957",
-  Catalog: "#3B82F6",
-  UserFeedback: "#F59E0B",
-};
-
-const TYPE_SIZES: Record<string, number> = {
-  Dataset: 50,
-  DataService: 50,
-  ScientificPaper: 50,
-  Catalog: 50,
-  UserFeedback: 50, // rect nodes — size unused visually but kept for collision
-};
-
-const DEFAULT_COLOR = "#94A3B8";
-const DEFAULT_SIZE = 50;
 
 export interface RawEdge {
   source: string;
@@ -30,19 +12,16 @@ export function assetToNode(
   asset: DigitalAsset,
   isSelected = false,
 ): NodeDatum {
-  const isRect = asset.type === "UserFeedback";
+  const config = ASSET_TYPE_CONFIG[asset.type];
   return {
     id: asset.id,
     label: asset.name,
-    description: asset.comment,
-    publisher: asset.publisher,
-    location: asset.location,
-    color: TYPE_COLORS[asset.type] ?? DEFAULT_COLOR,
-    size: TYPE_SIZES[asset.type] ?? DEFAULT_SIZE,
-    shape: isRect ? "rect" : "circle",
-    width: isRect ? 160 : undefined,
-    height: isRect ? 56 : undefined,
-    type: asset.type,
+    asset,
+    color: config.color,
+    size: config.size,
+    shape: config.shape,
+    width: config.width,
+    height: config.height,
     isSelected,
   };
 }

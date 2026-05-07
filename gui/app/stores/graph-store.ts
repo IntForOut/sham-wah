@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import { ref, shallowRef } from "vue";
 import { ASSET_BY_ID, MOCK_NEIGHBOR_GRAPHS } from "~/utils/graph/mockData";
-import type { DigitalAsset } from "~/stores/query-result-store";
 import type { NodeDatum, LinkDatum } from "~/utils/graph/graphTypes";
 import { buildGraphData, type RawEdge } from "~/utils/graph/graphAdapter";
 import { storeToRefs } from "pinia";
+import type { DigitalAsset } from "~/utils/graph/assetTypes";
 
 interface NeighborGraph {
   nodes: DigitalAsset[];
