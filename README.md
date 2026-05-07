@@ -10,6 +10,14 @@
 Sham‑Wah is a web application currently being developed for the [IntForOut Project](https://www.umr-lastig.fr/intforout/).
 It provides an intuitive interface for sharing and browsing the wide range of resources (scientific papers, datasets, scripts, services, etc...) produced and used by the project’s research teams thanks to an architecture based on a knowledge graph called [OutdoorPressure](https://github.com/intforout/outdoorpressure).
 
+
+### Try the Demo (GUI Only)
+
+A static preview of the GUI is available here: https://intforout.github.io/sham-wah/explore/
+
+This version does not communicate with the API or the Neo4j database, only the hard-coded data will give you a preview od the visualization of features.
+
+
 ## 🤔 Why the Name “Sham‑Wah”? 🤔
 
 I wanted a short, pleasant‑sounding name for a Knowledge Graph Query Framework, ideally with a nod to knowledge graph, querying and alpine ecology. Since the project focuses on wildlife disturbance in mountain environments, I explored animal‑themed names and naturally thought of the [chamois](https://en.wikipedia.org/wiki/Chamois), an animal I love.
@@ -36,12 +44,6 @@ Sham‑Wah follows a web-based client–server architecture composed of three ma
 <p align='center' style="margin-top: 20px;">
 <img src="docs/img/archi.png" alt="Architecture Diagram of Sham-Wah" width="500">
 </p>
-
-### Try the Demo (GUI Only)
-
-A static preview of the GUI is available here: https://intforout.github.io/sham-wah/explore/
-
-This version does not communicate with the API or the Neo4j database, only the hard-coded data will give you a preview od the visualization of features.
 
 <h2 id="installation">⚙️ Installation ⚙️</h2>
 
