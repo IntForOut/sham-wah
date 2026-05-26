@@ -7,12 +7,6 @@ defineEmits<{ close: [] }>();
 
 const asset = computed(() => props.node.asset);
 
-const hasComment = computed(
-  () =>
-    !!asset.value.comment &&
-    !asset.value.comment.toLowerCase().includes("no description"),
-);
-
 const pdfLabel = computed(() => {
   if (asset.value.type !== "Document") return null;
   return decodeURIComponent(
@@ -76,6 +70,24 @@ const pdfLabel = computed(() => {
       </p>
     </div>
 
+    <!-- rdfs:label -->
+    <!-- <div class="mb-4">
+      <p
+        class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
+      >
+        Label
+      </p>
+      <p
+        v-if="asset.label"
+        class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed"
+      >
+        {{ asset.label }}
+      </p>
+      <p v-else class="text-xs text-gray-400 dark:text-gray-600 italic">
+        No label available.
+      </p>
+    </div> -->
+
     <!-- Comment -->
     <div class="mb-4">
       <p
@@ -84,7 +96,7 @@ const pdfLabel = computed(() => {
         Comment
       </p>
       <p
-        v-if="hasComment"
+        v-if="asset.comment"
         class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed"
       >
         {{ asset.comment }}
