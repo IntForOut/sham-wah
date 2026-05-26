@@ -2,6 +2,7 @@ export interface BaseAsset {
   id: string;
   name: string;
   comment: string;
+  rdfs_label: string;
 }
 
 export interface DatasetAsset extends BaseAsset {

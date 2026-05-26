@@ -17,27 +17,24 @@ def first_value(value, default=""):
         return value[0] if value else default
     return value or default
 
-
 def row_to_asset(row: dict, node_key: str = "n") -> DigitalAsset:
     node = row[node_key]
     props = dict(node)
-
-    raw_label = first_value(props.get("rdfs__label"), "Unnamed")
+    
+    node_name = split_camel_case(extract_name(props.get("uri", "")))  # node name est l'uri trunqué 
+    raw_label = first_value(props.get("rdfs__label"), "no label") # premier label du noeud donc fr ou en selon le noeud
     raw_comment = first_value(props.get("rdfs__comment"), "")
 
     node_labels = row.get("nodeLabels", [])
     valid_labels = [lbl for lbl in node_labels if lbl not in IGNORED_LABELS]
     actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "No Type") if valid_labels else "No Type"
-
-    if raw_label == "Unnamed":
-        node_name = split_camel_case(extract_name(props.get("uri", "")))
-    else:
-        node_name = raw_label
+    
 
     return DigitalAsset(
         id=props.get("uri", ""),
         type=actual_type,
         name=node_name,
+        rdfs_label=raw_label,
         comment=raw_comment,
         publisher=props.get("ns4__publisher", []),
         location=props.get("ns4__location", []),

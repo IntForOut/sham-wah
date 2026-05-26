@@ -6,6 +6,7 @@ class DigitalAsset(BaseModel):
     type: str
     name: str
     comment: str
+    rdfs_label: str
     publisher: list[str] | None = None
     location: list[str] | None = None
 
