@@ -78,9 +78,13 @@ const pdfLabel = computed(() => {
         Label
       </p>
       <p
+        v-if="asset.rdfs_label"
         class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed"
       >
         {{ asset.rdfs_label }}
+      </p>
+      <p v-else class="text-xs text-gray-400 dark:text-gray-600 italic">
+        No label available.
       </p>
     </div>
 

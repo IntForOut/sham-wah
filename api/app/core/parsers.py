@@ -22,7 +22,7 @@ def row_to_asset(row: dict, node_key: str = "n") -> DigitalAsset:
     props = dict(node)
     
     node_name = split_camel_case(extract_name(props.get("uri", "")))  # node name est l'uri trunqué 
-    raw_label = first_value(props.get("rdfs__label"), "no label") # premier label du noeud donc fr ou en selon le noeud
+    raw_label = first_value(props.get("rdfs__label"), "") # premier label du noeud donc fr ou en selon le noeud
     raw_comment = first_value(props.get("rdfs__comment"), "")
 
     node_labels = row.get("nodeLabels", [])
