@@ -34,7 +34,7 @@
       <ThemeSwitcher />
       <LanguageSelector />
       <a
-        href="https://github.com/vpech77"
+        href="https://github.com/intforoutr/sham-wah"
         target="_blank"
         rel="noopener noreferrer"
         class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
