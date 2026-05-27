@@ -197,28 +197,28 @@ export interface MockNeighborGraph {
 
 export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
   "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015":
-    {
-      nodeIds: [
-        "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
-        "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
-      ],
-      edges: [
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
-          target:
-            "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015",
-          label: "ns6__target",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
-          target:
-            "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
-          label: "ns6_target",
-        },
-      ],
-    },
+  {
+    nodeIds: [
+      "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+      "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+    ],
+    edges: [
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+        target:
+          "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015",
+        label: "ns6__target",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+        target:
+          "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+        label: "ns6_target",
+      },
+    ],
+  },
   "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService": {
     nodeIds: [
       "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",
@@ -285,64 +285,64 @@ export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
     ],
   },
   "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest":
-    {
-      nodeIds: [
-        "https://intforout.github.io/outdoorPressure#MOUSLS",
-        "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
-        "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-        "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-      ],
-      edges: [
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
-          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-          label: "ns1__inSeries",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
-          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-          label: "ns1__inSeries",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-          label: "ns3__quotedAs",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-          label: "ns1__dataset",
-        },
-        {
-          source: "https://intforout.github.io/outdoorPressure#MOUSLS",
-          target:
-            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-          label: "ns3__wasQuotedFrom",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-          label: "ns4__hasPart",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-          target:
-            "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
-          label: "ns1__dataset",
-        },
-        {
-          source:
-            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-          target:
-            "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
-          label: "ns1__dataset",
-        },
-      ],
-    },
+  {
+    nodeIds: [
+      "https://intforout.github.io/outdoorPressure#MOUSLS",
+      "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+      "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+      "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+    ],
+    edges: [
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
+        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+        label: "ns1__inSeries",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+        label: "ns1__inSeries",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+        label: "ns3__quotedAs",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+        label: "ns1__dataset",
+      },
+      {
+        source: "https://intforout.github.io/outdoorPressure#MOUSLS",
+        target:
+          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+        label: "ns3__wasQuotedFrom",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+        label: "ns4__hasPart",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+        target:
+          "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
+        label: "ns1__dataset",
+      },
+      {
+        source:
+          "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+        target:
+          "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+        label: "ns1__dataset",
+      },
+    ],
+  },
 };
