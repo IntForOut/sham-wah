@@ -131,7 +131,7 @@ const panelMap = {
   //   component: HumanActivityPanel,
   // },
   mock: {
-    title: "Predefined Query - Hard coded data",
+    title: "Predefined Query",
     icon: "P",
     component: MockDataPanel,
   },
