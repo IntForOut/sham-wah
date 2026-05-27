@@ -30,6 +30,11 @@ def row_to_asset(row: dict, node_key: str = "n") -> DigitalAsset:
     actual_type = ASSET_TYPE_MAP_INV.get(valid_labels[0], "No Type") if valid_labels else "No Type"
     
 
+    if raw_label == "Unnamed":
+        node_name = split_camel_case(extract_name(props.get("uri", "")))
+    else:
+        node_name = raw_label
+
     return DigitalAsset(
         id=props.get("uri", ""),
         type=actual_type,

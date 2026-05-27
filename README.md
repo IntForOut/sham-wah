@@ -14,7 +14,7 @@ Designed as a companion to [OutdoorPressure](https://github.com/intforout/outdoo
 
 A static preview of the GUI is available here: https://intforout.github.io/sham-wah/explore/
 
-This version does not communicate with the API or the Neo4j database, only the hard-coded data will give you a preview of the feature visualizations.
+This version does not communicate with the API or the Neo4j database, only the local file data will give you a preview of the feature visualizations.
 
 ## 🤔 Why the Name “Sham‑Wah”? 🤔
 
