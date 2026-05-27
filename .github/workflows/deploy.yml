@@ -33,6 +33,8 @@ jobs:
       - name: Install dependencies
         working-directory: gui
         run: pnpm install
+        env:
+          PNPM_IGNORE_BUILDS: "true"
 
       - name: Generate static site
         working-directory: gui
