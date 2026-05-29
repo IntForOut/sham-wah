@@ -48,7 +48,9 @@
       >
         URI
       </p>
-      <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+      <p
+        class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed break-words"
+      >
         {{ node.id }}
       </p>
     </div>
