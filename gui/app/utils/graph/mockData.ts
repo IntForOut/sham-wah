@@ -7,7 +7,7 @@ export const MOCK_ASSETS: DigitalAsset[] = [
     type: "Dataset",
     name: "Data Phd Kerouanton",
     comment:
-      "Questionnaires de campagnes de terrain et traces GNSS ciblant la pratique de la randonnée dans le PNR du Massif des Bauges",
+      "Field survey questionnaires and GNSS tracks focusing on hiking in the Massif des Bauges Regional Nature Park",
     publisher: "LECA et l’EDYTEM",
     location: ["Parc naturel régional du Massif des Bauges"],
   },
@@ -16,7 +16,7 @@ export const MOCK_ASSETS: DigitalAsset[] = [
     type: "DataService",
     name: "Recreational User Map Service",
     comment:
-      "Ce flux de données permet de visualiser dans l’application Outdoorvision les tracés agrégés des traces GPS issus de services et d’objets connectés des pratiquants de sports et loisirs de nature. L’agrégation des flux s’appuie uniquement sur les traces GPS et ne prend pas en compte les contraintes spatiales comme le réseau routier. Cela permet de visualiser de façon précise la pratique sportive, les trajets réalisés qui peuvent être hors sentier.",
+      "This data feed enables the Outdoorvision app to display aggregated GPS tracks from services and connected devices used by outdoor sports and recreation enthusiasts. The aggregation of these feeds is based solely on GPS tracks and does not take into account spatial constraints such as the road network. This allows for an accurate visualization of sports activities and the routes taken, which may include off-trail paths.",
     publisher: "",
     location: [],
   },
@@ -25,7 +25,7 @@ export const MOCK_ASSETS: DigitalAsset[] = [
     type: "DataService",
     name: "Strava Global Heatmap",
     comment:
-      "Montre les activités publiques agrégées au cours de l'année passée dans Strava",
+      "Displays the aggregated public activities recorded in Strava over the past year",
     publisher: "",
     location: [],
   },
@@ -91,7 +91,7 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     name: "Profilage Donnees PhD Kerouanton",
     author: "Abdessalam Naciri",
     comment:
-      "Analyse -profilage- des données de recherche produites par Colin Kerouanton, notamment de la distribution des valeurs, (target 1). Le résultat de l'analyse est partagé dans un rapport (target 2)",
+      "Analysis (profiling) of the research data produced by Colin Kerouanton, including the distribution of values (target 1). The results of the analysis are presented in a report (target 2)",
     publisher: "",
     location: [],
   },
@@ -100,7 +100,7 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     type: "DataService",
     name: "Recreational User Map Service",
     comment:
-      "Ce flux de données permet de visualiser dans l’application Outdoorvision les tracés agrégés des traces GPS issus de services et d’objets connectés des pratiquants de sports et loisirs de nature. L’agrégation des flux s’appuie uniquement sur les traces GPS et ne prend pas en compte les contraintes spatiales comme le réseau routier. Cela permet de visualiser de façon précise la pratique sportive, les trajets réalisés qui peuvent être hors sentier.",
+      "This data stream allows users to visualize aggregated GPS tracks from Outdoorvision. The aggregation is based solely on GPS traces and does not consider spatial constraints such as road networks. This enables precise visualization of outdoor activities, including routes that may be off-trail.",
     publisher: "",
     location: [],
   },
@@ -180,7 +180,7 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     type: "Catalog",
     name: "IntForOut published Dataverse",
     comment:
-      "Dataverse dédié au projet IntForOut. Ce catalogue est intégré dans la plateforme de l'entrepôt pluridisciplinaire Recherche Data Gouv.",
+      "Dataverse dedicated to the IntForOut project. This catalog is integrated into the multidisciplinary data warehouse platform, Recherche Data Gouv.",
     publisher: "",
     location: [],
   },
@@ -197,28 +197,28 @@ export interface MockNeighborGraph {
 
 export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
   "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015":
-  {
-    nodeIds: [
-      "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
-      "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
-    ],
-    edges: [
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
-        target:
-          "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015",
-        label: "ns6__target",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
-        target:
-          "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
-        label: "ns6_target",
-      },
-    ],
-  },
+    {
+      nodeIds: [
+        "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+        "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+      ],
+      edges: [
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+          target:
+            "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015",
+          label: "ns6__target",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+          target:
+            "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+          label: "ns6_target",
+        },
+      ],
+    },
   "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService": {
     nodeIds: [
       "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",
@@ -285,64 +285,64 @@ export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
     ],
   },
   "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest":
-  {
-    nodeIds: [
-      "https://intforout.github.io/outdoorPressure#MOUSLS",
-      "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
-      "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-      "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-    ],
-    edges: [
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
-        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-        label: "ns1__inSeries",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
-        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-        label: "ns1__inSeries",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-        label: "ns3__quotedAs",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-        label: "ns1__dataset",
-      },
-      {
-        source: "https://intforout.github.io/outdoorPressure#MOUSLS",
-        target:
-          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-        label: "ns3__wasQuotedFrom",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
-        target: "https://intforout.github.io/outdoorPressure#MOUSLS",
-        label: "ns4__hasPart",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-        target:
-          "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
-        label: "ns1__dataset",
-      },
-      {
-        source:
-          "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
-        target:
-          "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
-        label: "ns1__dataset",
-      },
-    ],
-  },
+    {
+      nodeIds: [
+        "https://intforout.github.io/outdoorPressure#MOUSLS",
+        "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+        "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+        "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+      ],
+      edges: [
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns1__inSeries",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns1__inSeries",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns3__quotedAs",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns1__dataset",
+        },
+        {
+          source: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          target:
+            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+          label: "ns3__wasQuotedFrom",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+          target: "https://intforout.github.io/outdoorPressure#MOUSLS",
+          label: "ns4__hasPart",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+          target:
+            "https://intforout.github.io/outdoorPressure#MOUSLSTracksMultiSensorsVincennesForest",
+          label: "ns1__dataset",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+          target:
+            "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+          label: "ns1__dataset",
+        },
+      ],
+    },
 };
