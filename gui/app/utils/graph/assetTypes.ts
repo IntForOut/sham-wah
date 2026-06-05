@@ -27,8 +27,8 @@ export interface UserFeedbackAsset extends BaseAsset {
   author: string;
 }
 
-export interface DocumentAsset extends BaseAsset {
-  type: "Document";
+export interface TechnicalDocumentAsset extends BaseAsset {
+  type: "TechnicalDocument";
   pdfUrl: string;
 }
 
@@ -41,5 +41,5 @@ export type DigitalAsset =
   | DataServiceAsset
   | CatalogAsset
   | UserFeedbackAsset
-  | DocumentAsset
+  | TechnicalDocumentAsset
   | ScientificPaperAsset;

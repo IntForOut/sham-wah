@@ -6,6 +6,7 @@ ASSET_TYPE_MAP = {
     "DatasetSeries":  "ns1__DatasetSeries",
     "UserFeedback":   "ns6__UserFeedback",
     "Catalog":        "ns1__Catalog",
+    "TechnicalDocument":"ns2__TechnicalDocument",
 }
 
 CONCEPT_LABEL_MAP = {

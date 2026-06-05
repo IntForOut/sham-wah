@@ -77,7 +77,7 @@ export const MOCK_ASSETS: DigitalAsset[] = [
 const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
   {
     id: "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
-    type: "Document",
+    type: "TechnicalDocument",
     name: "Profilage Data PhD Kerouanton.pdf",
     comment: "",
     pdfUrl:
@@ -107,8 +107,6 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     author: "mdvdamme",
     comment:
       "Artifacts exist in dense urban areas above a certain zoom level. This is because the accuracy of GPS tracks is lower in these areas, making the spatial information displayed less relevant.",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
@@ -123,10 +121,9 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     id: "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
     type: "UserFeedback",
     name: "Track Collection Merge For Replicability",
+    author: "mdvdamme",
     comment:
       "The process proposed in this paper can probably be reproduced to generate HikersFootprint in Les Bauges and MontBlanc, using OutdoorVision data as an input",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#outdoorvision",
@@ -134,8 +131,6 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     name: "OutdoorVision Catalog",
     comment:
       "Outdoorvision https://outdoorvision.fr/; is a service to gather GPS tracks voluntarily shared by human during their outdoor activity through their accounts on their mobile device Garmin Connect™ / Polar Flow / Suunto APP / Decathlon. The data are anonymized and published for a list of authorised users. It is offered by the French National Resource Centre for Ecological Transition and Outdoor Sports.",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
@@ -151,8 +146,6 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     type: "ScientificPaper",
     name: "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
     comment: "",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#MOUSLS",
@@ -178,8 +171,6 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     name: "IntForOut published Dataverse",
     comment:
       "Dataverse dédié au projet IntForOut. Ce catalogue est intégré dans la plateforme de l'entrepôt pluridisciplinaire Recherche Data Gouv.",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",

@@ -8,7 +8,7 @@ defineEmits<{ close: [] }>();
 const asset = computed(() => props.node.asset);
 
 const pdfLabel = computed(() => {
-  if (asset.value.type !== "Document") return null;
+  if (asset.value.type !== "TechnicalDocument") return null;
   return decodeURIComponent(
     asset.value.pdfUrl.split("/").pop() ?? asset.value.pdfUrl,
   );
@@ -117,7 +117,7 @@ const pdfLabel = computed(() => {
     </div>
 
     <!-- PDF — Document only -->
-    <div v-if="asset.type === 'Document'" class="mb-4">
+    <div v-if="asset.type === 'TechnicalDocument'" class="mb-4">
       <p
         class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
       >
