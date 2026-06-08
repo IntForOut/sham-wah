@@ -220,6 +220,7 @@ import GraphInfoPanel from "./GraphInfoPanel.vue";
 const LEGEND_ITEMS = [
   { label: "Data", ...ASSET_TYPE_CONFIG.Dataset },
   { label: "Scientific Paper", ...ASSET_TYPE_CONFIG.ScientificPaper },
+  { label: "Technical Document", ...ASSET_TYPE_CONFIG.TechnicalDocument },
   { label: "User Feedback", ...ASSET_TYPE_CONFIG.UserFeedback },
 ] as const;
 

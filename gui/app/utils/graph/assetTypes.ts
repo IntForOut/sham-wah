@@ -9,17 +9,20 @@ export interface DatasetAsset extends BaseAsset {
   type: "Dataset";
   publisher?: string;
   location?: string[];
+  issued?: string;
 }
 
 export interface DataServiceAsset extends BaseAsset {
   type: "DataService";
   publisher?: string;
   location?: string[];
+  seealso?: string;
 }
 
 export interface CatalogAsset extends BaseAsset {
   type: "Catalog";
   publisher?: string;
+  homepage?: string;
 }
 
 export interface UserFeedbackAsset extends BaseAsset {
@@ -27,13 +30,18 @@ export interface UserFeedbackAsset extends BaseAsset {
   author: string;
 }
 
-export interface DocumentAsset extends BaseAsset {
-  type: "Document";
+export interface TechnicalDocumentAsset extends BaseAsset {
+  type: "TechnicalDocument";
   pdfUrl: string;
+  author: string;
 }
 
 export interface ScientificPaperAsset extends BaseAsset {
   type: "ScientificPaper";
+  authorID: string;
+  publisher: string;
+  publication_year: string;
+  subject?: string[];
 }
 
 export type DigitalAsset =
@@ -41,5 +49,5 @@ export type DigitalAsset =
   | DataServiceAsset
   | CatalogAsset
   | UserFeedbackAsset
-  | DocumentAsset
+  | TechnicalDocumentAsset
   | ScientificPaperAsset;
