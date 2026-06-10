@@ -57,9 +57,9 @@ function drawCircleNode(
   if (d.isSelected) {
     sel
       .append("circle")
-      .attr("r", r + 7)
-      .attr("fill", d.color)
-      .attr("opacity", 0.2)
+      .attr("r", r + 10)
+      .attr("fill", "#c4b05f")
+      .attr("opacity", 0.5)
       .attr("class", "glow-ring");
   }
 
