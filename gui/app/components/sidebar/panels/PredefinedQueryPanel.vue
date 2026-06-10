@@ -257,6 +257,7 @@ import ConceptSelector from "./predefinedQueryPanel/ConceptSelector.vue";
 import QueryFilters from "./predefinedQueryPanel/QueryFilters.vue";
 import AssetCard from "./predefinedQueryPanel/AssetCard.vue";
 import { storeToRefs } from "pinia";
+import type { DigitalAsset } from "~/utils/graph/assetTypes";
 
 const queryStore = useHumanActivitiesStore();
 const filterStore = usePredefinedQueryStore();
