@@ -15,6 +15,7 @@ export function useGraphRenderer(
   containerRef: Ref<HTMLDivElement | null>,
   nodesRef: Ref<NodeDatum[]>,
   linksRef: Ref<LinkDatum[]>,
+  onNodeDblClick?: (node: NodeDatum) => void,
 ) {
   const showLabels = ref(true);
   const clickedNode = ref<NodeDatum | null>(null);
@@ -151,13 +152,30 @@ export function useGraphRenderer(
         applyHoverHighlight(d3.select(this) as any, false);
       });
 
+    let clickTimer: ReturnType<typeof setTimeout> | null = null;
+
     // Click open info panel
     nodeGroup.on("click", (e, d) => {
       e.stopPropagation();
       clickedNode.value = d;
+
+      clickTimer = setTimeout(() => {
+        clickedNode.value = d;
+        clickTimer = null;
+      }, 200);
     });
     svgEl.on("click", () => {
       clickedNode.value = null;
+    });
+
+    // In nodeGroup event binding:
+    nodeGroup.on("dblclick", (e, d) => {
+      e.stopPropagation(); // prevent zoom on dblclick
+      if (clickTimer) {
+        clearTimeout(clickTimer);
+        clickTimer = null;
+      }
+      onNodeDblClick?.(d);
     });
 
     // External labels
@@ -265,10 +283,33 @@ export function useGraphRenderer(
   onMounted(() => build(nodesRef.value, linksRef.value));
 
   // Rebuild whenever the store pushes new graph data
-  watch([nodesRef, linksRef], ([nodes, links]) => {
+  watch([nodesRef, linksRef], ([newNodes, newLinks]) => {
+    // Save positions from current simulation nodes
+    const posMap = new Map<
+      string,
+      { x: number; y: number; vx: number; vy: number }
+    >();
+    if (simulation) {
+      for (const n of simulation.nodes()) {
+        posMap.set(n.id, {
+          x: n.x ?? 0,
+          y: n.y ?? 0,
+          vx: n.vx ?? 0,
+          vy: n.vy ?? 0,
+        });
+      }
+    }
+
     teardown();
     clickedNode.value = null;
-    build(nodes as NodeDatum[], links as LinkDatum[]);
+
+    // Restore positions before building
+    for (const node of newNodes as NodeDatum[]) {
+      const saved = posMap.get(node.id);
+      if (saved) Object.assign(node, saved);
+    }
+
+    build(newNodes as NodeDatum[], newLinks as LinkDatum[]);
   });
 
   onBeforeUnmount(teardown);

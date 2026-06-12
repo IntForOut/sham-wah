@@ -19,8 +19,8 @@ export const useGraphStore = defineStore("graph", () => {
   const error = ref<string | null>(null);
   const config = useRuntimeConfig();
 
-  const uiStrore = useUiStore();
-  const { activeSidebarTab } = storeToRefs(uiStrore);
+  const uiStore = useUiStore();
+  const { activeSidebarTab } = storeToRefs(uiStore);
 
   async function selectAsset(asset: DigitalAsset) {
     selectedAsset.value = asset;
@@ -31,7 +31,8 @@ export const useGraphStore = defineStore("graph", () => {
         activeSidebarTab.value === "mock"
           ? fetchNeighborGraphMock
           : fetchNeighborGraph;
-      const { nodes, edges } = await fetcher(asset.id);
+
+      const { nodes, edges } = await fetcher(asset.id, 2);
       const { nodes: graphN, links } = buildGraphData(asset, nodes, edges);
       graphNodes.value = graphN;
       graphEdges.value = links;
@@ -51,6 +52,7 @@ export const useGraphStore = defineStore("graph", () => {
 
   async function fetchNeighborGraphMock(
     assetId: string,
+    depth?: number,
   ): Promise<NeighborGraph> {
     await new Promise((r) => setTimeout(r, 400));
     const mock = MOCK_NEIGHBOR_GRAPHS[assetId];
@@ -62,11 +64,13 @@ export const useGraphStore = defineStore("graph", () => {
       edges: mock.edges,
     };
   }
-
-  async function fetchNeighborGraph(assetId: string): Promise<NeighborGraph> {
+  async function fetchNeighborGraph(
+    assetId: string,
+    depth: number = 1,
+  ): Promise<NeighborGraph> {
     const url = encodeURIComponent(assetId);
     const response = await fetch(
-      `${config.public.NEO4J_API_URL}/graph/neighbors/?asset_id=${url}&depth=2`,
+      `${config.public.NEO4J_API_URL}/graph/neighbors/?asset_id=${url}&depth=${depth}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -80,6 +84,103 @@ export const useGraphStore = defineStore("graph", () => {
     return response.json();
   }
 
+  // Add to state
+  const expandedNodeIds = ref<Set<string>>(new Set());
+
+  const expansionChildren = ref<Map<string, Set<string>>>(new Map());
+
+  async function toggleNodeExpansion(nodeId: string) {
+    if (expandedNodeIds.value.has(nodeId)) {
+      // --- COLLAPSE ---
+      collapseNode(nodeId);
+    } else {
+      // --- EXPAND ---
+      await expandNode(nodeId);
+    }
+  }
+
+  async function expandNode(nodeId: string) {
+    const node = graphNodes.value.find((n) => n.id === nodeId);
+    if (!node) return;
+
+    isLoadingNeighbors.value = true;
+    try {
+      const fetcher =
+        activeSidebarTab.value === "mock"
+          ? fetchNeighborGraphMock
+          : fetchNeighborGraph;
+      const { nodes: newAssets, edges: newEdges } = await fetcher(nodeId, 1);
+
+      const { nodes: newNodeData, links: newLinkData } = buildGraphData(
+        node.asset,
+        newAssets,
+        newEdges,
+      );
+
+      const existingIds = new Set(graphNodes.value.map((n) => n.id));
+      const childIds = new Set<string>();
+
+      // Merge only new nodes
+      const mergedNodes = [...graphNodes.value];
+      for (const n of newNodeData) {
+        if (!existingIds.has(n.id)) {
+          mergedNodes.push(n);
+          childIds.add(n.id);
+        }
+      }
+
+      // Merge only edges not already present
+      const existingEdgeKeys = new Set(
+        graphEdges.value.map((e) => `${e.source}->${e.target}`),
+      );
+      const mergedEdges = [...graphEdges.value];
+      for (const e of newLinkData) {
+        const key = `${e.source}->${e.target}`;
+        if (!existingEdgeKeys.has(key)) {
+          mergedEdges.push(e);
+        }
+      }
+
+      expansionChildren.value.set(nodeId, childIds);
+      expandedNodeIds.value.add(nodeId);
+
+      // shallowRef requires reassignment to trigger reactivity
+      graphNodes.value = mergedNodes;
+      graphEdges.value = mergedEdges;
+    } finally {
+      isLoadingNeighbors.value = false;
+    }
+  }
+
+  function collapseNode(nodeId: string) {
+    const children = expansionChildren.value.get(nodeId);
+    if (!children) return;
+
+    // Only remove a child if no other expanded node also has it
+    const protectedIds = new Set<string>();
+    for (const [ownerId, childSet] of expansionChildren.value) {
+      if (ownerId !== nodeId) {
+        for (const id of childSet) protectedIds.add(id);
+      }
+    }
+
+    const toRemove = new Set(
+      [...children].filter((id) => !protectedIds.has(id)),
+    );
+
+    graphNodes.value = graphNodes.value.filter((n) => !toRemove.has(n.id));
+    graphEdges.value = graphEdges.value.filter((e) => {
+      const src =
+        typeof e.source === "string" ? e.source : (e.source as any).id;
+      const tgt =
+        typeof e.target === "string" ? e.target : (e.target as any).id;
+      return !toRemove.has(src) && !toRemove.has(tgt);
+    });
+
+    expansionChildren.value.delete(nodeId);
+    expandedNodeIds.value.delete(nodeId);
+  }
+
   return {
     selectedAsset,
     graphNodes,
@@ -88,5 +189,10 @@ export const useGraphStore = defineStore("graph", () => {
     error,
     selectAsset,
     clearGraph,
+    expandedNodeIds,
+    expansionChildren,
+    toggleNodeExpansion,
+    expandNode,
+    collapseNode,
   };
 });
