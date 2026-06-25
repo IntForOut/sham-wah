@@ -10,7 +10,6 @@ import {
   drawNodeShape,
   applyHoverHighlight,
 } from "~/utils/graph/nodeRenderers";
-
 export function useGraphRenderer(
   containerRef: Ref<HTMLDivElement | null>,
   nodesRef: Ref<NodeDatum[]>,
@@ -62,7 +61,7 @@ export function useGraphRenderer(
 
     zoomBehavior = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.1, 8])
+      .scaleExtent([0.1, 15])
       .on("zoom", (e) => g.attr("transform", e.transform));
 
     svgEl.call(zoomBehavior); // allow zoom scroll with mouse wheel
@@ -282,34 +281,200 @@ export function useGraphRenderer(
 
   onMounted(() => build(nodesRef.value, linksRef.value));
 
-  // Rebuild whenever the store pushes new graph data
-  watch([nodesRef, linksRef], ([newNodes, newLinks]) => {
-    // Save positions from current simulation nodes
+  function update(newNodes: NodeDatum[], newLinks: LinkDatum[]) {
+    if (!simulation || !svgEl) {
+      // First render — full build
+      build(newNodes, newLinks);
+      return;
+    }
+
+    const g = svgEl.select<SVGGElement>(".graph-root");
+
     const posMap = new Map<
       string,
-      { x: number; y: number; vx: number; vy: number }
+      { x: number; y: number; fx: number | null; fy: number | null }
     >();
-    if (simulation) {
-      for (const n of simulation.nodes()) {
-        posMap.set(n.id, {
-          x: n.x ?? 0,
-          y: n.y ?? 0,
-          vx: n.vx ?? 0,
-          vy: n.vy ?? 0,
-        });
+    for (const n of simulation.nodes()) {
+      posMap.set(n.id, {
+        x: n.x ?? 0,
+        y: n.y ?? 0,
+        fx: n.fx ?? null,
+        fy: n.fy ?? null,
+      });
+    }
+    for (const n of newNodes) {
+      const prev = posMap.get(n.id);
+      if (prev) {
+        n.x = prev.x;
+        n.y = prev.y;
+        n.fx = prev.fx;
+        n.fy = prev.fy;
       }
     }
 
-    teardown();
-    clickedNode.value = null;
+    simulation.nodes(newNodes);
+    (simulation.force("link") as d3.ForceLink<NodeDatum, LinkDatum>).links(
+      newLinks,
+    );
 
-    // Restore positions before building
-    for (const node of newNodes as NodeDatum[]) {
-      const saved = posMap.get(node.id);
-      if (saved) Object.assign(node, saved);
+    const link = g
+      .select<SVGGElement>(".links")
+      .selectAll<SVGPathElement, LinkDatum>("path")
+      .data(newLinks)
+      .join("path")
+      .attr("stroke", "#CBD5E1")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-opacity", 0.7)
+      .attr("fill", "none")
+      .attr("marker-end", "url(#arrowhead)");
+
+    const linkLabel = g
+      .select<SVGGElement>(".link-labels")
+      .selectAll<SVGTextElement, LinkDatum>("text")
+      .data(newLinks)
+      .join("text")
+      .text((d) => d.label ?? "")
+      .attr("font-size", 12)
+      .attr("font-weight", "600")
+      .attr("fill", "#64748b")
+      .attr("text-anchor", "middle")
+      .attr("dominant-baseline", "middle")
+      .attr("pointer-events", "none")
+      .attr("paint-order", "stroke")
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", 3)
+      .attr("stroke-linejoin", "round");
+
+    const nodeGroup = g
+      .select<SVGGElement>(".nodes")
+      .selectAll<SVGGElement, NodeDatum>("g")
+      .data(newNodes, (d) => d.id)
+      .join((enter) => {
+        const grp = enter
+          .append("g")
+          .attr("class", "node")
+          .style("cursor", "pointer");
+        drawNodeShape(grp);
+        return grp;
+      })
+      .call(
+        d3
+          .drag<SVGGElement, NodeDatum>()
+          .on("start", (e, d) => {
+            if (!e.active) simulation?.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+          })
+          .on("drag", (e, d) => {
+            d.fx = e.x;
+            d.fy = e.y;
+          })
+          .on("end", (e, d) => {
+            if (!e.active) simulation?.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+          }),
+      );
+
+    let clickTimer: ReturnType<typeof setTimeout> | null = null;
+    nodeGroup
+      .on("mouseenter", function () {
+        applyHoverHighlight(d3.select(this) as any, true);
+      })
+      .on("mouseleave", function () {
+        applyHoverHighlight(d3.select(this) as any, false);
+      })
+      .on("click", (e, d) => {
+        e.stopPropagation();
+        clickTimer = setTimeout(() => {
+          clickedNode.value = d;
+          clickTimer = null;
+        }, 200);
+      })
+      .on("dblclick", (e, d) => {
+        e.stopPropagation();
+        if (clickTimer) {
+          clearTimeout(clickTimer);
+          clickTimer = null;
+        }
+        onNodeDblClick?.(d);
+      });
+
+    labelSel = g
+      .select<SVGGElement>(".labels")
+      .selectAll<SVGTextElement, NodeDatum>("text")
+      .data(
+        newNodes.filter((n) => n.shape === "rect"),
+        (d) => d.id,
+      )
+      .join("text")
+      .text((d) => d.label)
+      .attr("font-size", 12)
+      .attr("font-weight", (d) => (d.isSelected ? "700" : "400"))
+      .attr("fill", getLabelColor())
+      .attr("text-anchor", "middle")
+      .attr("dy", (d) => getLabelDy(d))
+      .attr("pointer-events", "none")
+      .attr("display", showLabels.value ? null : "none");
+
+    simulation.on("tick", () => {
+      link.attr("d", (d) => {
+        const sx = (d.source as NodeDatum).x ?? 0;
+        const sy = (d.source as NodeDatum).y ?? 0;
+        const { x: ex, y: ey } = getEdgeEnd(d);
+        const mx = (sx + ex) / 2;
+        const my = (sy + ey) / 2;
+        const dx = ex - sx;
+        const dy = ey - sy;
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        const curvature = 40;
+        const cx = mx - (dy / len) * curvature;
+        const cy = my + (dx / len) * curvature;
+        return `M ${sx},${sy} Q ${cx},${cy} ${ex},${ey}`;
+      });
+
+      linkLabel
+        .attr("x", (d) => {
+          const sx = (d.source as NodeDatum).x ?? 0;
+          const ex = (d.target as NodeDatum).x ?? 0;
+          const sy = (d.source as NodeDatum).y ?? 0;
+          const ey = (d.target as NodeDatum).y ?? 0;
+          const dx = ex - sx;
+          const dy = ey - sy;
+          const len = Math.sqrt(dx * dx + dy * dy) || 1;
+          return (sx + ex) / 2 - (dy / len) * 40 * 0.5;
+        })
+        .attr("y", (d) => {
+          const sx = (d.source as NodeDatum).x ?? 0;
+          const ex = (d.target as NodeDatum).x ?? 0;
+          const sy = (d.source as NodeDatum).y ?? 0;
+          const ey = (d.target as NodeDatum).y ?? 0;
+          const dx = ex - sx;
+          const dy = ey - sy;
+          const len = Math.sqrt(dx * dx + dy * dy) || 1;
+          return (sy + ey) / 2 + (dx / len) * 40 * 0.5;
+        });
+
+      nodeGroup.attr("transform", (d) => `translate(${d.x ?? 0},${d.y ?? 0})`);
+      labelSel?.attr("transform", (d) => `translate(${d.x ?? 0},${d.y ?? 0})`);
+    });
+
+    simulation.alpha(0.3).restart();
+  }
+
+  watch([nodesRef, linksRef], ([newNodes, newLinks]) => {
+    const simNodeIds = new Set(simulation?.nodes().map((n) => n.id) ?? []);
+    const isFullReplacement = (newNodes as NodeDatum[]).every(
+      (n) => !simNodeIds.has(n.id),
+    );
+
+    if (isFullReplacement || !simulation) {
+      teardown();
+      clickedNode.value = null;
+      build(newNodes as NodeDatum[], newLinks as LinkDatum[]);
+    } else {
+      update(newNodes as NodeDatum[], newLinks as LinkDatum[]);
     }
-
-    build(newNodes as NodeDatum[], newLinks as LinkDatum[]);
   });
 
   onBeforeUnmount(teardown);
@@ -326,7 +491,7 @@ export function useGraphRenderer(
   const resetView = () =>
     svgEl
       ?.transition()
-      .duration(500)
+      .duration(300)
       .call(zoomBehavior!.transform, d3.zoomIdentity);
 
   const toggleLabels = () => {
