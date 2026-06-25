@@ -214,28 +214,25 @@
 import { ref, computed } from "vue";
 import { useGraphStore } from "~/stores/graph-store";
 import { useGraphRenderer } from "~/composables/useGraphRenderer";
-import { TYPE_COLORS } from "~/utils/graph/graphAdapter";
+import { ASSET_TYPE_CONFIG } from "~/utils/graph/assetTypeConfig";
 import GraphInfoPanel from "./GraphInfoPanel.vue";
 
 const LEGEND_ITEMS = [
-  { label: "Data", color: TYPE_COLORS.Dataset, shape: "circle" },
-  {
-    label: "Scientific Paper",
-    color: TYPE_COLORS.ScientificPaper,
-    shape: "circle",
-  },
-  { label: "User Feedback", color: TYPE_COLORS.UserFeedback, shape: "rect" },
+  { label: "Data", ...ASSET_TYPE_CONFIG.Dataset },
+  { label: "Scientific Paper", ...ASSET_TYPE_CONFIG.ScientificPaper },
+  { label: "Technical Document", ...ASSET_TYPE_CONFIG.TechnicalDocument },
+  { label: "User Feedback", ...ASSET_TYPE_CONFIG.UserFeedback },
 ] as const;
 
 const graphStore = useGraphStore();
 
 const graphContainer = ref<HTMLDivElement | null>(null);
 
+const { graphNodes, graphEdges, expandedNodeIds } = storeToRefs(graphStore);
+
 const { showLabels, clickedNode, zoomIn, zoomOut, resetView, toggleLabels } =
-  useGraphRenderer(
-    graphContainer,
-    computed(() => graphStore.graphNodes),
-    computed(() => graphStore.graphEdges),
+  useGraphRenderer(graphContainer, graphNodes, graphEdges, (node) =>
+    graphStore.toggleNodeExpansion(node.id),
   );
 
 /** Count edges touching a given node (works before and after d3 resolves string ids) */

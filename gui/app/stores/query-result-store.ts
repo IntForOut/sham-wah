@@ -1,21 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-
 import { MOCK_ASSETS } from "~/utils/graph/mockData";
+import type { DigitalAsset } from "~/utils/graph/assetTypes";
 
 export interface QueryResult {
   count: number;
   executionTime: number;
   data: DigitalAsset[];
-}
-
-export interface DigitalAsset {
-  id: string;
-  type: string;
-  name: string;
-  comment: string;
-  publisher?: string;
-  location?: string[];
 }
 
 export interface QueryParams {

@@ -57,9 +57,9 @@ function drawCircleNode(
   if (d.isSelected) {
     sel
       .append("circle")
-      .attr("r", r + 7)
-      .attr("fill", d.color)
-      .attr("opacity", 0.2)
+      .attr("r", r + 10)
+      .attr("fill", "#c4b05f")
+      .attr("opacity", 0.5)
       .attr("class", "glow-ring");
   }
 
@@ -89,7 +89,7 @@ function drawRectNode(
   const padY = 10;
 
   const maxChars = Math.floor((rw - padX * 2) / RECT_PX_PER_CHAR);
-  const lines = wrapText(d.description ?? "", maxChars);
+  const lines = wrapText(d.asset.comment ?? "", maxChars);
 
   const textBlockH = lines.length * RECT_LINE_HEIGHT;
   const rh = textBlockH + padY * 2;

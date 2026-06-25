@@ -1,7 +1,16 @@
-import type { DigitalAsset } from "~/stores/query-result-store";
+import type { DigitalAsset } from "./assetTypes";
 import type { RawEdge } from "./graphAdapter";
 
 export const MOCK_ASSETS: DigitalAsset[] = [
+  {
+    id: "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015",
+    type: "Dataset",
+    name: "Data Phd Kerouanton",
+    comment:
+      "Questionnaires de campagnes de terrain et traces GNSS ciblant la pratique de la randonnée dans le PNR du Massif des Bauges",
+    publisher: "LECA et l’EDYTEM",
+    location: ["Parc naturel régional du Massif des Bauges"],
+  },
   {
     id: "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
     type: "DataService",
@@ -67,6 +76,22 @@ export const MOCK_ASSETS: DigitalAsset[] = [
 
 const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
   {
+    id: "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+    type: "TechnicalDocument",
+    name: "Profilage Data PhD Kerouanton.pdf",
+    comment: "",
+    pdfUrl:
+      "https://github.com/IntForOut/outdoorPressure/blob/main/expertsfeedback/reports/ProfilageDataPhDKerouanton.pdf",
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+    type: "UserFeedback",
+    name: "Profilage Donnees PhD Kerouanton",
+    author: "Abdessalam Naciri",
+    comment:
+      "Analyse -profilage- des données de recherche produites par Colin Kerouanton, notamment de la distribution des valeurs, (target 1). Le résultat de l'analyse est partagé dans un rapport (target 2)",
+  },
+  {
     id: "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService",
     type: "DataService",
     name: "Recreational User Map Service",
@@ -79,10 +104,9 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     id: "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",
     type: "UserFeedback",
     name: "Quality Of OV Recreational User Map Service",
+    author: "mdvdamme",
     comment:
       "Artifacts exist in dense urban areas above a certain zoom level. This is because the accuracy of GPS tracks is lower in these areas, making the spatial information displayed less relevant.",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
@@ -97,10 +121,9 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     id: "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
     type: "UserFeedback",
     name: "Track Collection Merge For Replicability",
+    author: "mdvdamme",
     comment:
       "The process proposed in this paper can probably be reproduced to generate HikersFootprint in Les Bauges and MontBlanc, using OutdoorVision data as an input",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#outdoorvision",
@@ -108,8 +131,6 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     name: "OutdoorVision Catalog",
     comment:
       "Outdoorvision https://outdoorvision.fr/; is a service to gather GPS tracks voluntarily shared by human during their outdoor activity through their accounts on their mobile device Garmin Connect™ / Polar Flow / Suunto APP / Decathlon. The data are anonymized and published for a list of authorised users. It is offered by the French National Resource Centre for Ecological Transition and Outdoor Sports.",
-    publisher: "",
-    location: [],
   },
   {
     id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
@@ -125,8 +146,70 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     type: "ScientificPaper",
     name: "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
     comment: "",
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#MOUSLS",
+    type: "Dataset",
+    name: "MOUSLS: Multi-sensors and Ground Truth Tracks in Vincennes (2025)",
+    comment:
+      "The goal of this dataset is to provide in-situ ground truth data to validate an algorithm for fusing GNSS tracks. This is a dataset series composed by two linked datasets. The first was (file tracks_multi_sensors_vincennes_forest.gpkg) contains GNSS tracks and was collected by two researchers using a strict data collection protocol, following the same path at times precisely and at other times with slight deviations. The second (file ground_truth_dense_forest_path.txt) was collected by a group of students and represents ground truth data for the same path in dense forest. English (2025)",
     publisher: "",
     location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#MOUSLSGroundTruthDenseForestPath",
+    type: "Dataset",
+    name: "MOUSLS Ground Truth Dense Forest Path",
+    comment:
+      "This dataset was collected on-site by a group of students using a defined methodology. It contains precise station locations along a real-world path through dense forest, after reordering in the south–north direction of travel. The goal of these reference data is to obtain a very precise ground truth in order to assess the accuracy of GNSS tracks produced by following exactly the same path with five sensors: a Garmin watch, a Polar watch, the Visorando mobile application, a Keymaza GPS, and a Ublox GPS.",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#EntrepotRechercheIntForOut",
+    type: "Catalog",
+    name: "IntForOut published Dataverse",
+    comment:
+      "Dataverse dédié au projet IntForOut. Ce catalogue est intégré dans la plateforme de l'entrepôt pluridisciplinaire Recherche Data Gouv.",
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+    type: "Dataset",
+    name: "OutdoorVision export in Bauges and Mont Blanc in 2024",
+    comment:
+      "A set of tracks issued from Outdoorvision. GPS traces from outdoorvison are cleaned and filtered",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#TrackCollectionMergeForReplicability",
+    type: "UserFeedback",
+    name: "Track Collection Merge For Replicability",
+    author: "mdvdamme",
+    comment:
+      "The process proposed in this paper can probably be reproduced to generate HikersFootprint in Les Bauges and MontBlanc, using OutdoorVision data as an input",
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#outdoorvision",
+    type: "Catalog",
+    name: "OutdoorVision Catalog",
+    comment:
+      "Outdoorvision https://outdoorvision.fr/; is a service to gather GPS tracks voluntarily shared by human during their outdoor activity through their accounts on their mobile device Garmin Connect™ / Polar Flow / Suunto APP / Decathlon. The data are anonymized and published for a list of authorised users. It is offered by the French National Resource Centre for Ecological Transition and Outdoor Sports.",
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#OVTracksMontBlancBauges2024",
+    type: "Dataset",
+    name: "OutdoorVision export in Bauges and Mont Blanc in 2024",
+    comment:
+      "A set of tracks issued from Outdoorvision. GPS traces from outdoorvison are cleaned and filtered",
+    publisher: "",
+    location: [],
+  },
+  {
+    id: "https://intforout.github.io/outdoorPressure#SIGSPATIAL24VanDammeEtAl2024",
+    type: "ScientificPaper",
+    name: "A metrological analysis of a modular and iterative aggregation algorithm of GNSS trajectories",
+    comment: "",
   },
   {
     id: "https://intforout.github.io/outdoorPressure#MOUSLS",
@@ -153,7 +236,6 @@ const GRAPH_ONLY_ASSETS: DigitalAsset[] = [
     comment:
       "Dataverse dédié au projet IntForOut. Ce catalogue est intégré dans la plateforme de l'entrepôt pluridisciplinaire Recherche Data Gouv.",
     publisher: "",
-    location: [],
   },
 ];
 
@@ -167,6 +249,29 @@ export interface MockNeighborGraph {
 }
 
 export const MOCK_NEIGHBOR_GRAPHS: Record<string, MockNeighborGraph> = {
+  "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015":
+    {
+      nodeIds: [
+        "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+        "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+      ],
+      edges: [
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+          target:
+            "https://intforout.github.io/outdoorPressure#KerouantonSurveyFieldCampaignTracksGNSS20142015",
+          label: "ns6__target",
+        },
+        {
+          source:
+            "https://intforout.github.io/outdoorPressure#ProfilageDonneesKerouantonANaciri",
+          target:
+            "https://intforout.github.io/outdoorPressure#ProfilageDataPhDKerouanton.pdf",
+          label: "ns6_target",
+        },
+      ],
+    },
   "https://intforout.github.io/outdoorPressure#OVRecreationalUserMapService": {
     nodeIds: [
       "https://intforout.github.io/outdoorPressure#QualityOfOVRecreationalUserMapService",

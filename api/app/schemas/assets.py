@@ -1,14 +1,61 @@
-from pydantic import BaseModel
+from typing import Literal, Union, Optional
+from typing_extensions import Annotated
+from pydantic import BaseModel, Field
 
-# query-result-store.ts
-class DigitalAsset(BaseModel):
+
+class BaseAsset(BaseModel):
     id: str
-    type: str
     name: str
     comment: str
-    publisher: list[str] | None = None
-    location: list[str] | None = None
+    rdfs_label: Optional[str] = None
 
+class DatasetAsset(BaseAsset):
+    type: Literal["Dataset"]
+    publisher: Optional[list[str]] = None
+    location: Optional[list[str]] = None
+    issued: Optional[str] = None
+
+class DataServiceAsset(BaseAsset):
+    type: Literal["DataService"]
+    publisher: Optional[list[str]] = None
+    location: Optional[list[str]] = None
+    seealso: Optional[str] = None
+
+class CatalogAsset(BaseAsset):
+    type: Literal["Catalog"]
+    publisher: Optional[list[str]] = None
+    homepage: Optional[str] = None
+
+class UserFeedbackAsset(BaseAsset):
+    type: Literal["UserFeedback"]
+    author: str
+
+class TechnicalDocumentAsset(BaseAsset):
+    type: Literal["TechnicalDocument"]
+    pdfUrl: str
+    author: str
+
+class ScientificPaperAsset(BaseAsset):
+    type: Literal["ScientificPaper"]
+    authorID: str
+    publisher: str
+    publication_year: str
+    subject: Optional[list[str]] = None
+
+    
+DigitalAsset = Annotated[
+    Union[
+        DatasetAsset,
+        DataServiceAsset,
+        CatalogAsset,
+        UserFeedbackAsset,
+        TechnicalDocumentAsset,
+        ScientificPaperAsset
+    ],
+    Field(discriminator="type")
+]
+    
+    
 class QueryResult(BaseModel):
     count: int
     executionTime: int   # ms
