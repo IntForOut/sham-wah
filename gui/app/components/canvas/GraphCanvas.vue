@@ -228,11 +228,11 @@ const graphStore = useGraphStore();
 
 const graphContainer = ref<HTMLDivElement | null>(null);
 
+const { graphNodes, graphEdges, expandedNodeIds } = storeToRefs(graphStore);
+
 const { showLabels, clickedNode, zoomIn, zoomOut, resetView, toggleLabels } =
-  useGraphRenderer(
-    graphContainer,
-    computed(() => graphStore.graphNodes),
-    computed(() => graphStore.graphEdges),
+  useGraphRenderer(graphContainer, graphNodes, graphEdges, (node) =>
+    graphStore.toggleNodeExpansion(node.id),
   );
 
 /** Count edges touching a given node (works before and after d3 resolves string ids) */
