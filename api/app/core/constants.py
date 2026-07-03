@@ -1,10 +1,10 @@
 ASSET_TYPE_MAP = {
     "Dataset":        "ns1__Dataset",
     "DataService":    "ns1__DataService",
-    "ScientificPaper":"ns6__ScientificPaper",
-    "Process":        "ns6__Process",
+    "ScientificPaper":"ns4__ScientificPaper",
+    "Process":        "ns4__Process",
     "DatasetSeries":  "ns1__DatasetSeries",
-    "UserFeedback":   "ns6__UserFeedback",
+    "UserFeedback":   "ns4__UserFeedback",
     "Catalog":        "ns1__Catalog",
     "TechnicalDocument":"ns2__TechnicalDocument",
 }

@@ -55,7 +55,10 @@ def row_to_asset(row: dict, node_key: str = "n"):
     uri         = props.get("uri", "")
     node_name   = split_camel_case(extract_name(uri))
     raw_label   = to_str(props.get("rdfs__label"))
-    raw_comment = to_str(props.get("rdfs__comment"), "")
+    raw_comment = to_str(    props.get("rdfs__comment")
+    or props.get("ns0__description")
+    or "",
+    "")
 
     node_labels  = row.get("nodeLabels", [])
     valid_labels = [lbl for lbl in node_labels if lbl not in IGNORED_LABELS]

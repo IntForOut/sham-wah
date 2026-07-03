@@ -50,13 +50,13 @@ def _build_cypher(params: QueryParams):
             AND parent2.uri ENDS WITH "HumanActivity"
             WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["HumanActivity"] AS activityClasses
 
-            MATCH (n1:Resource)-[:ns6__represents]->(ha)
+            MATCH (n1:Resource)-[:ns4__represents]->(ha)
             WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
             WITH landClasses, activityClasses, collect(DISTINCT n1) AS list1
 
             WITH landClasses, activityClasses, list1
 
-            MATCH (n2:Resource)-[:ns6__represents]->(le)-[:ns2__affords]->(ha2)
+            MATCH (n2:Resource)-[:ns4__represents]->(le)-[:ns2__affords]->(ha2)
             WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | "ns2__" + cls])
             AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
             WITH list1, collect(DISTINCT n2) AS list2
@@ -74,7 +74,7 @@ def _build_cypher(params: QueryParams):
 
     match_clause = f"(n:{asset_label})"
     if activity_labels:
-        match_clause += f"-[:ns6__represents]-(m:{'|'.join(activity_labels)})"
+        match_clause += f"-[:ns4__represents]-(m:{'|'.join(activity_labels)})"
 
     cypher = f"""
         MATCH {match_clause}
