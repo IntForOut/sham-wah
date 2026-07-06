@@ -16,6 +16,7 @@ export const ASSET_TYPE_CONFIG: Record<DigitalAsset["type"], AssetTypeConfig> =
     Catalog: { color: "#3B82F6", shape: "circle", size: 50 },
     ScientificPaper: { color: "#7ed957", shape: "circle", size: 50 },
     TechnicalDocument: { color: "#F8CB63", shape: "circle", size: 50 },
+    Process: { color: "#c963f8", shape: "circle", size: 50 },
     UserFeedback: {
       color: "#F59E0B",
       shape: "rect",

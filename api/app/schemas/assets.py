@@ -42,6 +42,9 @@ class ScientificPaperAsset(BaseAsset):
     publication_year: str
     subject: Optional[list[str]] = None
 
+class ProcessAsset(BaseAsset):
+    type: Literal["Process"]
+
     
 DigitalAsset = Annotated[
     Union[
@@ -50,7 +53,8 @@ DigitalAsset = Annotated[
         CatalogAsset,
         UserFeedbackAsset,
         TechnicalDocumentAsset,
-        ScientificPaperAsset
+        ScientificPaperAsset,
+        ProcessAsset
     ],
     Field(discriminator="type")
 ]

@@ -1,7 +1,7 @@
 from app.core.constants import ASSET_TYPE_MAP_INV, IGNORED_LABELS
 from app.schemas.assets import (
     DatasetAsset, DataServiceAsset, CatalogAsset,
-    UserFeedbackAsset, TechnicalDocumentAsset, ScientificPaperAsset,
+    UserFeedbackAsset, TechnicalDocumentAsset, ScientificPaperAsset, ProcessAsset
 )
 import re
 
@@ -121,6 +121,13 @@ def row_to_asset(row: dict, node_key: str = "n"):
                 publisher=to_str(props.get("ns0__publisher"), ""),
                 publication_year=to_str(props.get("ns4__publicationYear"), ""),
                 subject=to_str_list(props.get("ns4__subject")),
+            )
+            
+            
+        case "Process":
+            return ProcessAsset(
+                **base,
+                type="Process",
             )
 
         case _:
