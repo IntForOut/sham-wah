@@ -93,7 +93,7 @@ const pdfLabel = computed(() => {
       <p
         class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
       >
-        Comment
+        Description
       </p>
       <p
         v-if="asset.comment"

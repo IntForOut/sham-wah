@@ -7,8 +7,12 @@ import re
 
 
 def split_camel_case(name: str) -> str:
+    """Parse les string, remplace tiret par espace, espace entre chaque maj et nombre et date"""
+    name = re.sub(r"-", " ", name)
     name = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", name)
     name = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+    name = re.sub(r"([A-Za-z])([0-9])", r"\1 \2", name)
+    name = re.sub(r"([0-9])([A-Za-z])", r"\1 \2", name)
     return name
 
 
