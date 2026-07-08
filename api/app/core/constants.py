@@ -15,6 +15,7 @@ CONCEPT_LABEL_MAP = {
     "PopulationFootprint":"ns2__PopulationFootprint",
     "Sentier":            "ns2__Sentier",
     "ReservesNaturelles": "ns2__ReservesNaturelles",
+    "AnimalActivity":      "ns2__AnimalActivity",
 }
 
 ASSET_TYPE_MAP_INV = {v: k for k, v in ASSET_TYPE_MAP.items()}
