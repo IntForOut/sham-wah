@@ -106,11 +106,7 @@
       leave-to-class="opacity-0 -translate-x-2"
     >
       <div v-if="clickedNode" class="absolute top-4 left-4 z-10">
-        <GraphInfoPanel
-          :node="clickedNode"
-          :degree="edgeDegree(clickedNode.id)"
-          @close="clickedNode = null"
-        />
+        <GraphInfoPanel :node="clickedNode" @close="clickedNode = null" />
       </div>
     </Transition>
 
@@ -211,7 +207,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useGraphStore } from "~/stores/graph-store";
 import { useGraphRenderer } from "~/composables/useGraphRenderer";
 import { ASSET_TYPE_CONFIG } from "~/utils/graph/assetTypeConfig";
@@ -229,19 +225,10 @@ const graphStore = useGraphStore();
 
 const graphContainer = ref<HTMLDivElement | null>(null);
 
-const { graphNodes, graphEdges, expandedNodeIds } = storeToRefs(graphStore);
+const { graphNodes, graphEdges } = storeToRefs(graphStore);
 
 const { showLabels, clickedNode, zoomIn, zoomOut, resetView, toggleLabels } =
   useGraphRenderer(graphContainer, graphNodes, graphEdges, (node) =>
     graphStore.toggleNodeExpansion(node.id),
   );
-
-/** Count edges touching a given node (works before and after d3 resolves string ids) */
-function edgeDegree(nodeId: string): number {
-  return graphStore.graphEdges.filter((l) => {
-    const src = typeof l.source === "string" ? l.source : l.source.id;
-    const tgt = typeof l.target === "string" ? l.target : l.target.id;
-    return src === nodeId || tgt === nodeId;
-  }).length;
-}
 </script>

@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import type { NodeDatum } from "~/utils/graph/graphTypes";
 
-const props = defineProps<{ node: NodeDatum; degree: number }>();
+const props = defineProps<{ node: NodeDatum }>();
 defineEmits<{ close: [] }>();
 
 const asset = computed(() => props.node.asset);
@@ -276,11 +276,11 @@ const pdfLabel = computed(() => {
       </div>
     </template>
 
-    <!-- Footer -->
-    <div
+    <!-- Footer maybe ajout du button pour voir tous les types de voisins-->
+    <!-- <div
       class="border-t border-gray-100 dark:border-gray-700 pt-2 text-xs text-gray-500 dark:text-gray-400"
     >
-      <p><span class="font-medium">Connections:</span> {{ degree }}</p>
-    </div>
+      
+    </div> -->
   </div>
 </template>
