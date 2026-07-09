@@ -29,10 +29,10 @@
       </span>
     </div>
 
-    <!-- Line 2: Description (full, wraps naturally) -->
+    <!-- Line 2: Description -->
     <p
       v-if="asset.comment"
-      class="text-[11px] mt-1 leading-relaxed"
+      class="text-[12px] mt-1 leading-relaxed line-clamp-3"
       :class="
         selected
           ? 'text-gold-700 dark:text-gold-300'

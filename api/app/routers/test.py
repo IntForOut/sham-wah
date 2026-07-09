@@ -22,7 +22,7 @@ async def get_neighbors_node(driver: AsyncDriver = Depends(get_driver)):
     WHERE n.uri ENDS WITH "#OVTracksMontBlancBauges2024"
 
     OPTIONAL MATCH p = (n)-[r]-(v)
-    WHERE ALL(node IN nodes(p) WHERE node = n OR node:ns1__DataService OR node:ns1__Dataset OR node:ns6__UserFeedback OR node:ns1__Catalog)
+    WHERE ALL(node IN nodes(p) WHERE node = n OR node:ns1__DataService OR node:ns1__Dataset OR node:ns4__UserFeedback OR node:ns1__Catalog)
 
     RETURN 
         n AS center, 

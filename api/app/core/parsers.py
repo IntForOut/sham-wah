@@ -1,14 +1,18 @@
 from app.core.constants import ASSET_TYPE_MAP_INV, IGNORED_LABELS
 from app.schemas.assets import (
     DatasetAsset, DataServiceAsset, CatalogAsset,
-    UserFeedbackAsset, TechnicalDocumentAsset, ScientificPaperAsset,
+    UserFeedbackAsset, TechnicalDocumentAsset, ScientificPaperAsset, ProcessAsset
 )
 import re
 
 
 def split_camel_case(name: str) -> str:
+    """Parse les string, remplace tiret par espace, espace entre chaque maj et nombre et date"""
+    name = re.sub(r"-", " ", name)
     name = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", name)
     name = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+    name = re.sub(r"([A-Za-z])([0-9])", r"\1 \2", name)
+    name = re.sub(r"([0-9])([A-Za-z])", r"\1 \2", name)
     return name
 
 
@@ -55,7 +59,10 @@ def row_to_asset(row: dict, node_key: str = "n"):
     uri         = props.get("uri", "")
     node_name   = split_camel_case(extract_name(uri))
     raw_label   = to_str(props.get("rdfs__label"))
-    raw_comment = to_str(props.get("rdfs__comment"), "")
+    raw_comment = to_str(    props.get("rdfs__comment")
+    or props.get("ns0__description")
+    or "",
+    "")
 
     node_labels  = row.get("nodeLabels", [])
     valid_labels = [lbl for lbl in node_labels if lbl not in IGNORED_LABELS]
@@ -118,6 +125,13 @@ def row_to_asset(row: dict, node_key: str = "n"):
                 publisher=to_str(props.get("ns0__publisher"), ""),
                 publication_year=to_str(props.get("ns4__publicationYear"), ""),
                 subject=to_str_list(props.get("ns4__subject")),
+            )
+            
+            
+        case "Process":
+            return ProcessAsset(
+                **base,
+                type="Process",
             )
 
         case _:
