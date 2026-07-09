@@ -63,11 +63,15 @@ const pdfLabel = computed(() => {
       >
         URI
       </p>
-      <p
-        class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed break-all"
+
+      <a
+        :href="asset.id"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline leading-relaxed break-all"
       >
         {{ asset.id }}
-      </p>
+      </a>
     </div>
 
     <!-- rdfs:label -->
