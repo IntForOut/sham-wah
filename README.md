@@ -8,7 +8,7 @@
 ## ⛰️ About ⛰️
 
 Sham‑Wah is a web application currently being developed as part of the [IntForOut Project](https://www.umr-lastig.fr/intforout/).
-Designed as a companion to [OutdoorPressure](https://github.com/intforout/outdoorpressure) knowledge graph, it enables non‑experts to query and explore the graph through a user-friendly interface. It allows users to search and discover the wide range of resources (scientific papers, datasets, scripts, services, etc...) produced and used by the project’s research teams.
+Designed as a companion to [OutdoorPressure](https://github.com/intforout/outdoorpressure) knowledge graph, it enables non‑experts to query and explore the graph through a user-friendly interface, allowing users to search and discover the wide range of resources (scientific papers, datasets, scripts, services, etc...) produced and used by the project’s research teams.
 
 ### Try the Demo (GUI Only)
 
@@ -121,5 +121,7 @@ The current version includes:
     - A predefined query panel highlighting digital assets linked to human activities
     - A panel with hard coded data for demonstration purposes
   - A graph neighborhood view on the right
+    - Click a node to open its information panel and view detailed metadata
+    - Double‑click a node to expand or collapse its node neighbors
 
 More features will be added as development continues. You can also follow progress on the [github's project](https://github.com/users/vanou-suerte/projects/5)
