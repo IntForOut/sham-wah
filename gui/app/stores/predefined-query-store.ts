@@ -69,7 +69,7 @@ export const ASSET_TYPES = [
 export type AssetTypeValue = (typeof ASSET_TYPES)[number]["value"];
 
 const DEFAULT_FILTERS: QueryFilters = {
-  limit: 15,
+  limit: 10,
   assetType: "all",
   dateStart: null,
   dateEnd: null,

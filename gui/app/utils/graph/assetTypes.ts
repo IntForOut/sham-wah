@@ -44,10 +44,15 @@ export interface ScientificPaperAsset extends BaseAsset {
   subject?: string[];
 }
 
+export interface ProcessAsset extends BaseAsset {
+  type: "Process";
+}
+
 export type DigitalAsset =
   | DatasetAsset
   | DataServiceAsset
   | CatalogAsset
   | UserFeedbackAsset
   | TechnicalDocumentAsset
-  | ScientificPaperAsset;
+  | ScientificPaperAsset
+  | ProcessAsset;

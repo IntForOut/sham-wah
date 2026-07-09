@@ -38,25 +38,25 @@ def _build_cypher(params: QueryParams):
     if unknown:
         raise ValueError(f"Unknown concepts: {unknown}")
     
-    if "HumanActivity" in params.concepts:
-        cypher = """
-            MATCH (cls1:Resource)-[r1]->(parent1:Resource)
+    if "HumanActivity" in params.concepts or "AnimalActivity" in params.concepts:
+        cypher = f"""
+            OPTIONAL MATCH (cls1:Resource)-[r1]->(parent1:Resource)
             WHERE type(r1) CONTAINS "subClassOf"
             AND parent1.uri ENDS WITH "LandEntity"
             WITH collect(split(cls1.uri, "#")[-1]) + ["LandEntity"] AS landClasses
 
-            MATCH (cls2:Resource)-[r2]->(parent2:Resource)
+            OPTIONAL MATCH (cls2:Resource)-[r2]->(parent2:Resource)
             WHERE type(r2) CONTAINS "subClassOf"
-            AND parent2.uri ENDS WITH "HumanActivity"
-            WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["HumanActivity"] AS activityClasses
+            AND parent2.uri ENDS WITH "{params.concepts[0]}"
+            WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["{params.concepts[0]}"] AS activityClasses
 
-            MATCH (n1:Resource)-[:ns6__represents]->(ha)
+            OPTIONAL MATCH (n1:Resource)-[:ns4__represents]->(ha)
             WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
             WITH landClasses, activityClasses, collect(DISTINCT n1) AS list1
 
             WITH landClasses, activityClasses, list1
 
-            MATCH (n2:Resource)-[:ns6__represents]->(le)-[:ns2__affords]->(ha2)
+            OPTIONAL MATCH (n2:Resource)-[:ns4__represents]->(le)-[:ns2__affords]->(ha2)
             WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | "ns2__" + cls])
             AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
             WITH list1, collect(DISTINCT n2) AS list2
@@ -74,7 +74,7 @@ def _build_cypher(params: QueryParams):
 
     match_clause = f"(n:{asset_label})"
     if activity_labels:
-        match_clause += f"-[:ns6__represents]-(m:{'|'.join(activity_labels)})"
+        match_clause += f"-[:ns4__represents]-(m:{'|'.join(activity_labels)})"
 
     cypher = f"""
         MATCH {match_clause}

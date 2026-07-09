@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import type { NodeDatum } from "~/utils/graph/graphTypes";
 
-const props = defineProps<{ node: NodeDatum; degree: number }>();
+const props = defineProps<{ node: NodeDatum }>();
 defineEmits<{ close: [] }>();
 
 const asset = computed(() => props.node.asset);
@@ -63,11 +63,15 @@ const pdfLabel = computed(() => {
       >
         URI
       </p>
-      <p
-        class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed break-all"
+
+      <a
+        :href="asset.id"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 underline leading-relaxed break-all"
       >
         {{ asset.id }}
-      </p>
+      </a>
     </div>
 
     <!-- rdfs:label -->
@@ -93,7 +97,7 @@ const pdfLabel = computed(() => {
       <p
         class="text-xs font-bold uppercase tracking-wide text-gray-800 dark:text-gray-200 mb-1"
       >
-        Comment
+        Description
       </p>
       <p
         v-if="asset.comment"
@@ -276,11 +280,11 @@ const pdfLabel = computed(() => {
       </div>
     </template>
 
-    <!-- Footer -->
-    <div
+    <!-- Footer maybe ajout du button pour voir tous les types de voisins-->
+    <!-- <div
       class="border-t border-gray-100 dark:border-gray-700 pt-2 text-xs text-gray-500 dark:text-gray-400"
     >
-      <p><span class="font-medium">Connections:</span> {{ degree }}</p>
-    </div>
+      
+    </div> -->
   </div>
 </template>
