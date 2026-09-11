@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from app.dependencies import get_driver
 from app.config import settings
+from app import state
 
 
 
@@ -13,6 +14,9 @@ async def get_labels(driver = Depends(get_driver)):
         records = await result.data()
     return {"labels": [r["label"] for r in records]}
 
+@router.get("/mapping")
+async def get_mapping():
+    return {"mapping": state.ASSET_TYPES_MAP}
 
 @router.get("/neighbors/node")
 async def get_neighbors_node(driver = Depends(get_driver)):

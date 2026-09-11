@@ -1,3 +1,14 @@
+ASSET_TYPES = [
+    "Dataset",
+    "DataService",
+    "ScientificPaper",
+    "Process",
+    "TechnicalDocument",
+    "DatasetSeries",
+    "UserFeedback",
+    "Catalog"
+]
+
 ASSET_TYPE_MAP = {
     "Dataset":        "ns1__Dataset",
     "DataService":    "ns1__DataService",

@@ -1,2 +1,5 @@
 driver = None
 LABEL_CACHE = []
+
+ASSET_TYPES_MAP = {}
+ASSET_TYPE_MAP_INV = {}
