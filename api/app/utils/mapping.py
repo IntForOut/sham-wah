@@ -1,4 +1,4 @@
-def build_label_mapping(labels, asset_types):
+def build_mapping(labels, asset_types):
     mapping = {}
 
     for label in labels:

@@ -9,6 +9,23 @@ ASSET_TYPES = [
     "Catalog"
 ]
 
+ASSET_RELATIONSHIPS = [
+    "reprensents",
+    "affords",
+    "publisher",
+    "location",
+    "issued",
+    "seeAlso",
+    "homepage",
+    "creator",
+    "source",
+    "relatedIdentifier",
+    "publicationYear",
+    "subject",
+]
+
+###################################################
+
 ASSET_TYPE_MAP = {
     "Dataset":        "ns1__Dataset",
     "DataService":    "ns1__DataService",

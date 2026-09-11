@@ -5,7 +5,7 @@ from neo4j import AsyncGraphDatabase
 from app.dependencies import  close_driver
 from app import state
 from app.config import settings
-from app.services.labels import load_labels
+from app.services.metadata import load_labels, load_relationships
 from app.routers import assets, graph, test, db, admin
 
 
@@ -19,6 +19,7 @@ async def lifespan(app: FastAPI):
     )
     
     await load_labels()
+    await load_relationships()
     yield
     await close_driver()
 
