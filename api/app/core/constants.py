@@ -10,7 +10,7 @@ ASSET_TYPES = [
 ]
 
 ASSET_RELATIONSHIPS = [
-    "reprensents",
+    "represents",
     "affords",
     "publisher",
     "location",
@@ -39,7 +39,7 @@ ASSET_TYPE_MAP = {
 
 CONCEPT_LABEL_MAP = {
     "Hiking":             "ns2__Hiking",
-    "HumanActivity":      "ns2__HumanActivity",
+    "HumanActivity":      "ns3__HumanActivity",
     "PopulationFootprint":"ns2__PopulationFootprint",
     "Sentier":            "ns2__Sentier",
     "ReservesNaturelles": "ns2__ReservesNaturelles",
