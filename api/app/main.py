@@ -3,16 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from neo4j import AsyncGraphDatabase
 from app.dependencies import  close_driver
-from app.routers import assets, graph, test, db
-from app.config import settings
 from app import state
+from app.config import settings
+from app.services.labels import load_labels
+from app.routers import assets, graph, test, db, admin
 
-
-async def load_labels_once():
-    async with state.driver.session(database=settings.neo4j_database) as session:
-        result = await session.run("CALL db.labels()")
-        state.LABEL_CACHE = [record["label"] for record in await result.data()]
-    print("Labels chargés :", state.LABEL_CACHE)
 
 
 @asynccontextmanager
@@ -23,7 +18,7 @@ async def lifespan(app: FastAPI):
         auth=(settings.neo4j_user, settings.neo4j_password)
     )
     
-    await load_labels_once()
+    await load_labels()
     yield
     await close_driver()
 
@@ -41,6 +36,7 @@ app.include_router(assets.router)
 app.include_router(graph.router)
 app.include_router(test.router)
 app.include_router(db.router)
+app.include_router(admin.router)
 
 @app.get("/")
 async def root():

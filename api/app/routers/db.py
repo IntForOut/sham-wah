@@ -3,6 +3,7 @@ from app.dependencies import get_driver
 from app.config import settings
 from fastapi import HTTPException
 
+
 router = APIRouter(prefix="/db", tags=["health"])
  
 @router.get("/ready")
