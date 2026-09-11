@@ -1,6 +1,5 @@
 import time
 from fastapi import APIRouter, Depends, HTTPException
-from neo4j import AsyncDriver
 from app.dependencies import get_driver
 from app.schemas.assets import QueryParams, QueryResult
 from app.core.constants import ASSET_TYPE_MAP, CONCEPT_LABEL_MAP
@@ -13,7 +12,7 @@ router = APIRouter(prefix="/assets", tags=["assets"])
 @router.post("/query", response_model=QueryResult)
 async def query_assets(
     params: QueryParams,
-    driver: AsyncDriver = Depends(get_driver),
+    driver = Depends(get_driver),
 ):
     start = time.monotonic()
     

@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-from neo4j import AsyncDriver
 from app.dependencies import get_driver
 from app.config import settings
 
@@ -8,7 +7,7 @@ from app.config import settings
 router = APIRouter(prefix="/test", tags=["test"])
 
 @router.get("/labels")
-async def get_labels(driver: AsyncDriver = Depends(get_driver)):
+async def get_labels(driver = Depends(get_driver)):
     async with driver.session(database=settings.neo4j_database) as session:
         result = await session.run("CALL db.labels()")
         records = await result.data()
@@ -16,7 +15,7 @@ async def get_labels(driver: AsyncDriver = Depends(get_driver)):
 
 
 @router.get("/neighbors/node")
-async def get_neighbors_node(driver: AsyncDriver = Depends(get_driver)):
+async def get_neighbors_node(driver = Depends(get_driver)):
     cypher = """        
     MATCH (n)
     WHERE n.uri ENDS WITH "#OVTracksMontBlancBauges2024"
@@ -41,7 +40,7 @@ async def get_neighbors_node(driver: AsyncDriver = Depends(get_driver)):
 
 
 @router.get("/sample", include_in_schema=False)
-async def sample_node(driver: AsyncDriver = Depends(get_driver)):
+async def sample_node(driver = Depends(get_driver)):
     async with driver.session(database=settings.neo4j_database) as session:
         result = await session.run(
             "MATCH (n:Resource)-[:ns6__represents]-(m:ns2__HumanActivity) RETURN n "
@@ -51,7 +50,7 @@ async def sample_node(driver: AsyncDriver = Depends(get_driver)):
 
 
 @router.get("/all")
-async def all_nodes(driver: AsyncDriver = Depends(get_driver)):
+async def all_nodes(driver = Depends(get_driver)):
     async with driver.session(database=settings.neo4j_database) as session:
         result = await session.run(
             """

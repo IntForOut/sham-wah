@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException
-from neo4j import AsyncDriver
 from app.dependencies import get_driver
 from app.schemas.assets import NeighborGraph, RawEdge
 from app.core.parsers import row_to_asset
@@ -11,7 +10,7 @@ router = APIRouter(prefix="/graph", tags=["graph"])
 async def get_neighbors(
     asset_id: str,
     depth: int = 1,
-    driver: AsyncDriver = Depends(get_driver),
+    driver = Depends(get_driver),
 ):
     if depth < 1 or depth > 2:
         raise HTTPException(status_code=400, detail="Depth must be between 1 and 2")
