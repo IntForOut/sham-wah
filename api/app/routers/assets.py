@@ -53,14 +53,14 @@ def _build_cypher(params: QueryParams):
             WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["{params.concepts[0]}"] AS activityClasses
 
             OPTIONAL MATCH (n1:Resource)-[:{state.RELATIONSHIP_MAP.get("represents")}]->(ha)
-            WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | "ns3__" + cls])
+            WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
             WITH landClasses, activityClasses, collect(DISTINCT n1) AS list1
 
             WITH landClasses, activityClasses, list1
 
             OPTIONAL MATCH (n2:Resource)-[:{state.RELATIONSHIP_MAP.get("represents")}]->(le)-[:{state.RELATIONSHIP_MAP.get("affords")}]->(ha2)
-            WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | "ns3__" + cls])
-            AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | "ns3__" + cls])
+            WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | "ns2__" + cls])
+            AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
             WITH list1, collect(DISTINCT n2) AS list2
 
             WITH list1 + list2 AS allNodes
