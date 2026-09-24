@@ -33,14 +33,22 @@ async def query_assets(
     return QueryResult(count=len(assets), executionTime=elapsed_ms, data=assets)
 
 def _build_cypher(params: QueryParams):
-    p = {"limit": params.limit}
 
     unknown = [c for c in params.concepts if c not in CONCEPT_LABEL_MAP]
     if unknown:
         raise ValueError(f"Unknown concepts: {unknown}")
     
+    # Je récup les sousclass des concepts en recuperant les neouds ressources qui ont l'uri du sous-concept donc je parse aussi l'uri pour recontruire en label neo4j
+    
     
     if "HumanActivity" in params.concepts or "AnimalActivity" in params.concepts:
+        
+        concept = params.concepts[0]
+        full_label = state.CONCEPT_MAP.get(concept)
+        prefix = full_label.split("__")[0] + "__"
+
+        p = {"limit": params.limit, "prefix": prefix}
+
         cypher = f"""
             OPTIONAL MATCH (cls1:Resource)-[r1]->(parent1:Resource)
             WHERE type(r1) CONTAINS "subClassOf"
@@ -49,18 +57,18 @@ def _build_cypher(params: QueryParams):
 
             OPTIONAL MATCH (cls2:Resource)-[r2]->(parent2:Resource)
             WHERE type(r2) CONTAINS "subClassOf"
-            AND parent2.uri ENDS WITH "{params.concepts[0]}"
-            WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["{params.concepts[0]}"] AS activityClasses
+            AND parent2.uri ENDS WITH "{concept}"
+            WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["{concept}"] AS activityClasses
 
             OPTIONAL MATCH (n1:Resource)-[:{state.RELATIONSHIP_MAP.get("represents")}]->(ha)
-            WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
+            WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | $prefix + cls])
             WITH landClasses, activityClasses, collect(DISTINCT n1) AS list1
 
             WITH landClasses, activityClasses, list1
 
             OPTIONAL MATCH (n2:Resource)-[:{state.RELATIONSHIP_MAP.get("represents")}]->(le)-[:{state.RELATIONSHIP_MAP.get("affords")}]->(ha2)
-            WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | "ns2__" + cls])
-            AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
+            WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | $prefix + cls])
+            AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | $prefix + cls])
             WITH list1, collect(DISTINCT n2) AS list2
 
             WITH list1 + list2 AS allNodes

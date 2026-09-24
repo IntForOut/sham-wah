@@ -1,6 +1,6 @@
 from app import state
 from app.config import settings
-from app.core.constants import ASSET_TYPES, ASSET_RELATIONSHIPS
+from app.core.constants import ASSET_TYPES, ASSET_RELATIONSHIPS, CONCEPT_LABEL
 from app.utils.mapping import build_mapping
 
 
@@ -10,11 +10,13 @@ async def load_labels():
         state.LABEL_CACHE = [record["label"] for record in await result.data()]
     state.ASSET_TYPES_MAP = build_mapping(state.LABEL_CACHE, ASSET_TYPES)
     state.ASSET_TYPE_MAP_INV = {v: k for k, v in state.ASSET_TYPES_MAP.items()}
+    state.CONCEPT_MAP = build_mapping(state.LABEL_CACHE, CONCEPT_LABEL)
 
 
     print("Labels chargés :", state.LABEL_CACHE)
-    print("\nMapping construit :", state.ASSET_TYPES_MAP)
+    print("\nMapping type construit :", state.ASSET_TYPES_MAP)
     print("\nMapping inversé :", state.ASSET_TYPE_MAP_INV)
+    print("\nMapping concept construit : ", state.CONCEPT_MAP)
 
 
 async def load_relationships():

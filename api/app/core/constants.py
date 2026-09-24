@@ -24,6 +24,13 @@ ASSET_RELATIONSHIPS = [
     "subject",
 ]
 
+
+CONCEPT_LABEL = [
+    "HumanActivity",
+    "AnimalActivity"
+]
+
+
 ###################################################
 
 ASSET_TYPE_MAP = {
