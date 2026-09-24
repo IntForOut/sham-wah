@@ -11,13 +11,13 @@
     <!-- Line 1: Type badge + Name -->
     <div class="flex items-center gap-1.5 min-w-0">
       <span
-        class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide"
+        class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[12px] font-semibold uppercase tracking-wide"
         :class="selected ? 'bg-gold-600 text-white' : typeColor"
       >
         {{ shortType }}
       </span>
       <span
-        class="text-xs font-semibold truncate"
+        class="text-sm font-semibold truncate"
         :class="
           selected
             ? 'text-gold-900 dark:text-gold-100'
@@ -32,7 +32,7 @@
     <!-- Line 2: Description -->
     <p
       v-if="asset.comment"
-      class="text-[12px] mt-1 leading-relaxed line-clamp-3"
+      class="text-sm mt-1 leading-relaxed line-clamp-3"
       :class="
         selected
           ? 'text-gold-700 dark:text-gold-300'

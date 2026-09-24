@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[500px] h-full flex flex-col bg-white dark:bg-gray-900">
+  <div class="w-[600px] h-full flex flex-col bg-white dark:bg-gray-900">
     <!-- HEADER -->
     <div
       class="h-16 px-6 border-b dark:border-gray-800 flex items-center justify-between"
@@ -10,7 +10,7 @@
         >
           <span class="text-white text-sm font-bold">{{ tabIcon }}</span>
         </div>
-        <span class="text-base font-semibold text-gray-900 dark:text-white">
+        <span class="text-lg font-semibold text-gray-900 dark:text-white">
           {{ title }}
         </span>
       </div>
