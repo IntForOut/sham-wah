@@ -3,9 +3,9 @@
     class="relative w-full h-full bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden"
   >
     <!-- Toolbar on the top-right corner -->
-    <div class="absolute top-4 right-4 z-10 flex flex-col gap-2">
-      <!-- Zoom controls -->
-      <div
+    <!-- <div class="absolute top-4 right-4 z-10 flex flex-col gap-2"> -->
+    <!-- Zoom controls -->
+    <!-- <div
         class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-1"
       >
         <button
@@ -67,10 +67,10 @@
             />
           </svg>
         </button>
-      </div>
+      </div> -->
 
-      <!-- Label toggle -->
-      <div
+    <!-- Label toggle -->
+    <!-- <div
         class="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-1"
       >
         <button
@@ -94,7 +94,7 @@
           </svg>
         </button>
       </div>
-    </div>
+    </div> -->
 
     <!-- Info panel -->
     <Transition
@@ -196,7 +196,7 @@
           class="w-2.5 h-2.5 rounded-full flex-shrink-0"
           :style="{ backgroundColor: item.color }"
         />
-        <span class="text-xs text-gray-600 dark:text-gray-400">{{
+        <span class="text-lg text-gray-600 dark:text-gray-400">{{
           item.label
         }}</span>
       </div>
