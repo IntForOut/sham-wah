@@ -5,7 +5,7 @@
       class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
       title="Change language"
     >
-      <IconLanguage class="w-6 h-6" />
+      <IconLanguage class="w-8 h-8" />
     </button>
 
     <Transition
