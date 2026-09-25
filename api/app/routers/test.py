@@ -16,7 +16,7 @@ async def get_labels(driver = Depends(get_driver)):
 
 @router.get("/mapping")
 async def get_mapping():
-    return {"mapping": state.ASSET_TYPES_MAP}
+    return {"mapping type": state.ASSET_TYPES_MAP, "mapping relationship": state.RELATIONSHIP_MAP}
 
 @router.get("/neighbors/node")
 async def get_neighbors_node(driver = Depends(get_driver)):
