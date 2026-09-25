@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from neo4j import AsyncDriver
 from app.dependencies import get_driver
 from app.schemas.assets import NeighborGraph, RawEdge
 from app.core.parsers import row_to_asset
 from app.config import settings
+from app import state
 
 router = APIRouter(prefix="/graph", tags=["graph"])
 
@@ -11,10 +11,12 @@ router = APIRouter(prefix="/graph", tags=["graph"])
 async def get_neighbors(
     asset_id: str,
     depth: int = 1,
-    driver: AsyncDriver = Depends(get_driver),
+    driver = Depends(get_driver),
 ):
     if depth < 1 or depth > 2:
         raise HTTPException(status_code=400, detail="Depth must be between 1 and 2")
+    
+    
 
     cypher = f"""
         MATCH (n)
@@ -22,14 +24,7 @@ async def get_neighbors(
         
         OPTIONAL MATCH p = (n)-[*1..{depth}]-(v)
         WHERE ALL(node IN nodes(p) WHERE 
-            node = n OR 
-            node:ns1__DataService OR 
-            node:ns1__Dataset OR 
-            node:ns4__UserFeedback OR 
-            node:ns2__TechnicalDocument OR
-            node:ns1__Catalog OR
-            node:ns6__ScientificPaper OR
-            node:ns4__Process
+            node = n OR ANY(lbl IN labels(node) WHERE lbl IN $allowed_labels)
         )
         
         RETURN 
@@ -43,9 +38,12 @@ async def get_neighbors(
                 target_uri: endNode(rel).uri
             }}] AS pathEdges
     """
+    
+    allowed_labels = list(state.ASSET_TYPES_MAP.values())
+
 
     async with driver.session(database=settings.neo4j_database) as session:
-        result = await session.run(cypher, {"suffix": asset_id})
+        result = await session.run(cypher, {"suffix": asset_id, "allowed_labels": allowed_labels})
         records = await result.data()
 
     if not records:

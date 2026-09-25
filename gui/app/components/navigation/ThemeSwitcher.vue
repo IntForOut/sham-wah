@@ -13,8 +13,8 @@
       leave-from-class="scale-100 rotate-0"
       leave-to-class="scale-0 -rotate-90"
     >
-      <IconSun v-if="isDark" key="sun" class="w-6 h-6" />
-      <IconMoon v-else key="moon" class="w-6 h-6" />
+      <IconSun v-if="isDark" key="sun" class="w-8 h-8" />
+      <IconMoon v-else key="moon" class="w-8 h-8" />
     </Transition>
   </button>
 </template>

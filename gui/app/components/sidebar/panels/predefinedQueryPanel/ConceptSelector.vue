@@ -3,7 +3,7 @@
     <select
       v-model="selectedCategory"
       :disabled="disabled"
-      class="w-full h-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none"
+      class="w-full h-full px-4 py-2.5 pr-10 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-base appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none"
     >
       <option value="">Select a concept category...</option>
       <option

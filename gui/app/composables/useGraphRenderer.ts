@@ -51,11 +51,18 @@ export function useGraphRenderer(
     unknown
   > | null = null;
 
+  let autofitTimer: ReturnType<typeof setTimeout> | null = null;
+
   const getLabelColor = () =>
     document.documentElement.classList.contains("dark") ? "#D1D5DB" : "#374151";
 
   function teardown() {
     simulation?.stop();
+    if (autofitTimer) {
+      clearTimeout(autofitTimer);
+      autofitTimer = null;
+    }
+
     if (containerRef.value)
       d3.select(containerRef.value).select("svg").remove();
     themeObserver?.disconnect();
@@ -137,7 +144,39 @@ export function useGraphRenderer(
     });
   }
 
-  function updateGraph(newNodes: NodeDatum[], newLinks: LinkDatum[]) {
+  function zoomToFit(padding = 60, maxScale = 1.5, duration = 400) {
+    if (!svgEl || !zoomBehavior || !containerRef.value) return;
+    const node = svgEl.select<SVGGElement>(".graph-root").node();
+    if (!node) return;
+
+    const bounds = node.getBBox();
+    if (!bounds.width || !bounds.height) return;
+
+    const { width, height } = containerRef.value.getBoundingClientRect();
+    const scale = Math.min(
+      (width - padding * 2) / bounds.width,
+      (height - padding * 2) / bounds.height,
+      maxScale,
+    );
+    const tx = width / 2 - scale * (bounds.x + bounds.width / 2);
+    const ty = height / 2 - scale * (bounds.y + bounds.height / 2);
+    const transform = d3.zoomIdentity.translate(tx, ty).scale(scale);
+
+    if (duration > 0) {
+      svgEl
+        .transition()
+        .duration(duration)
+        .call(zoomBehavior.transform, transform);
+    } else {
+      svgEl.call(zoomBehavior.transform, transform); // instant, no animation
+    }
+  }
+
+  function updateGraph(
+    newNodes: NodeDatum[],
+    newLinks: LinkDatum[],
+    fitView = false,
+  ) {
     if (!svgEl || !simulation) {
       initGraph();
     }
@@ -197,7 +236,7 @@ export function useGraphRenderer(
       .data(newLinks)
       .join("text")
       .text((d) => d.label ?? "")
-      .attr("font-size", 12)
+      .attr("font-size", 14)
       .attr("font-weight", "600")
       .attr("fill", "#64748b")
       .attr("text-anchor", "middle")
@@ -280,7 +319,7 @@ export function useGraphRenderer(
       )
       .join("text")
       .text((d) => d.label)
-      .attr("font-size", 12)
+      .attr("font-size", 14)
       .attr("font-weight", (d) => (d.isSelected ? "700" : "400"))
       .attr("fill", getLabelColor())
       .attr("text-anchor", "middle")
@@ -288,7 +327,21 @@ export function useGraphRenderer(
       .attr("pointer-events", "none")
       .attr("display", showLabels.value ? null : "none");
 
-    simulation!.alpha(0.3).restart();
+    if (fitView) {
+      // Fast-forward the physics synchronously — no frame is painted mid-animation
+      simulation!.alpha(1).alphaTarget(0);
+      let i = 0;
+      while (simulation!.alpha() > simulation!.alphaMin() && i < 400) {
+        simulation!.tick();
+        i++;
+      }
+      handleTick(); // paint the already-settled positions, once
+      zoomToFit(60, 1.5, 0); // snap the camera to fit, instantly
+
+      simulation!.alpha(0.3).restart(); // resume live ticking for drag/interaction
+    } else {
+      simulation!.alpha(0.3).restart();
+    }
   }
 
   function handleTick() {
@@ -348,10 +401,14 @@ export function useGraphRenderer(
       clickedNode.value = null;
     }
 
-    updateGraph(newNodes as NodeDatum[], newLinks as LinkDatum[]);
+    updateGraph(
+      newNodes as NodeDatum[],
+      newLinks as LinkDatum[],
+      isFullReplacement,
+    );
   });
 
-  onMounted(() => updateGraph(nodesRef.value, linksRef.value));
+  onMounted(() => updateGraph(nodesRef.value, linksRef.value, true));
   onBeforeUnmount(teardown);
 
   const zoomIn = () =>

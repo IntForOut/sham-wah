@@ -22,7 +22,7 @@
         v-for="item in navItems"
         :key="item.view"
         :to="item.path"
-        class="px-4 py-2 rounded-lg text-md font-medium transition-all duration-200"
+        class="px-4 py-2 rounded-lg text-lg font-medium transition-all duration-200"
         :class="linkClass(item.view)"
       >
         {{ item.label }}

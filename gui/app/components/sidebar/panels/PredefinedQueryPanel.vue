@@ -1,9 +1,9 @@
 <template>
-  <div class="space-y-6">
+  <div class="space-y-9">
     <!-- Row 1: sentence + [selector + quick search button] always on one line -->
     <div class="flex items-center gap-3 flex-wrap">
       <h3
-        class="text-sm font-semibold text-gray-900 dark:text-white whitespace-nowrap shrink-0"
+        class="text-base font-semibold text-gray-900 dark:text-white whitespace-nowrap shrink-0"
       >
         I'm looking for data about
       </h3>
@@ -114,7 +114,7 @@
     </div>
 
     <!-- Filters accordion -->
-    <AppAccordion :default-open="false">
+    <!-- <AppAccordion :default-open="false">
       <template #icon>
         <svg
           class="w-3.5 h-3.5 text-gray-400"
@@ -136,13 +136,13 @@
         @search="executeQuery"
         @reset="resetAll"
       />
-    </AppAccordion>
+    </AppAccordion> -->
 
     <!-- Max results — outside filters, controls result count -->
     <div class="flex items-center gap-2">
       <label
         for="results-limit"
-        class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap shrink-0"
+        class="text-base font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap shrink-0"
       >
         Max results
       </label>
@@ -150,7 +150,7 @@
         id="results-limit"
         :value="filterStore.filters.limit"
         :disabled="queryStore.isExecuting"
-        class="w-24 px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all disabled:opacity-50"
+        class="w-24 px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-base focus:ring-2 focus:ring-gold-500 dark:focus:ring-gold-400 focus:border-transparent transition-all disabled:opacity-50"
         @change="
           filterStore.setFilters({
             limit: Number(($event.target as HTMLSelectElement).value),
@@ -166,7 +166,7 @@
     <!-- Results section -->
     <section v-if="queryStore.results || queryStore.error">
       <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
+        <h3 class="text-base font-semibold text-gray-900 dark:text-white">
           Results
           <span
             v-if="queryStore.results"
@@ -176,7 +176,7 @@
           </span>
         </h3>
         <button
-          class="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+          class="flex items-center gap-1 text-base text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-colors"
           title="Clear results"
           @click="clearResults"
         >
@@ -228,9 +228,9 @@
 
       <!-- Success state -->
       <div v-else-if="queryStore.results" class="space-y-3">
-        <p class="text-xs text-gray-500 dark:text-gray-400">
+        <!-- <p class="text-xs text-gray-500 dark:text-gray-400">
           {{ queryStore.results.executionTime }}ms
-        </p>
+        </p> -->
         <!-- Scrollable list capped before scrolling -->
         <div
           class="flex flex-col gap-1.5 max-h-[600px] overflow-y-auto pr-1 scrollbar-thin"

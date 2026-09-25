@@ -25,7 +25,7 @@ const tabs: Array<{
   icon: string;
 }> = [
   { id: "human", label: "Predefined Query", icon: "P" },
-  { id: "mock", label: "Predefined Query - Hard coded data", icon: "H" },
+  // { id: "mock", label: "Predefined Query - Hard coded data", icon: "H" },
   // { id: "cypher", label: "Graph Query", icon: "G" },
   // { id: "chatbot", label: "Chatbot", icon: "C" },
 ];

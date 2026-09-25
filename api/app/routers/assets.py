@@ -1,9 +1,10 @@
 import time
 from fastapi import APIRouter, Depends, HTTPException
-from neo4j import AsyncDriver
 from app.dependencies import get_driver
 from app.schemas.assets import QueryParams, QueryResult
-from app.core.constants import ASSET_TYPE_MAP, CONCEPT_LABEL_MAP
+from app.core.constants import  CONCEPT_LABEL_MAP
+from app import state
+
 from app.core.parsers import row_to_asset
 from app.config import settings
 
@@ -13,7 +14,7 @@ router = APIRouter(prefix="/assets", tags=["assets"])
 @router.post("/query", response_model=QueryResult)
 async def query_assets(
     params: QueryParams,
-    driver: AsyncDriver = Depends(get_driver),
+    driver = Depends(get_driver),
 ):
     start = time.monotonic()
     
@@ -32,13 +33,22 @@ async def query_assets(
     return QueryResult(count=len(assets), executionTime=elapsed_ms, data=assets)
 
 def _build_cypher(params: QueryParams):
-    p = {"limit": params.limit}
 
     unknown = [c for c in params.concepts if c not in CONCEPT_LABEL_MAP]
     if unknown:
         raise ValueError(f"Unknown concepts: {unknown}")
     
+    # Je récup les sousclass des concepts en recuperant les neouds ressources qui ont l'uri du sous-concept donc je parse aussi l'uri pour recontruire en label neo4j
+    
+    
     if "HumanActivity" in params.concepts or "AnimalActivity" in params.concepts:
+        
+        concept = params.concepts[0]
+        full_label = state.CONCEPT_MAP.get(concept)
+        prefix = full_label.split("__")[0] + "__"
+
+        p = {"limit": params.limit, "prefix": prefix}
+
         cypher = f"""
             OPTIONAL MATCH (cls1:Resource)-[r1]->(parent1:Resource)
             WHERE type(r1) CONTAINS "subClassOf"
@@ -47,18 +57,18 @@ def _build_cypher(params: QueryParams):
 
             OPTIONAL MATCH (cls2:Resource)-[r2]->(parent2:Resource)
             WHERE type(r2) CONTAINS "subClassOf"
-            AND parent2.uri ENDS WITH "{params.concepts[0]}"
-            WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["{params.concepts[0]}"] AS activityClasses
+            AND parent2.uri ENDS WITH "{concept}"
+            WITH landClasses, collect(split(cls2.uri, "#")[-1]) + ["{concept}"] AS activityClasses
 
-            OPTIONAL MATCH (n1:Resource)-[:ns4__represents]->(ha)
-            WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
+            OPTIONAL MATCH (n1:Resource)-[:{state.RELATIONSHIP_MAP.get("represents")}]->(ha)
+            WHERE any(label IN labels(ha) WHERE label IN [cls IN activityClasses | $prefix + cls])
             WITH landClasses, activityClasses, collect(DISTINCT n1) AS list1
 
             WITH landClasses, activityClasses, list1
 
-            OPTIONAL MATCH (n2:Resource)-[:ns4__represents]->(le)-[:ns2__affords]->(ha2)
-            WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | "ns2__" + cls])
-            AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | "ns2__" + cls])
+            OPTIONAL MATCH (n2:Resource)-[:{state.RELATIONSHIP_MAP.get("represents")}]->(le)-[:{state.RELATIONSHIP_MAP.get("affords")}]->(ha2)
+            WHERE any(label IN labels(le) WHERE label IN [cls IN landClasses | $prefix + cls])
+            AND any(label IN labels(ha2) WHERE label IN [cls IN activityClasses | $prefix + cls])
             WITH list1, collect(DISTINCT n2) AS list2
 
             WITH list1 + list2 AS allNodes
@@ -67,14 +77,24 @@ def _build_cypher(params: QueryParams):
             RETURN DISTINCT n, labels(n) AS nodeLabels
             LIMIT $limit
         """
-        return cypher, p
+        
+        print("------------------REQUETE--------------")
 
-    asset_label = ASSET_TYPE_MAP.get(params.assetType, "Resource")
+        print(cypher)
+
+        return cypher, p
+    
+    print("------------------REQUETE--------------")
+
+    print(cypher)
+    #### Le filtre des types
+
+    asset_label = state.ASSET_TYPES_MAP.get(params.assetType, "Resource")
     activity_labels = [CONCEPT_LABEL_MAP[c] for c in params.concepts]
 
     match_clause = f"(n:{asset_label})"
     if activity_labels:
-        match_clause += f"-[:ns4__represents]-(m:{'|'.join(activity_labels)})"
+        match_clause += f"-[:{state.RELATIONSHIP_MAP.get("represents")}]-(m:{'|'.join(activity_labels)})"
 
     cypher = f"""
         MATCH {match_clause}

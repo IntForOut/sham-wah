@@ -1,13 +1,13 @@
 import * as d3 from "d3";
 import type { NodeDatum } from "./graphTypes";
 
-const CIRCLE_FONT_SIZE = 12;
-const CIRCLE_LINE_HEIGHT = 15;
-const CIRCLE_PX_PER_CHAR = 5.4;
+const CIRCLE_FONT_SIZE = 16;
+const CIRCLE_LINE_HEIGHT = 20;
+const CIRCLE_PX_PER_CHAR = 6.4;
 
-const RECT_FONT_SIZE = 12;
+const RECT_FONT_SIZE = 16;
 const RECT_LINE_HEIGHT = 15;
-const RECT_PX_PER_CHAR = 6.2;
+const RECT_PX_PER_CHAR = 7.2;
 
 export function drawNodeShape(
   group: d3.Selection<SVGGElement, NodeDatum, SVGGElement, unknown>,

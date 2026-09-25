@@ -1,4 +1,5 @@
-from app.core.constants import ASSET_TYPE_MAP_INV, IGNORED_LABELS
+from app.core.constants import IGNORED_LABELS
+from app import state
 from app.schemas.assets import (
     DatasetAsset, DataServiceAsset, CatalogAsset,
     UserFeedbackAsset, TechnicalDocumentAsset, ScientificPaperAsset, ProcessAsset
@@ -66,7 +67,7 @@ def row_to_asset(row: dict, node_key: str = "n"):
 
     node_labels  = row.get("nodeLabels", [])
     valid_labels = [lbl for lbl in node_labels if lbl not in IGNORED_LABELS]
-    actual_type  = ASSET_TYPE_MAP_INV.get(valid_labels[0], "Dataset") if valid_labels else "Dataset"
+    actual_type  = state.ASSET_TYPE_MAP_INV.get(valid_labels[0], "Dataset") if valid_labels else "Dataset"
 
     base = dict(
         id=uri,
@@ -80,51 +81,51 @@ def row_to_asset(row: dict, node_key: str = "n"):
             return DatasetAsset(
                 **base,
                 type="Dataset",
-                publisher=to_str_list(props.get("ns4__publisher")),
-                location=to_str_list(props.get("ns4__location")),
-                issued=to_str(props.get("ns0__issued")),
+                publisher=to_str_list(props.get(state.RELATIONSHIP_MAP.get("publisher"))),
+                location=to_str_list(props.get(state.RELATIONSHIP_MAP.get("location"))),
+                issued=to_str(props.get(state.RELATIONSHIP_MAP.get("issued"))),
             )
 
         case "DataService":
             return DataServiceAsset(
                 **base,
                 type="DataService",
-                publisher=to_str_list(props.get("ns4__publisher")),
-                location=to_str_list(props.get("ns4__location")),
-                seealso=to_str(props.get("rdfs__seeAlso")),
+                publisher=to_str_list(props.get(state.RELATIONSHIP_MAP.get("publisher"))),
+                location=to_str_list(props.get(state.RELATIONSHIP_MAP.get("location"))),
+                seealso=to_str(props.get(state.RELATIONSHIP_MAP.get("seeAlso"))),
             )
 
         case "Catalog":
             return CatalogAsset(
                 **base,
                 type="Catalog",
-                publisher=to_str_list(props.get("ns4__publisher")),
-                homepage=to_str(props.get("ns5__homepage")),
+                publisher=to_str_list(props.get(state.RELATIONSHIP_MAP.get("publisher"))),
+                homepage=to_str(props.get(state.RELATIONSHIP_MAP.get("homepage"))),
             )
 
         case "UserFeedback":
             return UserFeedbackAsset(
                 **base,
                 type="UserFeedback",
-                author=to_str(props.get("ns0__creator"), ""),
+                author=to_str(props.get(state.RELATIONSHIP_MAP.get("creator")), ""),
             )
 
         case "TechnicalDocument":
             return TechnicalDocumentAsset(
                 **base,
                 type="TechnicalDocument",
-                pdfUrl=to_str(props.get("ns0__source"), ""),
-                author=to_str(props.get("ns0__creator"), ""),
+                pdfUrl=to_str(props.get(state.RELATIONSHIP_MAP.get("source")), ""),
+                author=to_str(props.get(state.RELATIONSHIP_MAP.get("creator")), ""),
             )
 
         case "ScientificPaper":
             return ScientificPaperAsset(
                 **base,
                 type="ScientificPaper",
-                authorID=to_str(props.get("ns4__relatedIdentifier"), ""),
-                publisher=to_str(props.get("ns0__publisher"), ""),
-                publication_year=to_str(props.get("ns4__publicationYear"), ""),
-                subject=to_str_list(props.get("ns4__subject")),
+                authorID=to_str(props.get(state.RELATIONSHIP_MAP.get("relatedIdentifier")), ""),
+                publisher=to_str(props.get(state.RELATIONSHIP_MAP.get("publisher")), ""),
+                publication_year=to_str(props.get(state.RELATIONSHIP_MAP.get("publicationYear")), ""),
+                subject=to_str_list(props.get(state.RELATIONSHIP_MAP.get("subject"))),
             )
             
             

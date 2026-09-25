@@ -1,3 +1,38 @@
+ASSET_TYPES = [
+    "Dataset",
+    "DataService",
+    "ScientificPaper",
+    "Process",
+    "TechnicalDocument",
+    "DatasetSeries",
+    "UserFeedback",
+    "Catalog"
+]
+
+ASSET_RELATIONSHIPS = [
+    "represents",
+    "affords",
+    "publisher",
+    "location",
+    "issued",
+    "seeAlso",
+    "homepage",
+    "creator",
+    "source",
+    "relatedIdentifier",
+    "publicationYear",
+    "subject",
+]
+
+
+CONCEPT_LABEL = [
+    "HumanActivity",
+    "AnimalActivity"
+]
+
+
+###################################################
+
 ASSET_TYPE_MAP = {
     "Dataset":        "ns1__Dataset",
     "DataService":    "ns1__DataService",
@@ -11,7 +46,7 @@ ASSET_TYPE_MAP = {
 
 CONCEPT_LABEL_MAP = {
     "Hiking":             "ns2__Hiking",
-    "HumanActivity":      "ns2__HumanActivity",
+    "HumanActivity":      "ns3__HumanActivity",
     "PopulationFootprint":"ns2__PopulationFootprint",
     "Sentier":            "ns2__Sentier",
     "ReservesNaturelles": "ns2__ReservesNaturelles",

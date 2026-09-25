@@ -1,13 +1,25 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from neo4j import AsyncGraphDatabase
+from app.dependencies import  close_driver
+from app import state
+from app.config import settings
+from app.services.metadata import load_labels, load_relationships
+from app.routers import assets, graph, test, db, admin
 
-from app.dependencies import close_driver
-from app.routers import assets, graph, test, db
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+
+    state.driver = AsyncGraphDatabase.driver(
+        settings.neo4j_url,
+        auth=(settings.neo4j_user, settings.neo4j_password)
+    )
+    
+    await load_labels()
+    await load_relationships()
     yield
     await close_driver()
 
@@ -25,6 +37,7 @@ app.include_router(assets.router)
 app.include_router(graph.router)
 app.include_router(test.router)
 app.include_router(db.router)
+app.include_router(admin.router)
 
 @app.get("/")
 async def root():
