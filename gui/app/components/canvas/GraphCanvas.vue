@@ -187,13 +187,13 @@
         <!-- Rect shape for UserFeedback -->
         <span
           v-if="item.shape === 'rect'"
-          class="w-4 h-2.5 rounded-sm flex-shrink-0 border border-gray-400"
+          class="w-5 h-3.5 rounded-sm flex-shrink-0 border border-gray-400"
           style="background: #ffffff"
         />
         <!-- Circle shape for all others -->
         <span
           v-else
-          class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+          class="w-4 h-4 rounded-full flex-shrink-0"
           :style="{ backgroundColor: item.color }"
         />
         <span class="text-lg text-gray-600 dark:text-gray-400">{{
